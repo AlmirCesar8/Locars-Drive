@@ -5,5 +5,5 @@ index_bp = Blueprint('index', __name__)
 
 # Definição da rota para a página inicial
 @index_bp.route('/')
-def home():
+def index():
     return render_template('index.html')

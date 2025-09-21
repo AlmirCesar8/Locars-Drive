@@ -61,7 +61,7 @@ def atualizar_veiculo(veiculo_id):
     dados_atualizados = request.get_json(silent=True)
     if dados_atualizados:
         veiculo.update(dados_atualizados)
-        return jsonify(veiculo)
+        return jsonify(veiculo), 200 #<-- OK
     return jsonify({"erro": "O formato da requisição deve ser JSON"}), 400
 
 @veiculos_bp.route('/veiculos/<int:veiculo_id>', methods=['DELETE'])
@@ -71,4 +71,4 @@ def deletar_veiculo(veiculo_id):
         return jsonify({'error': 'Veículo não encontrado'}), 404
     
     VEICULOS_MOCK.remove(veiculo)
-    return jsonify({'message': 'Veículo deletado com sucesso'}), 200 #<-- OK
+    return jsonify({'message': 'Veículo deletado com sucesso'}), 200

@@ -1,130 +1,51 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Locars Drive</title>
-    <!-- Fonte Inter com pesos 400, 600, 700 -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
-</head>
-<body>
+{% extends 'base.html' %}
 
-    <!-- NAVBAR -->
-    <header>
-        <nav class="navbar">
-            <div class="container_nav">
-                <!-- Botão Menu (ícone) -->
-                <button id="botao_menu" aria-haspopup="true" aria-expanded="false" aria-controls="menu_dropdown" class="botao_menu" type="button" aria-label="Abrir menu">
-                    &#9776;
-                </button>
+{% block title %}Inicio{% endblock %}
 
-                <a href="{{ url_for('index.index') }}" class="logo">Locars Drive</a>
+{% block content %}
 
-                <ul class="menu">
-                    <li><a href="{{ url_for('index.index') }}">Início</a></li>
-                    <li><a href="{{ url_for('frotas.frotas') }}">Frotas</a></li>
-                    <li><a href="{{ url_for('planos.planos') }}">Planos</a></li>
-                    <li><a href="{{ url_for('contato.contato') }}">Contato</a></li>
-                    <li><a href="{{ url_for('autenticacao.login') }}" class="btn_entrar">Entrar</a></li>
-                </ul>
-            </div>
+<!-- HERO -->
+<section class="hero">
+    <div class="overlay"></div>
+    <div class="conteudo_hero">
+        <h1>O serviço perfeito para você.</h1>
+        <form class="form_reserva" action="/veiculos/" method="GET">
+            <input type="text" name="local_retirada" placeholder="Local de retirada" required />
+            <input type="date" name="data_retirada" aria-label="Data de retirada" required />
+            <input type="time" name="hora_retirada" aria-label="Hora de retirada" required />
+            <button type="submit">Buscar Veículo</button>
+        </form>
+    </div>
+</section>
 
-            <!-- Menu Dropdown -->
-            <nav id="menu_dropdown" class="menu_dropdown" aria-label="Menu principal" hidden>
-                <div class="menu_topico">
-                    <h4>Locação</h4>
-                    <ul>
-                        <li><a href="{{ url_for('locacao.locacao') }}">Aluguel</a></li>
-                        <li><a href="{{ url_for('planos.planos') }}">Planos</a></li>
-                        <li><a href="{{ url_for('planos.assinatura') }}">Por Assinatura</a></li>
-                        <li><a href="{{ url_for('locacao.sem_habilitacao') }}">Sem Habilitação</a></li>
-                    </ul>
-                </div>
-                <div class="menu_topico">
-                    <h4>Frotas</h4>
-                    <ul>
-                        <li><a href="{{ url_for('frotas.frotas') }}">Nossas Frotas</a></li>
-                        <li><a href="{{ url_for('veiculos.veiculos') }}">Veículos</a></li>
-                    </ul>
-                </div>
-                <div class="menu_topico">
-                    <h4>Suporte</h4>
-                    <ul>
-                        <li><a href="{{ url_for('contato.contato') }}">Contato</a></li>
-                        <li><a href="{{ url_for('autenticacao.login') }}">Entrar</a></li>
-                        <li><a href="{{ url_for('autenticacao.registro') }}">Registrar</a></li>
-                    </ul>
-                </div>
-            </nav>
-        </nav>
-    </header>
-    
-    <!-- HERO -->
-    <section class="hero">
-        <div class="overlay"></div>
-        <div class="conteudo_hero">
-            <h1>O serviço perfeito para você.</h1>
-            <form class="form_reserva" action="{{ url_for('veiculos.pesquisar_veiculos') }}" method="GET">
-                <input type="text" name="local_retirada" placeholder="Local de retirada" required />
-                <input type="date" name="data_retirada" aria-label="Data de retirada" required />
-                <input type="time" name="hora_retirada" aria-label="Hora de retirada" required />
-                <button type="submit">Buscar Veículo</button>
-            </form>
+<!-- NAVEGAÇÃO SECUNDÁRIA -->
+<nav class="navegacao_secundaria" aria-label="Navegação de categorias">
+    <button class="botao_navegacao" onclick="location.href='/veiculos/'">Explorar</button>
+    <button class="botao_navegacao" onclick="location.href='/locacao/'">Aluguel</button>
+    <button class="botao_navegacao" onclick="location.href='/planos/'">Aluguel Mensal</button>
+    <button class="botao_navegacao" onclick="location.href='#'">Por Assinatura</button>
+    <button class="botao_navegacao" onclick="location.href='#'">Sem Habilitação</button>
+    <button class="botao_navegacao" onclick="location.href='/frotas/'">Frotas</button>
+</nav>
+
+<!-- FROTA -->
+<section class="frota" aria-label="Seção de frota de veículos">
+    <h2>Conheça nossa frota</h2>
+    <div class="carros">
+        <div class="carro" tabindex="0">
+            <img src="https://via.placeholder.com/350x180?text=Carro+Econômico" alt="Carro Econômico" />
+            <p>Carro Econômico</p>
         </div>
-    </section>
-
-    <!-- NAVEGAÇÃO SECUNDÁRIA -->
-    <nav class="navegacao_secundaria" aria-label="Navegação de categorias">
-        <button class="botao_navegacao">Explorar</button>
-        <button class="botao_navegacao">Aluguel</button>
-        <button class="botao_navegacao">Aluguel Mensal</button>
-        <button class="botao_navegacao">Por Assinatura</button>
-        <button class="botao_navegacao">Sem Habilitação</button>
-        <button class="botao_navegacao">Frotas</button>
-    </nav>
-    
-    <!-- FROTA -->
-    <section class="frota" aria-label="Seção de frota de veículos">
-        <h2>Conheça nossa frota</h2>
-        <div class="carros">
-            <div class="carro" tabindex="0">
-                <img src="https://via.placeholder.com/350x180?text=Carro+Econômico" alt="Carro Econômico" />
-                <p>Carro Econômico</p>
-            </div>
-            <div class="carro" tabindex="0">
-                <img src="https://via.placeholder.com/350x180?text=SUV+Conforto" alt="SUV Conforto" />
-                <p>SUV Conforto</p>
-            </div>
-            <div class="carro" tabindex="0">
-                <img src="https://via.placeholder.com/350x180?text=Luxo+Premium" alt="Luxo Premium" />
-                <p>Luxo Premium</p>
-            </div>
+        <div class="carro" tabindex="0">
+            <img src="https://via.placeholder.com/350x180?text=SUV+Conforto" alt="SUV Conforto" />
+            <p>SUV Conforto</p>
         </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer>
-        <div class="container_footer">
-            <div class="coluna">
-                <h3>Locars Drive</h3>
-                <p>O serviço perfeito para você.</p>
-            </div>
-            <div class="coluna">
-                <h3>Contato</h3>
-                <p>Email: contato@locarsdrive.com</p>
-                <p>Telefone: (11) 99999-9999</p>
-            </div>
-            <div class="coluna">
-                <h3>Sobre</h3>
-                <p>Especialistas em locação de veículos, com conforto, segurança e praticidade.</p>
-            </div>
+        <div class="carro" tabindex="0">
+            <img src="https://via.placeholder.com/350x180?text=Luxo+Premium" alt="Luxo Premium" />
+            <p>Luxo Premium</p>
         </div>
-        <div class="copy">
-            <p>&copy; 2025 Locars Drive - Todos os direitos reservados.</p>
-        </div>
-    </footer>
+    </div>
+</section>
 
-    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
-</body>
-</html>
+
+{% endblock %}

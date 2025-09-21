@@ -2,7 +2,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const botaoMenu = document.getElementById('botao_menu');
     const menuDropdown = document.getElementById('menu_dropdown');
 
-    botaoMenu.addEventListener('click', function () {
+    // Alterna menu ao clicar no botão
+    botaoMenu.addEventListener('click', function (e) {
+        e.stopPropagation(); // evita que o clique suba para o documento
         const aberto = !menuDropdown.hasAttribute('hidden');
         if (aberto) {
             menuDropdown.setAttribute('hidden', '');
@@ -15,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Fecha o menu se clicar fora
     document.addEventListener('click', function (e) {
-        if (!menuDropdown.contains(e.target) && e.target !== botaoMenu) {
+        if (!menuDropdown.contains(e.target)) {
             menuDropdown.setAttribute('hidden', '');
             botaoMenu.setAttribute('aria-expanded', 'false');
         }

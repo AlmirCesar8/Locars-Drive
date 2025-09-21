@@ -9,4 +9,4 @@ def locacao():
 @locacao_bp.route('/sem_habilitacao')
 def sem_habilitacao():
     # Página específica para locação sem habilitação
-    return render_template('sem_habilitacao.html')  # Crie esse template ou ajuste conforme necessário
+    return render_template('sem_habilitacao.html')  

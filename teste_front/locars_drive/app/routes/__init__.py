@@ -10,14 +10,13 @@ from app.routes.administrador import administrador_bp
 from app.routes.devolucao import devolucao_bp
 
 blueprints = [
-    index_bp,
-    erros_bp,
-    frotas_bp,
-    locacao_bp,
-    planos_bp,
-    veiculos_bp,
-    contato_bp,
-    autenticacao_bp,
-    administrador_bp,
-    devolucao_bp,
-]
+        (index_bp, None),  # Rota principal '/'
+        (contato_bp, '/contato'),
+        (frotas_bp, '/frotas'),
+        (locacao_bp, '/locacao'),
+        (planos_bp, '/planos'),
+        (veiculos_bp, '/veiculos'),
+        (administrador_bp, '/admin'),
+        (autenticacao_bp, '/auth'),
+        (devolucao_bp, '/devolucao'),
+    ]

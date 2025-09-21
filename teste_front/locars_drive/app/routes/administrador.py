@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template
 
-administrador_bp = Blueprint('administrador', __name__, url_prefix='/admin')
+administrador_bp = Blueprint('administrador', __name__,)
 
 @administrador_bp.route('/painel')
 def painel():

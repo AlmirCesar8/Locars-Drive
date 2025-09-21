@@ -8,5 +8,4 @@ def veiculos():
 
 @veiculos_bp.route('/<int:veiculo_id>')
 def detalhe_veiculo(veiculo_id):
-    # Exemplo de rota para detalhes de veículo
     return render_template('detalhe_veiculo.html', veiculo_id=veiculo_id)

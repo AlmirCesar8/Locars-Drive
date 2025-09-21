@@ -9,4 +9,4 @@ def planos():
 @planos_bp.route('/assinatura')
 def assinatura():
     # Página para planos por assinatura
-    return render_template('assinatura.html')  # Crie esse template ou ajuste conforme necessário
+    return render_template('assinatura.html') 

@@ -3,71 +3,121 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{% block title %}{{ titulo_pagina }}{% endblock %}</title>
-    <!-- Fonte Inter com pesos 400, 600, 700 -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <title>{% block title %}{{ titulo_pagina or "Locars Drive" }}{% endblock %}</title>
+
+    <!-- Fontes -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/perfil.css') }}">
+
+    <!-- Ícones (FA) -->
+    <script src="https://kit.fontawesome.com/a2d0b1c5e1.js" crossorigin="anonymous"></script>
+
+    <link rel="icon" href="{{ url_for('static', filename='img/logo.ico') }}">
 </head>
 <body>
 
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-container">
+          {% for category, message in messages %}
+            <div class="flash-message {{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
     <!-- NAVBAR -->
-    <header>
-        <nav class="navbar">
-            <div class="container_nav">
-                <!-- Botão Menu (ícone) -->
-                <button id="botao_menu" aria-haspopup="true" aria-expanded="false" aria-controls="menu_dropdown" class="botao_menu" type="button" aria-label="Abrir menu">
-                    &#9776;
-                </button>
+<header class="navbar-branca">
+    <nav class="navbar">
+        <div class="container_nav">
 
-                <a href="{{ url_for('index.index') }}" class="logo">Locars Drive</a>
+            <!-- Botão Menu (ícone) -->
+            <button id="botao_menu" aria-haspopup="true" aria-expanded="false" aria-controls="menu_dropdown" class="botao_menu" type="button" aria-label="Abrir menu">
+                &#9776;
+            </button>
+            
+            <a href="{{ url_for('index.index') }}" class="logo">
+                <div>
+                    <h1>LocarsDrive</h1>
+                    <p>Mobilidade sem limites</p>
+                </div>
+            </a>
+            
+            <ul class="menu">
+                <li><a href="{{ url_for('index.index') }}" class="{% if request.endpoint == 'index.index' %}ativo{% endif %}">
+                    <i class="fas fa-home"></i> Início
+                </a></li>
 
-                <ul class="menu">
-                    <li><a href="{{ url_for('index.index') }}">Início</a></li>
-                    <li><a href="{{ url_for('frotas.frotas') }}">Frotas</a></li>
-                    <li><a href="{{ url_for('planos.planos') }}">Planos</a></li>
-                    <li><a href="{{ url_for('contato.contato') }}">Contato</a></li>
-                    <li><a href="{{ url_for('autenticacao.login') }}" class="btn_entrar">Entrar</a></li>
-                </ul>
+                <li><a href="{{ url_for('frotas.frotas') }}" class="{% if request.endpoint == 'frotas.frotas' %}ativo{% endif %}">
+                    <i class="fas fa-car"></i> Veículos
+                </a></li>
+
+                <li><a href="{{ url_for('planos.planos') }}" class="{% if request.endpoint == 'planos.planos' %}ativo{% endif %}">
+                    <i class="fas fa-credit-card"></i> Assinaturas
+                </a></li>
+
+                <li><a href="{{ url_for('locacao.locacao') }}" class="{% if request.endpoint == 'locacao.locacao' %}ativo{% endif %}">
+                    <i class="fas fa-calendar"></i> Minhas Reservas
+                </a></li>
+
+                <li><a href="{{ url_for('autenticacao.perfil') }}" class="{% if request.endpoint == 'autenticacao.perfil' %}ativo{% endif %}">
+                    <i class="fas fa-user"></i> Perfil
+                </a></li>
+            </ul>
+
+            {% if current_user.is_authenticated %}
+            <div class="user-info">
+                <div class="user-dados">
+                    <strong>{{ current_user.nome }}</strong>
+                    <span>{{ current_user.email }}</span>
+                </div>
+                <a href="{{ url_for('autenticacao.logout') }}" class="btn-sair">
+                    <i class="fas fa-sign-out-alt"></i> Sair
+                </a>
             </div>
+            {% else %}
+            <a href="{{ url_for('autenticacao.login') }}" class="btn-entrar">Entrar</a>
+            {% endif %}
+        </div>
+    </nav>
 
-            <!-- Menu Dropdown -->
-            <nav id="menu_dropdown" class="menu_dropdown" aria-label="Menu principal" hidden>
-                <div class="menu_topico">
-                    <h4>Locação</h4>
-                    <ul>
-                        <li><a href="{{ url_for('locacao.locacao') }}">Aluguel</a></li>
-                        <li><a href="{{ url_for('planos.planos') }}">Planos</a></li>
-                        <li><a href="{{ url_for('planos.assinatura') }}">Por Assinatura</a></li>
-                        <li><a href="{{ url_for('locacao.sem_habilitacao') }}">Sem Habilitação</a></li>
-                    </ul>
-                </div>
-                <div class="menu_topico">
-                    <h4>Frotas</h4>
-                    <ul>
-                        <li><a href="{{ url_for('frotas.frotas') }}">Nossas Frotas</a></li>
-                        <li><a href="{{ url_for('veiculos.veiculos') }}">Veículos</a></li>
-                    </ul>
-                </div>
-                <div class="menu_topico">
-                    <h4>Suporte</h4>
-                    <ul>
-                        <li><a href="{{ url_for('contato.contato') }}">Contato</a></li>
-                        <li><a href="{{ url_for('autenticacao.login') }}">Entrar</a></li>
-                        <li><a href="{{ url_for('autenticacao.registro') }}">Registrar</a></li>
-                    </ul>
-                </div>
-            </nav>
-        </nav>
-    </header>
 
-    <!-- MAIN CONTENT -->
+    <!-- MENU DROPDOWN (hidden por padrão) -->
+    <nav id="menu_dropdown" class="menu_dropdown" aria-label="Menu principal" hidden>
+        <div class="menu_topico">
+            <h4>Locação</h4>
+            <ul>
+                <li><a href="{{ url_for('locacao.locacao') }}">Aluguel</a></li>
+                <li><a href="{{ url_for('planos.planos') }}">Planos</a></li>
+                <li><a href="{{ url_for('planos.assinatura') }}">Por Assinatura</a></li>
+                <li><a href="{{ url_for('locacao.sem_habilitacao') }}">Sem Habilitação</a></li>
+            </ul>
+        </div>
+        <div class="menu_topico">
+            <h4>Frotas</h4>
+            <ul>
+                <li><a href="{{ url_for('frotas.frotas') }}">Nossas Frotas</a></li>
+                <li><a href="{{ url_for('veiculos.veiculos') }}">Veículos</a></li>
+            </ul>
+        </div>
+        <div class="menu_topico">
+            <h4>Suporte</h4>
+            <ul>
+                <li><a href="{{ url_for('contato.contato') }}">Contato</a></li>
+                <li><a href="{{ url_for('autenticacao.login') }}">Entrar</a></li>
+                <li><a href="{{ url_for('autenticacao.registro') }}">Registrar</a></li>
+            </ul>
+        </div>
+    </nav>
+
     <main>
-        {% block content %}
-
-        {% endblock %}
+        {% block content %}{% endblock %}
     </main>
 
-    <!-- FOOTER -->
     <footer>
         <div class="container_footer">
             <div class="coluna">

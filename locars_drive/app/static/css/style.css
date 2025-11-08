@@ -358,3 +358,220 @@ footer {
 .form_reserva input::placeholder {
     color: #bbb;
 }
+
+
+
+
+.auth-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.auth-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #222;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: none;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+.alert {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.error {
+    color: #dc3545;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+/* ---------- GERAL ---------- */
+body {
+    font-family: "Inter", sans-serif;
+    background-color: #f7f7f7;
+    margin: 0;
+    padding: 0;
+    color: #1c1c1c;
+}
+
+/* ---------- FLASH MESSAGES ---------- */
+.flash-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 2000;
+}
+
+.flash-message {
+    padding: 14px 20px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    color: #fff;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    animation: fadeIn 0.4s ease, fadeOut 0.5s ease 4.5s forwards;
+}
+
+.flash-message.success {
+    background-color: #2ecc71;
+}
+
+.flash-message.error {
+    background-color: #e74c3c;
+}
+
+.flash-message.info {
+    background-color: #3498db;
+}
+
+.flash-message.warning {
+    background-color: #f39c12;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+    to { opacity: 0; transform: translateY(-10px); }
+}
+
+/* ---------- NAVBAR ---------- */
+
+
+.container_nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    margin: auto;
+}
+
+
+
+.menu {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+}
+
+.menu a {
+    color: #ccc;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.menu a:hover {
+    color: #fff;
+}
+
+.btn_entrar {
+    background-color: #fff;
+    color: #111;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn_entrar:hover {
+    background-color: #eee;
+}
+
+/* ---------- FOOTER ---------- */
+footer {
+    background-color: #111;
+    color: #ccc;
+    padding: 2rem 0;
+    margin-top: 3rem;
+}
+
+.container_footer {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 2rem;
+    width: 90%;
+    margin: auto;
+}
+
+.coluna h3 {
+    color: #fff;
+    margin-bottom: 0.5rem;
+}
+
+.copy {
+    text-align: center;
+    border-top: 1px solid #222;
+    padding-top: 1rem;
+    color: #999;
+    font-size: 0.9rem;
+}
+

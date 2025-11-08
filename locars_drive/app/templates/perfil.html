@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}Perfil - Locars Drive{% endblock %}
+
+{% block content %}
+<section class="perfil-header">
+    <div class="perfil-header-inner">
+        <div class="perfil-avatar"><i class="fa-solid fa-user"></i></div>
+        <div class="perfil-identidade">
+            <h1>{{ usuario.nome }}</h1>
+            <p class="email">{{ usuario.email }}</p>
+        </div>
+    </div>
+</section>
+
+<section class="perfil-main">
+    <div class="perfil-container">
+        <aside class="col-left">
+            <div class="card info-conta">
+                <h3>Informações da Conta</h3>
+                <div class="info-row"><i class="fa-regular fa-user"></i><span>{{ usuario.nome }}</span></div>
+                <div class="info-row"><i class="fa-regular fa-envelope"></i><span>{{ usuario.email }}</span></div>
+                <div class="info-row"><i class="fa-regular fa-calendar"></i><span>Membro desde {{ usuario.data_criacao.strftime('%d/%m/%Y') }}</span></div>
+            </div>
+
+            <div class="card assinatura-card">
+                <div class="assinatura-top">
+                    <span class="badge">BÁSICO</span>
+                    <div class="assinatura-price">R$ 99.90<span>/mês</span></div>
+                    <div class="assinatura-valid">Válida até 01/12/2025</div>
+                </div>
+                <hr>
+                <ul class="beneficios">
+                    <li>10% de desconto em todas as locações</li>
+                    <li>1 dia grátis por mês</li>
+                    <li>Cancelamento flexível</li>
+                </ul>
+            </div>
+        </aside>
+
+        <div class="col-right">
+            <div class="cards-resumo">
+                <div class="mini card">
+                    <div class="mini-icon"><i class="fa-solid fa-car-side"></i></div>
+                    <div class="mini-body"><h4>0</h4><p>Total de Reservas</p></div>
+                </div>
+                <div class="mini card">
+                    <div class="mini-icon"><i class="fa-solid fa-check"></i></div>
+                    <div class="mini-body"><h4>0</h4><p>Locações Concluídas</p></div>
+                </div>
+                <div class="mini card">
+                    <div class="mini-icon"><i class="fa-solid fa-calendar-days"></i></div>
+                    <div class="mini-body"><h4>0</h4><p>Dias Alugados</p></div>
+                </div>
+            </div>
+
+            <div class="card atividade">
+                <h3>Atividade Recente</h3>
+                <p class="muted">Nenhuma atividade recente</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

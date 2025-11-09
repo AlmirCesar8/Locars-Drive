@@ -13,3 +13,6 @@ __pycache__/
 # Arquivos de logs e dados temporários
 *.log
 *.sqlite3
+
+# Arquivos de configuração do ambiente
+.env

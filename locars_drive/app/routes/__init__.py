@@ -7,6 +7,7 @@ from app.routes.veiculos import veiculos_bp
 from app.routes.autenticacao import autenticacao_bp
 from app.routes.administrador import administrador_bp
 from app.routes.devolucao import devolucao_bp
+from app.routes.teste import teste_bp
 
 blueprints = [
     (index_bp, None),
@@ -18,4 +19,5 @@ blueprints = [
     (administrador_bp, '/admin'),
     (autenticacao_bp, '/auth'),
     (devolucao_bp, '/devolucao'),
+    (teste_bp, None),
 ]

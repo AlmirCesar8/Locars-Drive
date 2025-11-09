@@ -1,11 +1,10 @@
 from flask import Flask
-from app.config import Config
 from app.extensions import db, bcrypt, login_manager
 
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_object(Config)
+    app.config.from_pyfile('config.py')
 
     # Inicialização das extensões
     db.init_app(app)
@@ -31,8 +30,7 @@ def create_app():
         else:
             app.register_blueprint(bp)
 
-    # Criar tabelas automaticamente (opcional, útil durante o desenvolvimento)
-    with app.app_context():
-        db.create_all()
-
+    print("Aplicativo criado com sucesso!")
     return app
+
+

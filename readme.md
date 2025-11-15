@@ -1,8 +1,8 @@
-<h1 align="center"> 🚗 Locars Drive - Projeto de Locadora de Veículos </h1>
+<h1 align="center"> 🚗 Locars Drive - Projeto de Locadora de Veículos 2025 </h1>
 
 
 ## :memo: Sobre o Projeto
-Este repositório apresenta o projeto fictício de locação de veículos **Locars Drive**, desenvolvido para a instituição **Instituto Federal de Educação, Ciência e Tecnologia do Estado de São Paulo – Campus São Paulo**.
+Este repositório apresenta o projeto fictício de locação de veículos **Locars Drive**, desenvolvido para a instituição **Instituto Federal de Educação, Ciência e Tecnologia do Estado de São Paulo – Campus São Paulo** com o objetivo de ser o Projeto Final das materias técnicas do curso de **Desenvolvimento de Sistemas.**
 
 A **Locars Drive** é um sistema voltado ao gerenciamento completo de uma locadora de veículos, oferecendo recursos para controle de frota, cadastro de clientes, gestão de locações, reservas e demais operações essenciais.
 

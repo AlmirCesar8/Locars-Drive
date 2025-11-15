@@ -551,6 +551,7 @@ footer {
     color: #ccc;
     padding: 2rem 0;
     margin-top: 3rem;
+    margin-bottom: 0%;
 }
 
 .container_footer {
@@ -575,3 +576,13 @@ footer {
     font-size: 0.9rem;
 }
 
+.erro {
+    text-align: center;
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 1rem;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}

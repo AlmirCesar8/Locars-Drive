@@ -1,10 +1,11 @@
 /* ============================================================
  Arquivo: 90_verificacoes_pos_execucao.sql
- Autor(es): Fabio Benjamin; Almir Silva; Gabriel Paiva 
+ Autor(es): Benjamin, Fabio; Silva, Almir; Paiva, Gabriel
  Trabalho: LocarsDrive
  Curso/Turma: Desenvolvimento de Sistemas - 213 Matutino
- SGBD: MySQL 8.0
+ SGBD: MySQL Versão: 8.0
  Objetivo: Validações após execução completa do projeto
+ Execução esperada: etapa final, após todos os demais scripts
  ============================================================ */
  
 -- Contagem de registros por tabela 

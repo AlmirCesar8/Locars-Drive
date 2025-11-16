@@ -149,6 +149,10 @@ CREATE TABLE Veiculo (
 
 -- ALTER TABLES UTILIZADOS --
 
+ALTER TABLE Agencia
+ADD COLUMN bairro VARCHAR(255),
+ADD COLUMN Nome_CIdade varchar(255);
+
 ALTER TABLE Historico_Km
 ADD COLUMN id_Veiculo INT NOT NULL;
 

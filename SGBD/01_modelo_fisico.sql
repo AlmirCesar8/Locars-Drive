@@ -19,9 +19,11 @@ CREATE TABLE Adicionais (
 );
 
 CREATE TABLE Agencia (
-    id_Agencia int PRIMARY KEY NOT NULL auto_increment,
-    Nome_Agencia varchar(255) NOT NULL,
-    Num_Agencia int NOT NULL UNIQUE
+    id_Agencia INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    Nome_Agencia VARCHAR(255) NOT NULL,
+    Num_Agencia INT NOT NULL UNIQUE,
+    id_Cidade INT NOT NULL,
+    FOREIGN KEY (id_Cidade) REFERENCES Cidade(id_Cidade)
 );
 
 CREATE TABLE Categoria (

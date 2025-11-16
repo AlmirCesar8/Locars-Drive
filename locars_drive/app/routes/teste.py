@@ -1,12 +1,17 @@
 from flask import Blueprint
-from app.modelos import Usuario
+from app.models import Usuario
+from app.models import Cidade
 
 teste_bp = Blueprint('teste', __name__)
 
 @teste_bp.route('/teste-db')
 def teste_db():
     try:
+        nome_cidade = []
         usuarios = Usuario.query.all()
-        return f"Conexão OK! Número de usuários: {len(usuarios)}"
+        cidades = Cidade.query.all()
+        for c in cidades:
+            nome_cidade.append(c.Nome_Cidade)
+        return f"Conexão OK! Número de usuários: {len(usuarios)}\nnomes das cidades: {', '.join(nome_cidade)}"
     except Exception as e:
         return f"Erro na conexão: {str(e)}"

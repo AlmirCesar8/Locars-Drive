@@ -8,7 +8,7 @@ class Cidade(db.Model):
 
     id_Cidade = db.Column(db.Integer, primary_key=True, autoincrement=True)
     Nome_Cidade = db.Column(db.String(255), nullable=False, unique=True)
-    CEP_ = db.Column(db.String(8), nullable=False, unique=True)
+    CEP = db.Column(db.String(8), nullable=False, unique=True)
     Complemento = db.Column(db.String(50), nullable=True)
     Bairro = db.Column(db.String(255), nullable=False)
     Num_Casa = db.Column(db.Integer, nullable=False, unique=True)

@@ -1,10 +1,11 @@
 /* ============================================================
  Arquivo: 10_queries_basicas.sql
- Autor(es): Fabio Benjamin; Almir Silva; Gabriel Paiva 
+ Autor(es): Benjamin, Fabio; Silva, Almir; Paiva, Gabriel
  Trabalho: LocarsDrive
- Curso/Turma: Desenvolvimento de Sistemas - 213 Matutino 
- SGBD: MySQL 8.0
+ Curso/Turma: Desenvolvimento de Sistemas - 213 Matutino
+ SGBD: MySQL Versão: 8.0
  Objetivo: Consultas SQL básicas
+ Execução esperada: após inserções básicas e casos de teste
  ============================================================ */
  
  -- Consulta 1: Listagem de todos os tipos de usuario 

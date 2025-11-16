@@ -105,6 +105,14 @@ O projeto foi idealizado com foco em **eficiência, precisão e segurança**, pr
 
 </div>
 
+## 📚 Referências
+* [Localiza](https://www.localiza.com/)  
+* [Movida](https://www.movida.com.br/)  
+* [Rentcars](https://www.rentcars.com/pt-br/)  
+* [Turbi](https://turbi.com.br/)  
+* [TOTVS – Política de Segurança da Informação](https://www.totvs.com/blog/gestao-para-assinatura-de-documentos/politica-de-seguranca-da-informacao/)  
+
+
 ## :dart: Status do projeto
 
 *  🚧 Em desenvolvimento 🚧

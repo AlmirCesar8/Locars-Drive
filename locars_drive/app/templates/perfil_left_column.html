@@ -1,0 +1,21 @@
+<!-- templates/perfil_left_column.html -->
+<div class="card info-conta">
+  <h3>Informações da Conta</h3>
+  <div class="info-row"><i class="fa-regular fa-user"></i><span>{{ current_user.nome_completo or current_user.nome }}</span></div>
+  <div class="info-row"><i class="fa-regular fa-envelope"></i><span>{{ current_user.email }}</span></div>
+  <div class="info-row"><i class="fa-regular fa-calendar"></i><span>Membro desde {{ current_user.data_criacao.strftime('%d/%m/%Y') }}</span></div>
+</div>
+
+<div class="card assinatura-card">
+  <div class="assinatura-top">
+    <span class="badge">{{ current_user.plano_nome or 'BÁSICO' }}</span>
+    <div class="assinatura-price">{{ current_user.plano_valor or 'R$ 99,90' }} <span>/mês</span></div>
+    <div class="assinatura-valid">Válida até {{ current_user.plano_renova_em or '01/12/2025' }}</div>
+  </div>
+  <hr>
+  <ul class="beneficios">
+    <li>10% de desconto em todas as locações</li>
+    <li>1 dia grátis por mês</li>
+    <li>Cancelamento flexível</li>
+  </ul>
+</div>

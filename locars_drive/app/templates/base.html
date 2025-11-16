@@ -64,10 +64,13 @@
                     <i class="fas fa-calendar"></i> Minhas Reservas
                 </a></li>
 
-                <li><a href="{{ url_for('autenticacao.perfil') }}" class="{% if request.endpoint == 'autenticacao.perfil' %}ativo{% endif %}">
-                    <i class="fas fa-user"></i> Perfil
-                </a></li>
+                {% if current_user.is_authenticated %}
+                    <li><a href="{{ url_for('autenticacao.perfil') }}" class="{% if request.endpoint == 'autenticacao.perfil' %}ativo{% endif %}">
+                        <i class="fas fa-user"></i> Perfil
+                    </a></li>
+                {% endif %}
             </ul>
+
 
             {% if current_user.is_authenticated %}
             <div class="user-info">

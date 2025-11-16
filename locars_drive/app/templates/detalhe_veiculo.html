@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% block title %}Detalhe do Veículo: {{ veiculo.marca }} {{ veiculo.modelo }}{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/detalhe.css') }}">
+
+
+<section class="detalhe-main">
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="{{ url_for('frotas.frotas') }}">Veículos</a> / <span>{{ veiculo.marca }} {{ veiculo.modelo }}</span>
+        </div>
+
+        <div class="detalhe-wrapper">
+            
+            <main class="detalhe-col-principal">
+                
+                <div class="veiculo-header">
+                    <h1>{{ veiculo.marca }} {{ veiculo.modelo }}</h1>
+                    <div class="avaliacao">
+                        <i class="fa-solid fa-star"></i> <span>{{ veiculo.media_avaliacao | round(1) }} ({{ veiculo.total_avaliacoes }} avaliações)</span>
+                    </div>
+                </div>
+
+                <div class="galeria-fotos">
+                    <img src="{{ veiculo.imagem_principal }}" alt="{{ veiculo.modelo }}" class="imagem-principal">
+                    <div class="miniaturas">
+                        {% for imagem in veiculo.imagens_secundarias %}
+                            <img src="{{ imagem }}" alt="Detalhe do {{ veiculo.modelo }}">
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="detalhe-card">
+                    <h2>Especificações Chave</h2>
+                    <ul class="lista-especificacoes">
+                        <li><i class="fa-solid fa-gas-pump"></i> Combustível: <span>{{ veiculo.combustivel }}</span></li>
+                        <li><i class="fa-solid fa-gear"></i> Transmissão: <span>{{ veiculo.transmissao }}</span></li>
+                        
+                        {% if veiculo.categoria == 'carro' %}
+                            <li><i class="fa-solid fa-user-group"></i> Assentos: <span>{{ veiculo.assentos }}</span></li>
+                            <li><i class="fa-solid fa-door-open"></i> Portas: <span>{{ veiculo.portas }}</span></li>
+                        {% elif veiculo.categoria == 'moto' %}
+                            <li><i class="fa-solid fa-motorcycle"></i> Cilindrada: <span>{{ veiculo.cilindrada }}</span></li>
+                            <li><i class="fa-solid fa-helmet-safety"></i> Capacete Incluso: <span>{{ 'Sim' if veiculo.capacete_incluso else 'Não' }}</span></li>
+                        {% else %}
+                        <li><i class="fa-solid fa-bolt"></i> Tipo: <span>{{ 'Elétrico' if veiculo.eletrico else 'Comum' }}</span></li>
+                            <li><i class="fa-solid fa-route"></i> Autonomia: <span>{{ veiculo.autonomia }} km</span></li>
+                        {% endif %}
+                    </ul>
+                </div>
+                
+                <div class="detalhe-card">
+                    <h2>Descrição</h2>
+                    <p>{{ veiculo.descricao_completa | default("Este veículo é uma excelente opção para suas necessidades de locomoção. Consulte a seção de reserva para incluir um motorista.") | safe }}</p>
+                </div>
+
+                <div class="detalhe-card">
+                    <h2>Para Usuários Sem CNH</h2>
+                    <ul class="lista-vantagens">
+                        <li><i class="fa-solid fa-shield-halved"></i> **Segurança:** Motoristas profissionais e verificados.</li>
+                        <li><i class="fa-solid fa-calendar-check"></i> **Flexibilidade:** Agende a locação e o motorista por hora ou dia.</li>
+                        <li><i class="fa-solid fa-map-location-dot"></i> **Cobertura:** Atendimento em diversas regiões.</li>
+                    </ul>
+                </div>
+
+            </main>
+
+            <aside class="detalhe-col-reserva">
+                <div class="card-reserva">
+                    
+                    <div class="preco-base">
+                        <span class="preco-valor">R$ {{ veiculo.preco_base | round(2) }}</span>
+                        <span class="preco-unidade">/ {{ 'hora' if veiculo.categoria in ['bicicleta', 'patinete'] else 'dia' }}</span>
+                    </div>
+
+                    <form id="form-reserva" action="{{ url_for('reservas.checkout', veiculo_id=veiculo.id) }}" method="POST">
+                        
+                        <div class="form-group">
+                            <label for="data_retirada">Data e Hora de Retirada</label>
+                            <input type="datetime-local" id="data_retirada" name="data_retirada" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="data_devolucao">Data e Hora de Devolução</label>
+                            <input type="datetime-local" id="data_devolucao" name="data_devolucao" required>
+                        </div>
+
+                        {% if veiculo.categoria in ['carro', 'moto'] %}
+                        <div class="form-group">
+                            <label for="motorista">Incluir Motorista LocarsDrive?</label>
+                            <select id="motorista" name="motorista" class="form-control" required>
+                                <option value="sim" selected>Sim, preciso de Motorista (Sem CNH)</option>
+                                <option value="nao">Não, eu dirigirei (Possuo CNH)</option>
+                            </select>
+                        </div>
+                        {% endif %}
+
+                        <div class="resumo-total">
+                            <span>Subtotal da Locação:</span>
+                            <span id="subtotal">R$ 0,00</span>
+                        </div>
+                        <div class="resumo-total total-final">
+                            <span>Total Final:</span>
+                            <span id="total-final">R$ 0,00</span>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-checkout">
+                            Reservar Agora <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </form>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+
+<script>
+    // A lógica JavaScript para calcular a diferença de datas, multiplicar pelo preço base e atualizar o subtotal/total deve ser inserida aqui.
+    // Isso envolveria escutar eventos 'change' nos inputs de data.
+</script>
+
+{% endblock %}

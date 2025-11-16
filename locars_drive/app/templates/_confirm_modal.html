@@ -1,0 +1,21 @@
+<!-- templates/_confirm_modal.html -->
+<div id="confirm-modal" class="confirm-modal" role="dialog" aria-hidden="true" style="display:none;">
+  <div class="confirm-modal-backdrop"></div>
+  <div class="confirm-modal-panel" role="document" aria-labelledby="confirm-title">
+    <h3 id="confirm-title">Confirmação</h3>
+    <p id="confirm-text">Tem certeza que deseja prosseguir?</p>
+    <div class="confirm-actions">
+      <button id="confirm-cancel" class="btn btn-secondary">Cancelar</button>
+      <button id="confirm-accept" class="btn btn-danger">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<style>
+/* estilinho simples para o modal — você pode mover pro perfil.css */
+.confirm-modal { position: fixed; inset: 0; display:flex; align-items:center; justify-content:center; z-index:4000; }
+.confirm-modal-backdrop { position:absolute; inset:0; background:rgba(0,0,0,0.55); }
+.confirm-modal-panel { position:relative; background:#fff; color:#111; border-radius:10px; padding:20px; width:420px; z-index:2; box-shadow:0 10px 40px rgba(0,0,0,0.3); }
+.confirm-modal-panel h3{ margin:0 0 8px 0; }
+.confirm-actions { display:flex; gap:10px; justify-content:flex-end; margin-top:16px; }
+</style>

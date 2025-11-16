@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block title %}Alterar Foto - Perfil{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/perfil.css') }}">
+<script src="{{ url_for('static', filename='js/perfil.js') }}"></script>
+
+<!-- inclui modal partial -->
+{% include '_confirm_modal.html' %}
+
+<section class="perfil-main">
+  <div class="perfil-wrapper">
+    <aside class="perfil-sidebar">
+      <!-- mesma sidebar do perfil.html -->
+      <nav>
+        <ul>
+          <li><a href="{{ url_for('autenticacao.perfil') }}" class="{% if request.endpoint == 'autenticacao.perfil' %}ativo{% endif %}">Visão Geral</a></li>
+          <li><a href="{{ url_for('autenticacao.perfil_info') }}" class="{% if request.endpoint == 'autenticacao.perfil_info' %}ativo{% endif %}">Informações pessoais</a></li>
+          <li><a href="{{ url_for('autenticacao.perfil_foto') }}" class="{% if request.endpoint == 'autenticacao.perfil_foto' %}ativo{% endif %}">Alterar foto</a></li>
+          <li><a href="{{ url_for('autenticacao.perfil_seguranca') }}" class="{% if request.endpoint == 'autenticacao.perfil_seguranca' %}ativo{% endif %}">Segurança</a></li>
+          <li><a href="{{ url_for('autenticacao.perfil_notificacoes') }}" class="{% if request.endpoint == 'autenticacao.perfil_notificacoes' %}ativo{% endif %}">Notificações</a></li>
+          <li><a href="{{ url_for('autenticacao.perfil_pagamentos') }}" class="{% if request.endpoint == 'autenticacao.perfil_pagamentos' %}ativo{% endif %}">Assinatura & Pagamentos</a></li>
+          <li><a href="{{ url_for('autenticacao.logout') }}" data-confirm="Você tem certeza que deseja sair da sua conta?"id="logout-link">Sair</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <div class="perfil-content">
+      <div class="perfil-header">
+        <div class="perfil-header-inner">
+          <div class="perfil-avatar avatar-edit" id="avatar-container">
+            {% if current_user.foto_perfil %}
+              <img id="avatar-img" src="{{ url_for('static', filename='uploads/perfil/' ~ current_user.foto_perfil) }}" alt="Avatar">
+            {% else %}
+              <i class="fa-solid fa-user"></i>
+            {% endif %}
+            <button id="avatar-edit-btn" class="avatar-edit-btn" title="Alterar foto" aria-label="Alterar foto">
+              <i class="fa-solid fa-pencil"></i>
+            </button>
+          </div>
+
+          <div class="perfil-identidade">
+            <h1>{{ current_user.nome_completo or current_user.nome }}</h1>
+            <div class="email">{{ current_user.email }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="perfil-body">
+        <div class="perfil-container">
+          <aside class="col-left">
+            <!-- left column (info + assinatura) como no perfil.html -->
+            {% include 'perfil_left_column.html' %}
+          </aside>
+
+          <div class="col-right">
+            <div class="card">
+              <h3>Editar foto de perfil</h3>
+              <p>Selecione uma imagem (JPG, PNG). O upload será enviado ao servidor ao confirmar.</p>
+
+              <form id="form-avatar" method="POST" action="{{ url_for('autenticacao.perfil_foto') }}" enctype="multipart/form-data">
+                {{ csrf_token() if csrf_token is defined }}
+                <div class="form-group">
+                  <input id="avatar-file" name="avatar" type="file" accept="image/*" style="display:none;">
+                  <div style="display:flex;gap:12px;align-items:center;">
+                    <button type="button" id="btn-select-avatar" class="btn btn-primary" style="background-color: #000;">Selecionar imagem</button>
+                    <span id="avatar-filename" style="opacity:0.8;"></span>
+                  </div>
+                </div>
+
+                <div id="avatar-preview" style="margin-top:16px; display:none;">
+                  <strong>Preview:</strong>
+                  <div style="margin-top:10px;">
+                    <img id="preview-img" src="" alt="preview" style="max-width:220px;border-radius:12px;border:1px solid #ddd;">
+                  </div>
+                </div>
+
+                <div style="margin-top:18px;">
+                  <button type="button" id="btn-save-avatar" class="btn btn-primary" data-confirm="Salvar alteração da foto?" style="background-color: #000;">Salvar</button>
+                  <a href="{{ url_for('autenticacao.perfil') }}" class="btn btn-secondary" style="color: #000;">Cancelar</a>
+                </div>
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}

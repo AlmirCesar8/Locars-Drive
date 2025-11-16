@@ -1,8 +1,62 @@
 {% extends 'base.html' %}
 {% block title %}Minhas Reservas{% endblock %}
 
+{#
+    ==================================================
+    BLOCO DE DADOS DE TESTE (MOCK DATA)
+    APAGAR AO INTEGRAR COM O BACK-END DO FLASK
+    ==================================================
+#}
+{% set reservas = [
+    {
+        'id': 1001,
+        'status': 'Ativa',
+        'categoria': 'Carro (Motorista)',
+        'veiculo': 'Renault Kwid Outsider',
+        'imagem': 'https://via.placeholder.com/100x70?text=Kwid',
+        'retirada': '18/11/2025 às 10:00',
+        'devolucao': '19/11/2025 às 10:00',
+        'local': 'Av. Paulista, 1000 - SP',
+        'total': 360.00,
+        'motorista': 'João Silva',
+        'avaliacao_pendente': False
+    },
+    {
+        'id': 1002,
+        'status': 'Concluída',
+        'categoria': 'E-Bike',
+        'veiculo': 'Xiaomi Himo C20',
+        'imagem': 'https://via.placeholder.com/100x70?text=E-Bike',
+        'retirada': '10/11/2025 às 15:00',
+        'devolucao': '10/11/2025 às 18:00',
+        'local': 'Rua Augusta, 500 - SP',
+        'total': 60.00,
+        'motorista': 'N/A',
+        'avaliacao_pendente': True
+    },
+    {
+        'id': 1003,
+        'status': 'Cancelada',
+        'categoria': 'Patinete Elétrico',
+        'veiculo': 'Ninebot KickScooter',
+        'imagem': 'https://via.placeholder.com/100x70?text=Patinete',
+        'retirada': '05/11/2025 às 09:00',
+        'devolucao': '05/11/2025 às 11:00',
+        'local': 'Praça da Sé - SP',
+        'total': 40.00,
+        'motorista': 'N/A',
+        'avaliacao_pendente': False
+    }
+] %}
+
+{#
+    ==================================================
+    FIM DO BLOCO DE DADOS DE TESTE
+    ==================================================
+#}
+
 {% block content %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/reserva.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/reservas.css') }}">
 
 <section class="reservas-main">
     <div class="container">
@@ -56,7 +110,7 @@
             {% else %}
             <div class="nenhuma-reserva">
                 <p>Você não tem nenhuma reserva registrada neste momento.</p>
-                <a href="{{ url_for('frotas.frotas') }}" class="btn btn-primary" style="background-color: #000;">Começar a Locar</a>
+                <a href="{{ url_for('frotas.frotas') }}" class="btn btn-primary">Começar a Locar</a>
             </div>
             {% endfor %}
         </div>

@@ -1,0 +1,300 @@
+/* ================================
+    CATÁLOGO DE VEÍCULOS
+================================ */
+
+.catalogo-main {
+    padding: 40px 0;
+    background: #f5f6fa; /* Fundo claro (ajuste se seu tema for escuro) */
+}
+
+.catalogo-main h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.catalogo-wrapper {
+    display: flex;
+    gap: 30px;
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+/* --- SIDEBAR DE FILTROS --- */
+.filtro-sidebar {
+    width: 280px;
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 18px;
+    height: fit-content;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.filtro-sidebar h3 {
+    margin-top: 0;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.filtro-group {
+    margin-bottom: 20px;
+}
+
+.filtro-group h4 {
+    margin: 0 0 10px 0;
+    font-size: 1.1rem;
+    color: #000;
+}
+
+.filtro-sidebar input[type="text"],
+.filtro-sidebar input[type="range"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.filtro-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.95rem;
+}
+
+.filtro-sidebar .btn-primary {
+    width: 100%;
+    padding: 12px;
+    background: #000;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.filtro-sidebar .btn-primary:hover {
+    background: #333;
+}
+
+/* --- ÁREA DE RESULTADOS --- */
+.resultados-area {
+    flex-grow: 1;
+}
+
+.resultado-contagem {
+    margin-bottom: 15px;
+    font-size: 1rem;
+    color: #666;
+}
+
+.veiculos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+/* --- CARD DE VEÍCULO --- */
+.veiculo-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    transition: transform 0.2s;
+}
+
+.veiculo-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.veiculo-card a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.card-imagem {
+    width: 100%;
+    height: 180px;
+    background-size: cover;
+    background-position: center;
+}
+
+.card-info {
+    padding: 15px;
+}
+
+.card-info h2 {
+    margin: 0 0 8px 0;
+    font-size: 1.3rem;
+    color: #000;
+}
+
+.card-localizacao {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.card-localizacao i {
+    color: #000;
+}
+
+.card-detalhes {
+    display: flex;
+    gap: 15px;
+    font-size: 0.9rem;
+    color: #999;
+    margin-bottom: 15px;
+}
+
+.card-detalhes i {
+    margin-right: 5px;
+    color: #000;
+}
+
+.card-preco {
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-end;
+}
+
+.preco-valor {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #000;
+}
+
+.preco-unidade {
+    font-size: 0.9rem;
+    color: #666;
+    margin-left: 5px;
+}
+
+/* Responsividade básica */
+@media (max-width: 768px) {
+    .catalogo-wrapper {
+        flex-direction: column;
+    }
+    .filtro-sidebar {
+        width: 100%;
+    }
+}
+
+/* =======================================================
+    SIDEBAR DE FILTROS (Refinado para Visual de Inspiração)
+========================================================= */
+
+.filtro-sidebar {
+    width: 280px;
+    min-width: 250px;
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 18px;
+    height: fit-content;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 20px;
+}
+
+.filtro-sidebar h3 {
+    /* Título principal mais definido */
+    margin-top: 0;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #000;
+    border-bottom: 2px solid #ddd; /* Separador mais forte */
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+}
+
+.filtro-group {
+    /* Espaçamento maior entre grupos */
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee; /* Linha de separação entre grupos */
+}
+
+/* Remove a borda do último grupo para não poluir */
+.filtro-group:last-of-type {
+    border-bottom: none;
+    margin-bottom: 20px;
+}
+
+.filtro-group h4 {
+    /* Título do filtro (ex: Localização, Tipo de Carro) */
+    margin: 0 0 15px 0;
+    font-size: 1.15rem;
+    color: #333;
+    font-weight: 600;
+}
+
+.filtro-sidebar input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc; /* Borda mais visível */
+    border-radius: 8px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+.filtro-sidebar input[type="text"]:focus {
+    border-color: #000; /* Destaque ao focar */
+    outline: none;
+}
+
+/* Estilo para Checkboxes/Labels */
+.filtro-group label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    gap: 8px;
+}
+
+/* Estilo para a Barra Deslizante (Range Input) */
+.filtro-group input[type="range"] {
+    -webkit-appearance: none; /* Remove estilo padrão do Chrome/Safari */
+    width: 100%;
+    height: 8px;
+    background: #ddd;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+/* Thumb (o círculo que você arrasta) */
+.filtro-group input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #000; /* Preto para combinar com a identidade */
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+}
+
+#preco-display {
+    display: block;
+    text-align: right; /* Alinha o valor à direita */
+    margin-top: 5px;
+    font-weight: bold;
+    color: #000;
+    font-size: 1.1rem;
+}
+
+#tipo-veiculo-select {
+    width: 100%;
+    padding: 10px;
+    cursor: pointer;
+    border: 1px solid #ccc; /* Borda mais visível */
+    border-radius: 8px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+
+

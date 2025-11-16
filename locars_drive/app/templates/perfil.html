@@ -1,63 +1,117 @@
 {% extends 'base.html' %}
-{% block title %}Perfil - Locars Drive{% endblock %}
+{% block title %}Perfil - LocarsDrive{% endblock %}
 
 {% block content %}
-<section class="perfil-header">
-    <div class="perfil-header-inner">
-        <div class="perfil-avatar"><i class="fa-solid fa-user"></i></div>
-        <div class="perfil-identidade">
-            <h1>{{ usuario.nome }}</h1>
-            <p class="email">{{ usuario.email }}</p>
-        </div>
-    </div>
-</section>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/perfil.css') }}">
+<script defer src="{{ url_for('static', filename='js/perfil.js') }}"></script>
 
 <section class="perfil-main">
-    <div class="perfil-container">
-        <aside class="col-left">
+  <div class="perfil-wrapper">
+    <aside class="perfil-sidebar">
+      <nav>
+        <ul>
+          <li><a href="{{ url_for('autenticacao.perfil') }}" class="{% if request.endpoint == 'autenticacao.perfil' %}ativo{% endif %}">Visão Geral</a></li>
+          <li><a href="{{ url_for('autenticacao.perfil_info') }}" class="{% if request.endpoint == 'autenticacao.perfil_info' %}ativo{% endif %}">Informações pessoais</a></li>
+          <li><a href="{{ url_for('autenticacao.perfil_foto') }}" class="{% if request.endpoint == 'autenticacao.perfil_foto' %}ativo{% endif %}">Alterar foto</a></li>
+          <li><a href="{{ url_for('autenticacao.perfil_seguranca') }}" class="{% if request.endpoint == 'autenticacao.perfil_seguranca' %}ativo{% endif %}">Segurança</a></li>
+          <li><a href="{{ url_for('autenticacao.perfil_notificacoes') }}" class="{% if request.endpoint == 'autenticacao.perfil_notificacoes' %}ativo{% endif %}">Notificações</a></li>
+          <li><a href="{{ url_for('autenticacao.perfil_pagamentos') }}" class="{% if request.endpoint == 'autenticacao.perfil_pagamentos' %}ativo{% endif %}">Assinatura & Pagamentos</a></li>
+          
+          <li>
+            <a href="{{ url_for('autenticacao.logout') }}" 
+               data-confirm="Você tem certeza que deseja sair da sua conta?"
+               id="logout-link">
+              Sair
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+
+    <div class="perfil-content">
+      <div class="perfil-header">
+        <div class="perfil-header-inner">
+          <div class="perfil-avatar"><i class="fa-solid fa-user"></i></div>
+          <div class="perfil-identidade">
+            <h1>{{ current_user.nome or "Usuário" }}</h1>
+            <div class="email">{{ current_user.email }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="perfil-body">
+        <div class="perfil-container">
+          <aside class="col-left">
+
             <div class="card info-conta">
-                <h3>Informações da Conta</h3>
-                <div class="info-row"><i class="fa-regular fa-user"></i><span>{{ usuario.nome }}</span></div>
-                <div class="info-row"><i class="fa-regular fa-envelope"></i><span>{{ usuario.email }}</span></div>
-                <div class="info-row"><i class="fa-regular fa-calendar"></i><span>Membro desde {{ usuario.data_criacao.strftime('%d/%m/%Y') }}</span></div>
+              <h3>Informações da Conta</h3>
+              <div class="info-row"><i class="fa-regular fa-user"></i><span>{{ current_user.nome }}</span></div>
+              <div class="info-row"><i class="fa-regular fa-envelope"></i><span>{{ current_user.email }}</span></div>
+
+              <div class="info-row">
+                <i class="fa-regular fa-calendar"></i>
+                <span>
+                  {% if current_user.data_criacao %}
+                    Membro desde {{ current_user.data_criacao.strftime('%d/%m/%Y') }}
+                  {% else %}
+                    Data não informada
+                  {% endif %}
+                </span>
+              </div>
             </div>
 
-            <div class="card assinatura-card">
-                <div class="assinatura-top">
-                    <span class="badge">BÁSICO</span>
-                    <div class="assinatura-price">R$ 99.90<span>/mês</span></div>
-                    <div class="assinatura-valid">Válida até 01/12/2025</div>
-                </div>
-                <hr>
-                <ul class="beneficios">
-                    <li>10% de desconto em todas as locações</li>
-                    <li>1 dia grátis por mês</li>
-                    <li>Cancelamento flexível</li>
-                </ul>
-            </div>
-        </aside>
+            {% if user_data %}
+            <div class="perfil-card plano-ativo-card">
+              <div class="plano-header">
+                  <span class="plano-nome-badge">{{ user_data.plano_ativo or "Nenhum plano" }}</span>
+                  <span class="membro-desde">{{ user_data.membro_desde or "" }}</span>
+              </div>
 
-        <div class="col-right">
+              <div class="plano-corpo">
+                  <span class="preco-valor">R$ {{ (user_data.valor_plano or 0) | round(2) }} <span>/mês</span></span>
+                  <span class="valido-ate">Válido até {{ user_data.valido_ate or "—" }}</span>
+              </div>
+              
+              <ul class="beneficios-resumo-lista">
+                  {% for beneficio in user_data.beneficios_resumo or [] %}
+                      <li><i class="fa-solid fa-check"></i> {{ beneficio }}</li>
+                  {% endfor %}
+              </ul>
+              
+              <a href="{{ url_for('planos.planos') }}" class="btn btn-upgrade">Gerenciar / Mudar Plano</a>
+            </div>
+            {% endif %}
+
+          </aside>
+
+          <div class="col-right">
             <div class="cards-resumo">
-                <div class="mini card">
-                    <div class="mini-icon"><i class="fa-solid fa-car-side"></i></div>
-                    <div class="mini-body"><h4>0</h4><p>Total de Reservas</p></div>
-                </div>
-                <div class="mini card">
-                    <div class="mini-icon"><i class="fa-solid fa-check"></i></div>
-                    <div class="mini-body"><h4>0</h4><p>Locações Concluídas</p></div>
-                </div>
-                <div class="mini card">
-                    <div class="mini-icon"><i class="fa-solid fa-calendar-days"></i></div>
-                    <div class="mini-body"><h4>0</h4><p>Dias Alugados</p></div>
-                </div>
+              <div class="mini card">
+                <div class="mini-icon"><i class="fa-solid fa-car-side"></i></div>
+                <div class="mini-body"><h4>0</h4><p>Total de Reservas</p></div>
+              </div>
+              <div class="mini card">
+                <div class="mini-icon"><i class="fa-solid fa-check"></i></div>
+                <div class="mini-body"><h4>0</h4><p>Locações Concluídas</p></div>
+              </div>
+              <div class="mini card">
+                <div class="mini-icon"><i class="fa-solid fa-calendar-days"></i></div>
+                <div class="mini-body"><h4>0</h4><p>Dias Alugados</p></div>
+              </div>
             </div>
 
             <div class="card atividade">
-                <h3>Atividade Recente</h3>
-                <p class="muted">Nenhuma atividade recente</p>
+              <h3>Atividade Recente</h3>
+              <p class="muted">Nenhuma atividade recente</p>
             </div>
+          </div>
+
         </div>
+      </div>
     </div>
+  </div>
 </section>
+
+{% include '_confirm_modal.html' %} 
+
 {% endblock %}

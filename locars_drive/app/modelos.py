@@ -1,27 +1,40 @@
 from flask_login import UserMixin
 from datetime import datetime
-from app.extensions import db  # usa a extensão global configurada no __init__.py
+from app.extensions import db 
+from datetime import date 
+from werkzeug.security import generate_password_hash, check_password_hash
+
+# from wtforms.validators import ValidationError # Não é necessário aqui
 
 # -------------------------------------------------------
 # Modelo de Usuário
 # -------------------------------------------------------
-class Usuario(db.Model):
-    __tablename__ = 'usuario_'  # Nome da tabela no banco de dados
+class Usuario(UserMixin, db.Model):
+    __tablename__ = 'usuario_'
 
-    id_usuario = db.Column(db.Integer, primary_key=True, autoincrement=True)  # Chave primária
-    email = db.Column(db.String(255), nullable=False, unique=True)  # Email único
-    nome_completo = db.Column(db.String(255))  # Nome completo
-    senha = db.Column(db.String(255), nullable=False)  # Senha
-    data_nasc = db.Column(db.Date, nullable=False)  # Data de nascimento
-    cpf = db.Column(db.String(11), nullable=False, unique=True)  # CPF único
-    cnh = db.Column(db.String(11), nullable=False, unique=True)  # CNH única
-    cargo = db.Column(db.String(255), nullable=False)  # Cargo
-    salario = db.Column(db.Numeric(10, 2), default=0.00)  # Salário
-    fk_funcao_id_funcao = db.Column(db.Integer)  # Chave estrangeira para função
-    fk_cidade_id_cidade = db.Column(db.Integer)  # Chave estrangeira para cidade
+    id_usuario = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    email = db.Column(db.String(255), nullable=False, unique=True)
+    nome_completo = db.Column(db.String(255))
+    senha = db.Column(db.String(255), nullable=False)
 
-    def __repr__(self):
-        return f'<Usuario {self.nome_completo}>'
+    # --- CAMPOS DE DADOS BÁSICOS (Membros) ---
+    data_nasc = db.Column(db.Date, nullable=False) 
+    cpf = db.Column(db.String(11), nullable=False, unique=True) 
+    
+    data_criacao = db.Column(db.DateTime, nullable=False, default=datetime.utcnow) 
+
+    # --- CAMPOS OPCIONAIS/EMPREGADOS ---
+    # CNH: Mantido nullable=True para permitir cadastro inicial sem CNH.
+    cnh = db.Column(db.String(11), nullable=True, unique=True) 
+    cargo = db.Column(db.String(255), nullable=True) 
+    salario = db.Column(db.Numeric(10, 2), default=0.00)
+
+    # Chaves estrangeiras opcionais
+    fk_funcao_id_funcao = db.Column(db.Integer, nullable=True) 
+    fk_cidade_id_cidade = db.Column(db.Integer, nullable=True)
+    
+    def get_id(self):
+        return str(self.id_usuario)
 
 # -------------------------------------------------------
 # Modelo de Veículo (para uso futuro)
@@ -47,7 +60,10 @@ class Locacao(db.Model):
     __tablename__ = 'locacao'
 
     id = db.Column(db.Integer, primary_key=True)
-    usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
+    
+    # CRÍTICO: db.ForeignKey usa o nome da tabela ('usuario_') e o nome da PK ('id_usuario')
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuario_.id_usuario'), nullable=False)
+    
     veiculo_id = db.Column(db.Integer, db.ForeignKey('veiculo.id'), nullable=False)
     data_inicio = db.Column(db.DateTime, default=datetime.utcnow)
     data_fim = db.Column(db.DateTime)

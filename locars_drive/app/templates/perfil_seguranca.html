@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block title %}Segurança - Perfil{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/perfil.css') }}">
+<script src="{{ url_for('static', filename='js/perfil.js') }}"></script>
+
+{% include '_confirm_modal.html' %}
+
+<section class="perfil-main">
+  <div class="perfil-wrapper">
+    <!-- ======================
+         SIDEBAR
+    ====================== -->
+    <aside class="perfil-sidebar">
+      <nav>
+        <ul>
+          <li><a href="{{ url_for('autenticacao.perfil') }}" class="{% if request.endpoint == 'autenticacao.perfil' %}ativo{% endif %}">Visão Geral</a></li>
+          <li><a href="{{ url_for('autenticacao.perfil_info') }}" class="{% if request.endpoint == 'autenticacao.perfil_info' %}ativo{% endif %}">Informações pessoais</a></li>
+          <li><a href="{{ url_for('autenticacao.perfil_foto') }}" class="{% if request.endpoint == 'autenticacao.perfil_foto' %}ativo{% endif %}">Alterar foto</a></li>
+          <li><a href="{{ url_for('autenticacao.perfil_seguranca') }}" class="{% if request.endpoint == 'autenticacao.perfil_seguranca' %}ativo{% endif %}">Segurança</a></li>
+          <li><a href="{{ url_for('autenticacao.perfil_notificacoes') }}" class="{% if request.endpoint == 'autenticacao.perfil_notificacoes' %}ativo{% endif %}">Notificações</a></li>
+          <li><a href="{{ url_for('autenticacao.perfil_pagamentos') }}" class="{% if request.endpoint == 'autenticacao.perfil_pagamentos' %}ativo{% endif %}">Assinatura & Pagamentos</a></li>
+          <li><a href="{{ url_for('autenticacao.logout') }}" data-confirm="Você tem certeza que deseja sair da sua conta?"id="logout-link">Sair</a></li>
+        </ul>
+      </nav>
+    </aside>
+    <!-- ======================
+         CONTENT AREA
+    ====================== -->
+    <div class="perfil-content">
+
+      <!-- HEADER -->
+      <div class="perfil-header">
+        <div class="perfil-header-inner">
+          <div class="perfil-avatar"><i class="fa-solid fa-user"></i></div>
+          <div class="perfil-identidade">
+            <h1>{{ current_user.nome }}</h1>
+            <div class="email">{{ current_user.email }}</div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="perfil-body">
+        <div class="perfil-container">
+          <aside class="col-left">
+            {% include 'perfil_left_column.html' %}
+          </aside>
+
+          <div class="col-right">
+            <div class="card">
+              <h3>Segurança</h3>
+              <p>Altere sua senha. Ao salvar será pedido confirmação.</p>
+
+              <form id="form-senha" method="POST" action="{{ url_for('autenticacao.perfil_seguranca') }}">
+                {{ csrf_token() if csrf_token is defined }}
+                <div class="form-group">
+                  <label for="senha_atual">Senha atual</label>
+                  <input id="senha_atual" name="senha_atual" class="form-control" type="password" required>
+                </div>
+
+                <div class="form-group">
+                  <label for="nova_senha">Nova senha</label>
+                  <input id="nova_senha" name="nova_senha" class="form-control" type="password" required>
+                </div>
+
+                <div class="form-group">
+                  <label for="confirmar_nova">Confirmar nova senha</label>
+                  <input id="confirmar_nova" name="confirmar_nova" class="form-control" type="password" required>
+                </div>
+
+                <div style="display:flex;gap:10px;margin-top:12px;color: #000;">
+                  <button type="button" id="btn-change-password" class="btn btn-primary" data-confirm="Alterar sua senha agora?" style="background-color: #000;">Salvar</button>
+                  <a href="{{ url_for('autenticacao.perfil') }}" class="btn btn-secondary">Cancelar</a>
+                </div>
+              </form>
+            </div>
+
+            <div class="card">
+              <h4>Últimas sessões</h4>
+              <p class="muted">Sem sessões ativas listadas.</p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{% endblock %}

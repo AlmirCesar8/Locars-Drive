@@ -1,224 +1,251 @@
 /* ================================
-   PERFIL - Header grande preto
+    PERFIL - DASHBOARD
 ================================ */
-.perfil-header {
+
+/* Layout geral */
+.perfil-main {
+    background: #f5f6fa;
+    padding: 40px 0;
+    display: flex;
+    justify-content: center;
+}
+
+.perfil-wrapper {
+    display: flex;
+    width: 95%;
+    max-width: 1300px;
+    gap: 25px;
+}
+
+/* ===================
+    SIDEBAR
+=================== */
+.perfil-sidebar {
+    width: 260px;
+    background: #ffffff;
+    padding: 25px 20px;
+    border-radius: 18px;
+    height: fit-content;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    position: sticky;
+    top: 20px;
+}
+
+.perfil-sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.perfil-sidebar ul li {
+    margin-bottom: 18px;
+}
+
+.perfil-sidebar ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    display: block;
+    padding: 10px 14px;
+    border-radius: 12px;
+    transition: 0.3s ease;
+}
+
+.perfil-sidebar ul li a:hover {
+    /* CORREÇÃO: Hover padrão ajustado para #DDD */
+    background: #ddd; 
+}
+
+.perfil-sidebar ul li a.ativo {
+    /* CORREÇÃO: Fundo ativo de #2F55D4 para #000 */
     background: #000;
     color: #fff;
-    padding: 34px 0 28px;
+}
+
+/* =======================
+    CONTENT
+======================= */
+.perfil-content {
+    flex: 1;
+}
+
+/* HEADER */
+.perfil-header {
+    /* CORREÇÃO: Fundo de #2F55D4 para #000 */
+    background: #000;
+    color: white;
+    padding: 25px 30px;
+    border-radius: 18px;
+    margin-bottom: 25px;
 }
 
 .perfil-header-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
     display: flex;
+    gap: 20px;
     align-items: center;
-    gap: 18px;
 }
 
 .perfil-avatar {
-    width: 72px;
-    height: 72px;
-    background: #111;
-    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    background: rgba(255,255,255,0.2);
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    border-radius: 50%;
     font-size: 32px;
-    color: #fff;
-    border: 3px solid rgba(255, 255, 255, 0.06);
 }
 
 .perfil-identidade h1 {
-    font-size: 24px;
     margin: 0;
-    color: #fff;
-    font-weight: 700;
+    font-size: 26px;
 }
 
 .perfil-identidade .email {
-    color: #cfcfcf;
-    margin-top: 6px;
-    font-size: 0.95rem;
+    font-size: 15px;
+    opacity: 0.9;
 }
 
-/* ================================
-   Área principal (fundo claro)
-================================ */
-.perfil-main {
-    background: #f5f5f5;
-    padding: 28px 0 60px;
-}
+/* ======================
+    BODY & COLUMNS
+====================== */
 
 .perfil-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-    display: grid;
-    grid-template-columns: 320px 1fr;
-    gap: 20px;
-    align-items: start;
-}
-
-/* ================================
-   Left column: cards
-================================ */
-.card {
-    background: #fff;
-    border-radius: 10px;
-    padding: 18px;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
-    border: 1px solid rgba(0, 0, 0, 0.04);
-}
-
-.info-conta h3 {
-    margin: 0 0 12px;
-    font-size: 16px;
-    color: #111;
-}
-
-.info-row {
     display: flex;
-    gap: 10px;
-    align-items: center;
-    color: #444;
-    margin: 10px 0;
-    font-size: 0.95rem;
+    gap: 25px;
 }
 
-.info-row i {
-    color: #666;
-    width: 20px;
-    text-align: center;
-}
-
-/* ================================
-   Assinatura card
-================================ */
-.assinatura-card {
-    margin-top: 10px;
-}
-.assinatura-card .assinatura-top {
+/* left column */
+.col-left {
+    width: 33%;
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    margin-bottom: 10px;
+    gap: 25px;
 }
 
-.badge {
-    display: inline-block;
-    background: #222;
-    color: #fff;
-    padding: 6px 8px;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: 700;
+/* right column */
+.col-right {
+    width: 67%;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
 }
 
-.assinatura-price {
-    font-weight: 800;
-    font-size: 20px;
-    margin-top: 6px;
-    color: #111;
+/* Cards padrões */
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 18px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
 
-.assinatura-price span {
-    font-weight: 400;
-    font-size: 12px;
-    color: #666;
-    margin-left: 6px;
+/* Info Conta */
+.info-conta .info-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    font-size: 16px;
 }
 
-.assinatura-valid {
-    color: #666;
-    font-size: 0.9rem;
+.info-conta i {
+    /* CORREÇÃO: Cor do ícone de #2F55D4 para #000 */
+    color: #000;
 }
 
-/* ================================
-   Benefícios
-================================ */
-.beneficios {
-    list-style: none;
-    margin: 12px 0 0;
-    padding: 0;
-    color: #444;
+/* Assinatura */
+.assinatura-card .badge {
+    /* CORREÇÃO: Fundo do badge de #2F55D4 para #000 */
+    background: #000;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-size: 13px;
 }
 
-.beneficios li {
-    margin: 6px 0;
-    font-size: 0.95rem;
+.assinatura-card .assinatura-price {
+    font-size: 26px;
+    font-weight: bold;
+    margin-top: 10px;
 }
 
-/* ================================
-   Right column: resumo mini cards
-================================ */
+.assinatura-card .assinatura-price span {
+    font-size: 14px;
+}
+
+.assinatura-card ul {
+    margin-top: 15px;
+    padding-left: 20px;
+}
+
+.assinatura-card li {
+    margin-bottom: 8px;
+}
+
+/* Mini cards */
 .cards-resumo {
     display: flex;
-    gap: 12px;
-    margin-bottom: 16px;
+    gap: 20px;
+    flex-wrap: wrap;
 }
 
-.card.mini {
+.mini.card {
     flex: 1;
+    min-width: 180px;
     display: flex;
-    gap: 12px;
     align-items: center;
-    padding: 14px;
+    gap: 18px;
+    padding: 20px;
+    border-radius: 18px;
 }
 
 .mini-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 8px;
-    background: #fafafa;
+    /* CORREÇÃO: Fundo do ícone de #2F55D4 para #000 */
+    background: #000;
+    width: 55px;
+    height: 55px;
+    border-radius: 14px;
     display: flex;
-    align-items: center;
     justify-content: center;
-    font-size: 20px;
-    color: #111;
-    border: 1px solid rgba(0, 0, 0, 0.04);
+    align-items: center;
+    color: white;
+    font-size: 22px;
 }
 
 .mini-body h4 {
-    font-size: 20px;
     margin: 0;
-    color: #111;
+    font-size: 22px;
+    font-weight: 700;
 }
 
 .mini-body p {
     margin: 0;
-    color: #666;
-    font-size: 0.9rem;
+    font-size: 14px;
+    opacity: 0.7;
 }
 
-/* ================================
-   Atividade card
-================================ */
-.atividade h3 {
-    margin: 0 0 10px;
-    font-size: 16px;
-    color: #111;
+/* Atividade */
+.atividade p.muted {
+    color: #888;
+    font-size: 15px;
 }
 
-.muted {
-    color: #777;
-}
+/* =======================
+    RESPONSIVIDADE
+======================= */
 
-/* ================================
-   Responsividade
-================================ */
 @media (max-width: 900px) {
+    .perfil-wrapper {
+        flex-direction: column;
+    }
+    .perfil-sidebar {
+        width: 100%;
+        position: static;
+    }
     .perfil-container {
-        grid-template-columns: 1fr;
-    }
-
-    .cards-resumo {
         flex-direction: column;
     }
-
-    .perfil-header-inner {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
+    .col-left, .col-right {
+        width: 100%;
     }
 }

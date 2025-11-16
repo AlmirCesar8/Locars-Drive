@@ -68,15 +68,17 @@ body {
     color: #000;
 }
 
-.btn_entrar {
+.btn-entrar {
     padding: 8px 18px;
+    text-decoration: none;
+    color: #000000;
     border: 1.5px solid #222;
     border-radius: 6px;
     font-weight: 700;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.btn_entrar:hover {
+.btn-entrar:hover {
     background-color: #222;
     color: #fff;
 }
@@ -532,18 +534,6 @@ body {
     color: #fff;
 }
 
-.btn_entrar {
-    background-color: #fff;
-    color: #111;
-    padding: 8px 14px;
-    border-radius: 6px;
-    font-weight: 600;
-    transition: 0.3s;
-}
-
-.btn_entrar:hover {
-    background-color: #eee;
-}
 
 /* ---------- FOOTER ---------- */
 footer {

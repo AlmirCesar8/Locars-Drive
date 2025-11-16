@@ -1,7 +1,149 @@
 {% extends 'base.html' %}
-
-{% block title %}Planos{% endblock %}
+{% block title %}Planos de Assinatura - LocarsDrive{% endblock %}
 
 {% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/assinatura.css') }}">
+
+<section class="assinaturas-main">
+    <div class="container">
+        <h1>Escolha o Plano Ideal para Você</h1>
+        <p class="subtitulo">Descontos exclusivos e benefícios que se adaptam à sua rotina de locomoção.</p>
+
+        <div class="planos-grid">
+
+            <div class="plano-card basico" data-plano="BÁSICO" data-valor="99.90">
+                <div class="icone-plano"><i class="fa-solid fa-star"></i></div>
+                <h2>Básico</h2>
+                <div class="preco-plano">R$ 99.90<span>/mês</span></div>
+                
+                <ul class="beneficios-lista">
+                    <li><i class="fa-solid fa-check"></i> 10% de desconto em todas as locações</li>
+                    <li><i class="fa-solid fa-check"></i> 1 dia grátis por mês</li>
+                    <li><i class="fa-solid fa-check"></i> Cancelamento flexível</li>
+                    <li><i class="fa-solid fa-check"></i> Suporte por email</li>
+                </ul>
+
+                <button class="btn btn-assinatura" data-plano-id="basico">Assinar Agora</button>
+            </div>
+
+            <div class="plano-card intermediario mais-popular" data-plano="INTERMEDIÁRIO" data-valor="199.90">
+                <div class="badge-popular">Mais Popular</div>
+                <div class="icone-plano"><i class="fa-solid fa-bolt"></i></div>
+                <h2>Intermediário</h2>
+                <div class="preco-plano">R$ 199.90<span>/mês</span></div>
+                
+                <ul class="beneficios-lista">
+                    <li><i class="fa-solid fa-check"></i> 20% de desconto em todas as locações</li>
+                    <li><i class="fa-solid fa-check"></i> 2 dias grátis por mês</li>
+                    <li><i class="fa-solid fa-check"></i> Upgrade de categoria gratuito</li>
+                    <li><i class="fa-solid fa-check"></i> Cancelamento flexível</li>
+                    <li><i class="fa-solid fa-check"></i> Suporte prioritário</li>
+                    <li><i class="fa-solid fa-check"></i> Seguro premium incluso</li>
+                </ul>
+
+                <button class="btn btn-assinatura" data-plano-id="intermediario">Assinar Agora</button>
+            </div>
+            
+            <div class="plano-card premium" data-plano="PREMIUM" data-valor="349.90">
+                <div class="icone-plano"><i class="fa-solid fa-crown"></i></div>
+                <h2>Premium</h2>
+                <div class="preco-plano">R$ 349.90<span>/mês</span></div>
+                
+                <ul class="beneficios-lista">
+                    <li><i class="fa-solid fa-check"></i> 30% de desconto em todas as locações</li>
+                    <li><i class="fa-solid fa-check"></i> 4 dias grátis por mês</li>
+                    <li><i class="fa-solid fa-check"></i> Acesso a veículos premium</li>
+                    <li><i class="fa-solid fa-check"></i> Entrega e coleta gratuitas</li>
+                    <li><i class="fa-solid fa-check"></i> Suporte VIP 24/7</li>
+                    <li><i class="fa-solid fa-check"></i> Motorista incluso (2x/mês)</li>
+                </ul>
+
+                <button class="btn btn-assinatura" data-plano-id="premium">Assinar Agora</button>
+            </div>
+
+            <div class="plano-card vip" data-plano="VIP" data-valor="599.90">
+                <div class="icone-plano"><i class="fa-solid fa-gem"></i></div>
+                <h2>VIP</h2>
+                <div class="preco-plano">R$ 599.90<span>/mês</span></div>
+                
+                <ul class="beneficios-lista">
+                    <li><i class="fa-solid fa-check"></i> 40% de desconto em todas as locações</li>
+                    <li><i class="fa-solid fa-check"></i> 7 dias grátis por mês</li>
+                    <li><i class="fa-solid fa-check"></i> Concierge exclusivo 24/7</li>
+                    <li><i class="fa-solid fa-check"></i> Motorista incluso (limitado)</li>
+                    <li><i class="fa-solid fa-check"></i> Manutenção e limpeza inclusos</li>
+                    <li><i class="fa-solid fa-check"></i> Cancelamento sem taxas</li>
+                </ul>
+
+                <button class="btn btn-assinatura" data-plano-id="vip">Assinar Agora</button>
+            </div>
+
+        </div>
+        
+        <div class="faq-container">
+            <h2>Perguntas Frequentes</h2>
+            <div class="faq-grid">
+                
+                <div class="faq-item">
+                    <h4>Posso cancelar a qualquer momento?</h4>
+                    <p>Sim! Todos os planos permitem cancelamento com até 30 dias de antecedência. Após o cancelamento, seu plano permanece ativo até o final do ciclo de faturamento.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h4>Os dias grátis acumulam?</h4>
+                    <p>Os dias grátis não acumulam para o mês seguinte, devem ser usados no mesmo mês.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h4>Como funciona o desconto?</h4>
+                    <p>O desconto é aplicado automaticamente em todas as suas locações realizadas enquanto seu plano estiver ativo.</p>
+                </div>
+                
+                <div class="faq-item">
+                    <h4>Posso mudar de plano?</h4>
+                    <p>Sim, você pode fazer *upgrade* ou *downgrade* do seu plano a qualquer momento, o ajuste de valor será proporcional ao ciclo restante.</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const botoesAssinatura = document.querySelectorAll('.btn-assinatura');
+        const url_perfil = "{{ url_for('autenticacao.perfil') }}"; // URL para a página de perfil
+        
+        botoesAssinatura.forEach(botao => {
+            botao.addEventListener('click', () => {
+                const planoId = botao.getAttribute('data-plano-id');
+                
+                fetch("{{ url_for('autenticacao.ativar_plano') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ plano_id: planoId })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error('Erro na ativação do plano.');
+                })
+                .then(data => {
+                    // 1. SILENCIOSO: Nenhuma mensagem de alerta.
+                    // 2. AÇÃO DE SUCESSO: Redireciona para o perfil
+                    window.location.href = url_perfil; 
+                })
+                .catch(error => {
+                    console.error('Erro ao ativar plano:', error);
+                    // Se houver erro (ex: não logado), você pode exibir uma mensagem de erro na tela.
+                    // alert('❌ Falha na ativação. Por favor, tente novamente ou faça login.'); 
+                });
+            });
+        });
+    });
+</script>
 
 {% endblock %}

@@ -3,6 +3,7 @@
 {% block content %}
 
 <link rel="stylesheet" href="{{ url_for('static', filename='css/login_registro.css') }}">
+<script src="{{ url_for('static', filename='js/login_registro.js') }}"></script>
 
 <div class="auth-container">
     <div class="auth-left">
@@ -34,7 +35,7 @@
 
             <p class="register-link">
                 Ainda não tem conta?
-                <a href="{{ url_for('autenticacao.registro') }}">Cadastre-se</a>
+                <a href="{{ url_for('autenticacao.registro') }}" style="color: rgba(219, 219, 219, 0.863);">Cadastre-se</a>
             </p>
         </div>
     </div>

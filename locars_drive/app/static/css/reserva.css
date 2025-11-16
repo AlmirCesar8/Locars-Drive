@@ -1,0 +1,238 @@
+/* ====================================================
+    MINHAS RESERVAS - REFINAMENTO DE ESTILO (BLACK & WHITE)
+====================================================== */
+
+.reservas-main {
+    padding: 60px 0;
+    background: #fcfcfc; /* Fundo muito claro, quase branco */
+    min-height: 80vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* --- TÍTULO PRINCIPAL --- */
+.reservas-main h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 25px;
+    color: #000;
+    border-bottom: 4px solid #000; /* Linha de destaque forte */
+    padding-bottom: 15px;
+    display: inline-block; /* Faz a linha acompanhar o tamanho do texto */
+}
+
+/* --- ABAS DE FILTRO (PILLS) --- */
+.reservas-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #eee; /* Separador sutil */
+    padding-bottom: 10px;
+}
+
+.tab-button {
+    background: transparent;
+    border: none;
+    color: #555;
+    padding: 8px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: background 0.2s, color 0.2s;
+}
+
+.tab-button.ativo {
+    background: #000;
+    color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.tab-button:hover:not(.ativo) {
+    color: #000;
+    background: #f0f0f0;
+}
+
+/* --- CARD DE RESERVA --- */
+.reserva-card {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid #e9ecef; /* Borda leve para definição */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+    margin-bottom: 25px;
+    transition: transform 0.2s;
+}
+
+.reserva-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* --- HEADER DO CARD --- */
+.reserva-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.reserva-id {
+    font-weight: 700;
+    color: #000;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+}
+
+/* Badges de Status (Pill Shape) */
+.badge-status {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: white;
+}
+
+.status-ativa {
+    background: #000; /* Preto forte */
+}
+
+.status-concluída {
+    background: #28a745; /* Verde para sucesso */
+}
+
+.status-cancelada {
+    background: #dc3545; /* Vermelho para cancelamento */
+}
+
+/* --- CORPO DO CARD --- */
+.reserva-body {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+.reserva-imagem {
+    width: 150px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.reserva-detalhes {
+    flex-grow: 1;
+}
+
+.reserva-detalhes h3 {
+    margin: 0 0 5px 0;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #000;
+}
+
+.reserva-detalhes .categoria {
+    font-size: 0.95rem;
+    color: #777;
+    margin-bottom: 15px;
+}
+
+.info-grupo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    font-size: 0.9rem;
+    color: #333;
+    font-weight: 500;
+}
+
+.info-item i {
+    color: #000;
+    margin-right: 5px;
+}
+
+/* --- AÇÕES E PREÇO --- */
+.reserva-acoes {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    min-width: 220px;
+}
+
+.total-reserva {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #000;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #eee; /* Linha de separação */
+}
+
+.btn-action {
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    width: 100%; 
+    max-width: 200px;
+    box-sizing: border-box;
+    transition: all 0.2s;
+}
+
+.btn-action.primary {
+    background: #000;
+    color: white;
+    border: 2px solid #000;
+}
+
+.btn-action.secondary {
+    background: white;
+    color: #000;
+    border: 2px solid #000;
+}
+
+.btn-action.primary:hover {
+    background: #333;
+    border-color: #333;
+}
+.btn-action.secondary:hover {
+    background: #000;
+    color: white;
+}
+
+.avaliar-btn {
+    background: #ffc107 !important; /* Amarelo/Ouro para Avaliação */
+    color: #000 !important;
+    border: 2px solid #ffc107 !important;
+}
+
+/* --- RESPONSIVIDADE --- */
+@media (max-width: 992px) {
+    .reserva-body {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+    .reserva-acoes {
+        align-items: flex-start;
+        width: 100%;
+        margin-top: 15px;
+        border-top: 1px solid #eee;
+        padding-top: 15px;
+    }
+    .reserva-acoes .btn-action {
+        max-width: none;
+    }
+}

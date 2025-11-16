@@ -1,7 +1,208 @@
 {% extends 'base.html' %}
-
-{% block title %}Frotas{% endblock %}
+{% block title %}Veículos Disponíveis{% endblock %}
 
 {% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/catalogo.css') }}">
+catalogo
+<section class="catalogo-main">
+    <div class="container">
+        <h1>Veículos Disponíveis para Locação</h1>
+
+        <div class="catalogo-wrapper">
+            
+            <aside class="filtro-sidebar">
+                            
+                <h3>Filtrar Busca</h3>
+                <form action="{{ url_for('frotas.frotas') }}" method="GET">
+                    
+                    <div class="filtro-group">
+                        <h4>Tipo de Veículo Principal</h4>
+                        <select id="tipo-veiculo" name="categoria_principal" class="form-control" required style="cursor: pointer;">
+                            <option value="carro" selected>Carro (Com Motorista)</option>
+                            <option value="moto">Moto</option>
+                            <option value="bicicleta">Bicicleta / E-Bike</option>
+                            <option value="patinete">Patinete Elétrico</option>
+                        </select>
+                    </div>
+
+                    <div class="filtro-group">
+                        <h4>Localização</h4>
+                        <input type="text" name="localizacao" placeholder="Cidade ou Endereço">
+                    </div>
+
+                    <div class="filtro-group">
+                        <h4>Preço por hora / dia</h4>
+                        <input type="range" name="preco_max" min="10" max="1200" step="10" value="500"> 
+                        <span id="preco-display">R$ 500</span>
+                    </div>
+                    
+                    <div id="filtro-carro" class="filtro-condicional">
+                        <div class="filtro-group">
+                            <h4>Necessidade de CNH</h4>
+                            <label><input type="radio" name="cnh" value="motorista"> Com Motorista LocarsDrive</label>
+                            <label><input type="radio" name="cnh" value="proprio"> Sem Motorista (Possuo CNH)</label>
+                        </div>
+                        
+                        <div class="filtro-group">
+                            <h4>Detalhes do Carro</h4>
+                            <label><input type="checkbox" name="tipo" value="premium"> Premium / Executivo</label>
+                            <label><input type="checkbox" name="transmissao" value="automatica"> Transmissão Automática</label>
+                            <label><input type="checkbox" name="combustivel" value="eletrico"> Híbrido/Elétrico</label>
+                        </div>
+
+                        <div class="filtro-group">
+                            <h4>Capacidade</h4>
+                            <label><input type="checkbox" name="assentos" value="5"> 5 Assentos</label>
+                            <label><input type="checkbox" name="portas" value="4"> 4 Portas</label>
+                        </div>
+                    </div>
+
+                    <div id="filtro-moto" class="filtro-condicional" style="display:none;">
+                        <div class="filtro-group">
+                            <h4>Tipo de Moto</h4>
+                            <label><input type="radio" name="tipo_moto" value="scooter"> Scooter / Urbana</label>
+                            <label><input type="radio" name="tipo_moto" value="esportiva"> Esportiva</label>
+                            <label><input type="radio" name="tipo_moto" value="trail"> Trail / Aventura</label>
+                        </div>
+                        
+                        <div class="filtro-group">
+                            <h4>Itens Inclusos</h4>
+                            <label><input type="checkbox" name="capacete" value="sim"> 2 Capacetes</label>
+                            <label><input type="checkbox" name="bau" value="sim"> Baú / Bagageiro</label>
+                        </div>
+                        
+                        <div class="filtro-group">
+                            <h4>Cilindrada (CC)</h4>
+                            <label><input type="checkbox" name="cc" value="baixa"> Até 160cc</label>
+                            <label><input type="checkbox" name="cc" value="media"> 160cc - 500cc</label>
+                            <label><input type="checkbox" name="cc" value="alta"> Acima de 500cc</label>
+                        </div>
+                    </div>
+                    
+                    <div id="filtro-bicicleta" class="filtro-condicional" style="display:none;">
+                        <div class="filtro-group">
+                            <h4>Tipo e Potência</h4>
+                            <label><input type="radio" name="ebike" value="sim"> Bicicleta Elétrica (E-Bike)</label>
+                            <label><input type="radio" name="ebike" value="nao"> Bicicleta Comum</label>
+                        </div>
+                        
+                        <div class="filtro-group">
+                            <h4>Acessórios</h4>
+                            <label><input type="checkbox" name="capacete_bike" value="sim"> Capacete Incluso</label>
+                            <label><input type="checkbox" name="cesta" value="sim"> Cesta / Bagageiro</label>
+                        </div>
+                    </div>
+
+                    <div id="filtro-patinete" class="filtro-condicional" style="display:none;">
+                        <div class="filtro-group">
+                            <h4>Características</h4>
+                            <label><input type="checkbox" name="dobravel" value="sim"> Dobrável</label>
+                            <label><input type="checkbox" name="velocidade_max" value="acima25"> Velocidade Máxima (+25 km/h)</label>
+                            <label><input type="checkbox" name="autonomia" value="longa"> Autonomia Longa (+ 30km)</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Aplicar Filtros</button>
+                    <a href="{{ url_for('frotas.frotas') }}" class="btn btn-secondary" style="width:100%; margin-top:10px;">Limpar Filtros</a>
+                </form>
+
+            </aside>
+            <main class="resultados-area">
+                <p class="resultado-contagem">Mostrando X de Y resultados</p>
+                
+                <div class="veiculos-grid">
+                    
+                    {% for veiculo in veiculos %}
+                    <div class="veiculo-card">
+                        <a href="{{ url_for('veiculos.detalhe', veiculo_id=veiculo.id) }}">
+                            <div class="card-imagem" style="background-image: url('{{ veiculo.imagem_url }}');"></div>
+                            <div class="card-info">
+                                <h2>{{ veiculo.marca }} {{ veiculo.modelo }}</h2>
+                                <p class="card-localizacao"><i class="fa-solid fa-location-dot"></i> {{ veiculo.localizacao }}</p>
+                                <div class="card-detalhes">
+                                    <span><i class="fa-solid fa-gas-pump"></i> {{ veiculo.combustivel }}</span>
+                                    <span><i class="fa-solid fa-gear"></i> {{ veiculo.transmissao }}</span>
+                                </div>
+                                <div class="card-preco">
+                                    <span class="preco-valor">R$ {{ veiculo.preco_dia | round(2) }}</span>
+                                    <span class="preco-unidade">/ dia</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    {% else %}
+                        <p class="no-results">Nenhum veículo encontrado com os filtros aplicados.</p>
+                    {% endfor %}
+                    
+                </div>
+            </main>
+        </div>
+    </div>
+</section>
+
+<script>
+    /* Lógica de Filtros Condicionais */
+/* Lógica de Filtros Condicionais e Preço */
+document.addEventListener('DOMContentLoaded', () => {
+    const selectTipoVeiculo = document.getElementById('tipo-veiculo');
+    const filtrosCondicionais = document.querySelectorAll('.filtro-condicional');
+    const precoRange = document.querySelector('input[name="preco_max"]');
+    const precoDisplay = document.getElementById('preco-display');
+    
+    // Mapeia as configurações de preço máximo para cada tipo de veículo
+    const precoMaximo = {
+        carro: { max: 1200, step: 10, default: 500 },
+        moto: { max: 300, step: 5, default: 150 },
+        bicicleta: { max: 100, step: 5, default: 50 },
+        patinete: { max: 80, step: 5, default: 40 }
+    };
+
+    function atualizarFiltros() {
+        const tipoSelecionado = selectTipoVeiculo.value;
+
+        // --- 1. Exibir/Esconder Filtros ---
+        filtrosCondicionais.forEach(div => {
+            div.style.display = 'none';
+        });
+
+        const filtroAtivo = document.getElementById(`filtro-${tipoSelecionado}`);
+        if (filtroAtivo) {
+            filtroAtivo.style.display = 'block';
+        }
+        
+        // --- 2. Ajustar o Range de Preço ---
+        const config = precoMaximo[tipoSelecionado];
+
+        if (precoRange && precoDisplay && config) {
+            // Aplica os novos limites
+            precoRange.min = 10; // Mantém um mínimo baixo para todos
+            precoRange.max = config.max;
+            precoRange.step = config.step;
+            
+            // Se o valor atual estiver fora do novo limite, reseta para o padrão
+            if (parseInt(precoRange.value) > config.max) {
+                precoRange.value = config.default;
+            }
+            
+            // Atualiza o display
+            precoDisplay.textContent = `R$ ${precoRange.value}`;
+        }
+    }
+
+    // Event Listeners
+    if (selectTipoVeiculo) {
+        selectTipoVeiculo.addEventListener('change', atualizarFiltros);
+    }
+    
+    if (precoRange && precoDisplay) {
+        precoRange.addEventListener('input', () => {
+            precoDisplay.textContent = `R$ ${precoRange.value}`;
+        });
+    }
+
+    // Inicialização ao carregar a página
+    atualizarFiltros(); 
+});
+</script>
 
 {% endblock %}

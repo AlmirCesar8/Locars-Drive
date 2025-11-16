@@ -3,6 +3,8 @@
 {% block content %}
 
 <link rel="stylesheet" href="{{ url_for('static', filename='css/login_registro.css') }}">
+<script defer src="{{ url_for('static', filename='js/registro.js') }}"></script>
+<script src="{{ url_for('static', filename='js/login_registro.js') }}"></script>
 
 <div class="auth-container reverse">
     <div class="auth-left">
@@ -19,24 +21,106 @@
             <form method="POST" action="{{ url_for('autenticacao.registro') }}">
                 {{ form.hidden_tag() }}
 
+                <!-- Nome -->
                 <div class="form-group">
                     {{ form.nome.label(class="form-label") }}
                     {{ form.nome(class="form-input", placeholder="Seu nome completo") }}
+                    {% for error in form.nome.errors %}
+                        <span class="error-message">{{ error }}</span>
+                    {% endfor %}
                 </div>
 
+                <!-- Email -->
                 <div class="form-group">
                     {{ form.email.label(class="form-label") }}
                     {{ form.email(class="form-input", placeholder="Seu email") }}
+                    {% for error in form.email.errors %}
+                        <span class="error-message">{{ error }}</span>
+                    {% endfor %}
                 </div>
 
+                <!-- CPF -->
+                <div class="form-group">
+                    {{ form.cpf.label(class="form-label") }}
+                    {{ form.cpf(class="form-input", placeholder="Seu CPF (apenas números)") }}
+                    {% for error in form.cpf.errors %}
+                        <span class="error-message">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+                <!-- Data de nascimento -->
+                <div class="form-group">
+                    {{ form.data_nasc.label(class="form-label") }}
+                    {{ form.data_nasc(class="form-input", type="date", id="data_nasc") }}
+                    {% for error in form.data_nasc.errors %}
+                        <span class="error-message">{{ error }}</span>
+                    {% endfor %}
+                    <small id="idade_display" class="form-text text-muted" style="margin-top: 5px;"></small>
+                </div>
+
+                <!-- Pergunta CNH (mostrada após validar idade) -->
+                <div id="cnh_pergunta" style="display: none;" class="form-group">
+                    {{ form.tem_cnh.label(class="form-label") }}
+                    <div class="form-radio-group">
+                        {% for subfield in form.tem_cnh %}
+                            <label class="form-radio-option">
+                                {{ subfield(class="form-radio-input") }}
+                                {{ subfield.label.text }}
+                            </label>
+                        {% endfor %}
+                    </div>
+
+                    {% for error in form.tem_cnh.errors %}
+                        <span class="error-message">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+                <!-- Campo CNH -->
+                <div id="cnh_campo_wrapper" style="display: none;">
+                    <div class="form-group">
+                        {{ form.cnh.label(class="form-label") }}
+                        {{ form.cnh(class="form-input", placeholder="Apenas números", id="cnh_input") }}
+                        {% for error in form.cnh.errors %}
+                            <span class="error-message">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                                <!-- Cargo -->
+                <div class="form-group">
+                    {{ form.cargo.label(class="form-label") }}
+                    {{ form.cargo(class="form-input", placeholder="Ex: Gerente, Atendente, Cliente, etc.") }}
+                    {% for error in form.cargo.errors %}
+                        <span class="error-message">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+                <!-- Salário -->
+                <div class="form-group">
+                    {{ form.salario.label(class="form-label") }}
+                    {{ form.salario(class="form-input", placeholder="Renda mensal", type="number", step="0.01", min="0") }}
+                    {% for error in form.salario.errors %}
+                        <span class="error-message">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+
+                <!-- Senha -->
                 <div class="form-group">
                     {{ form.senha.label(class="form-label") }}
                     {{ form.senha(class="form-input", placeholder="Crie uma senha") }}
+                    {% for error in form.senha.errors %}
+                        <span class="error-message">{{ error }}</span>
+                    {% endfor %}
                 </div>
 
+                <!-- Confirmar senha -->
                 <div class="form-group">
                     {{ form.confirmar_senha.label(class="form-label") }}
                     {{ form.confirmar_senha(class="form-input", placeholder="Confirme a senha") }}
+                    {% for error in form.confirmar_senha.errors %}
+                        <span class="error-message">{{ error }}</span>
+                    {% endfor %}
                 </div>
 
                 {{ form.submit(class="btn-primary") }}

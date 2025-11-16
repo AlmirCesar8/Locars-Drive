@@ -1,14 +1,26 @@
-/* ============ GLOBAL ============ */
+/* ===========================
+   NOVA VERSÃO MELHORADA
+   Login & Registro - LocarsDrive
+   =========================== */
+
 :root {
     --bg-dark: #0f0f0f;
     --bg-gray: #1c1c1c;
     --text-light: #f5f5f5;
+
+    /* Mantendo sua paleta */
     --accent: #ffffff;
-    --input-bg: #2a2a2a;
-    --input-border: #3c3c3c;
-    --transition: 0.3s ease;
+    --accent-primary: rgba(100, 100, 100, 0.25); /* ★ Vermelho LocarsDrive */
+    
+    --input-bg: #1a1a1a;
+    --input-border: #333;
+    --input-focus: rgba(100, 100, 100, 0.25);
+
+    --error-color: rgba(240, 8, 8, 0.795);
+    --transition: 0.25s ease;
 }
 
+/* ==================== GLOBAL ==================== */
 body {
     background-color: var(--bg-dark);
     font-family: 'Poppins', sans-serif;
@@ -17,10 +29,11 @@ body {
     overflow-x: hidden;
 }
 
-/* ============ CONTAINER ============ */
+/* ==================== CONTAINER ==================== */
 .auth-container {
     display: flex;
-    height: 100vh;
+    min-height: 100vh;
+    width: 100%;
 }
 
 .auth-container.reverse {
@@ -29,154 +42,208 @@ body {
 
 .auth-left {
     position: relative;
-    flex: 1;
-    background: url("https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1400&q=80") center/cover no-repeat;
+    flex: 1.2;
+    background: url("https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1400&q=80") 
+        center/cover no-repeat;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    text-align: center;
+    padding: 40px;
 }
 
 .auth-left .overlay {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.65);
 }
 
 .auth-left .brand {
-    font-size: 3rem;
+    font-size: 3.4rem;
     z-index: 2;
-    font-weight: 700;
+    font-weight: 800;
     color: var(--accent);
-    letter-spacing: 2px;
+    letter-spacing: 3px;
+    text-shadow: 0 0 8px rgba(255,255,255,0.25);
 }
 
 .auth-left .subtitle {
     z-index: 2;
-    font-size: 1.1rem;
-    opacity: 0.8;
+    margin-top: 10px;
+    font-size: 1.2rem;
+    opacity: 0.85;
 }
 
-/* ============ FORM ============ */
+/* ==================== FORM ==================== */
 .auth-right {
     flex: 1;
-    background-color: var(--bg-gray);
     display: flex;
     justify-content: center;
     align-items: center;
+    background: var(--bg-gray);
+    padding: 50px 20px;
 }
 
 .form-container {
-    width: 80%;
-    max-width: 400px;
-    padding: 2rem;
-    background-color: #141414;
-    border-radius: 20px;
-    box-shadow: 0 0 40px rgba(255, 255, 255, 0.05);
+    width: 100%;
+    max-width: 420px;
+    background-color: #131313;
+    padding: 2.5rem;
+    border-radius: 22px;
+    box-shadow: 0 0 45px rgba(0,0,0,0.4);
     animation: fadeIn 0.6s ease;
 }
 
 .form-container h2 {
-    font-size: 1.8rem;
+    font-size: 2rem;
+    font-weight: 700;
     margin-bottom: 0.3rem;
-    text-align: center;
 }
 
 .form-subtitle {
-    text-align: center;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     opacity: 0.7;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.8rem;
 }
 
 .form-group {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 1rem;
+    margin-bottom: 1.1rem;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity .4s ease, transform .4s ease;
+}
+
+.form-group.animate-slide-in {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .form-label {
     font-size: 0.9rem;
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.4rem;
     color: #ccc;
 }
 
-.form-input {
+/* Inputs padronizados (inclui date e cnh!!) */
+.form-input,
+input[type="date"],
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select {
+    width: 100%;
     background-color: var(--input-bg);
     border: 1px solid var(--input-border);
-    border-radius: 10px;
-    padding: 0.8rem;
     color: var(--text-light);
-    outline: none;
+    padding: 0.85rem;
+    border-radius: 10px;
     transition: var(--transition);
+    font-size: 0.95rem;
+    box-sizing: border-box;
 }
 
-.form-input:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.15);
+.form-input:focus,
+input[type="date"]:focus,
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+    border-color: var(--input-focus);
+    box-shadow: 0 0 10px rgba(255,0,0,0.25);
 }
 
-/* ============ BUTTONS ============ */
+/* ==================== BUTTONS ==================== */
 .btn-primary {
     width: 100%;
-    background-color: var(--accent);
-    color: #000;
-    border: none;
-    padding: 0.9rem;
-    border-radius: 10px;
-    cursor: pointer;
+    background-color: var(--accent-primary);
+    color: #fff;
+    padding: 0.95rem;
+    border-radius: 12px;
     font-weight: 600;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
     transition: var(--transition);
 }
 
 .btn-primary:hover {
-    background-color: #e0e0e0;
+    background-color: rgba(100, 100, 100, 0.25);
+    box-shadow: 0 0 12px rgba(190, 190, 190, 0.548);
 }
 
-/* ============ LINKS ============ */
+/* Botão Google */
+.btn-google {
+    width: 100%;
+    background-color: #fff;
+    color: #000;
+    border-radius: 10px;
+    padding: 0.85rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 1.2rem;
+    border: 1px solid #ccc;
+}
+
+.btn-google:hover {
+    background-color: #eee;
+}
+
+/* ==================== LINKS ==================== */
 .register-link {
-    text-align: center;
-    margin-top: 1.5rem;
-    font-size: 0.9rem;
+    margin-top: 1.7rem;
+    font-size: 0.95rem;
 }
 
 .register-link a {
-    color: var(--accent);
-    text-decoration: none;
-    font-weight: 500;
-    transition: var(--transition);
+    color: var(--accent-primary);
+    font-weight: 600;
 }
 
 .register-link a:hover {
     opacity: 0.7;
 }
 
-/* ============ ANIMATION ============ */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+/* ==================== SEPARATOR ==================== */
+.separator {
+    display: flex;
+    align-items: center;
+    margin: 1.8rem 0;
+    color: #999;
 }
 
-/* ============ RESPONSIVE ============ */
+.separator::before,
+.separator::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #444;
+}
+
+.separator span {
+    margin: 0 12px;
+}
+
+/* ==================== ERROR ==================== */
+.error-message {
+    color: var(--error-color);
+    font-size: 0.85rem;
+    margin-top: 3px;
+}
+
+/* ==================== ANIMATION ==================== */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==================== RESPONSIVE ==================== */
 @media (max-width: 900px) {
-    .auth-container {
-        flex-direction: column;
-    }
-
-    .auth-left {
-        height: 35vh;
-    }
-
-    .form-container {
-        background: transparent;
-        box-shadow: none;
-        padding: 1.5rem;
-    }
+    .auth-container { flex-direction: column; }
+    .auth-left { height: 32vh; padding: 20px; }
+    .form-container { padding: 1.5rem; background: transparent; box-shadow: none; }
+}
+@media (max-width: 500px) {
+    .auth-left .brand { font-size: 2.4rem; }
+    .auth-left .subtitle { font-size: 1rem; }
+    .form-container { max-width: 100%; }
 }

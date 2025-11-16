@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% block title %}Assinatura & Pagamentos - Perfil{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/perfil.css') }}">
+<script src="{{ url_for('static', filename='js/perfil.js') }}"></script>
+
+{% include '_confirm_modal.html' %}
+
+<section class="perfil-main">
+  <div class="perfil-wrapper">
+    <!-- ======================
+         SIDEBAR
+    ====================== -->
+    <aside class="perfil-sidebar">
+      <nav>
+        <ul>
+          <li><a href="{{ url_for('autenticacao.perfil') }}" class="{% if request.endpoint == 'autenticacao.perfil' %}ativo{% endif %}">Visão Geral</a></li>
+          <li><a href="{{ url_for('autenticacao.perfil_info') }}" class="{% if request.endpoint == 'autenticacao.perfil_info' %}ativo{% endif %}">Informações pessoais</a></li>
+          <li><a href="{{ url_for('autenticacao.perfil_foto') }}" class="{% if request.endpoint == 'autenticacao.perfil_foto' %}ativo{% endif %}">Alterar foto</a></li>
+          <li><a href="{{ url_for('autenticacao.perfil_seguranca') }}" class="{% if request.endpoint == 'autenticacao.perfil_seguranca' %}ativo{% endif %}">Segurança</a></li>
+          <li><a href="{{ url_for('autenticacao.perfil_notificacoes') }}" class="{% if request.endpoint == 'autenticacao.perfil_notificacoes' %}ativo{% endif %}">Notificações</a></li>
+          <li><a href="{{ url_for('autenticacao.perfil_pagamentos') }}" class="{% if request.endpoint == 'autenticacao.perfil_pagamentos' %}ativo{% endif %}">Assinatura & Pagamentos</a></li>
+          <li><a href="{{ url_for('autenticacao.logout') }}" data-confirm="Você tem certeza que deseja sair da sua conta?"id="logout-link">Sair</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- ======================
+         CONTENT AREA
+    ====================== -->
+    <div class="perfil-content">
+
+      <!-- HEADER -->
+      <div class="perfil-header">
+        <div class="perfil-header-inner">
+          <div class="perfil-avatar"><i class="fa-solid fa-user"></i></div>
+          <div class="perfil-identidade">
+            <h1>{{ current_user.nome }}</h1>
+            <div class="email">{{ current_user.email }}</div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="perfil-body">
+        <div class="perfil-container">
+          <aside class="col-left">
+            {% include 'perfil_left_column.html' %}
+          </aside>
+
+          <div class="col-right">
+            <div class="card">
+              <h3>Assinatura atual</h3>
+              <div class="assinatura-top">
+                <span class="badge">{{ current_user.plano_nome or 'BÁSICO' }}</span>
+                <div class="assinatura-price">{{ current_user.plano_valor or 'R$ 99,90' }} <span>/mês</span></div>
+                <div class="assinatura-valid">Renova em {{ current_user.plano_renova_em or '01/12/2025' }}</div>
+              </div>
+
+              <div style="margin-top:14px;display:flex;gap:10px;color: #000;">
+                <a href="{{ url_for('planos.planos') }}" class="btn btn-primary" style="background-color: #000;">Alterar plano</a>
+                <button id="btn-cancel-plan" type="button" class="btn btn-secondary" data-confirm="Cancelar assinatura atual?">Cancelar assinatura</button>
+              </div>
+            </div>
+
+            <div class="card">
+              <h3>Métodos de pagamento</h3>
+
+              <div id="cards-list">
+                {% if current_user.cartoes %}
+                  {% for c in current_user.cartoes %}
+                    <div class="card-method">
+                      <strong>{{ c.brand }} •••• {{ c.last4 }}</strong>
+                      <div style="margin-top:8px;">
+                        <button class="btn btn-secondary btn-small" data-action="remove-card" data-card-id="{{ c.id }}" data-confirm="Remover este cartão?">Remover</button>
+                        <button class="btn btn-primary btn-small" data-action="set-default" data-card-id="{{ c.id }}" data-confirm="Definir como cartão padrão?">Definir padrão</button>
+                      </div>
+                    </div>
+                  {% endfor %}
+                {% else %}
+                  <p class="muted">Nenhum cartão cadastrado.</p>
+                {% endif %}
+              </div>
+
+              <hr>
+
+              <form id="form-add-card" method="POST" action="{{ url_for('autenticacao.perfil_pagamentos') }}">
+                {{ csrf_token() if csrf_token is defined }}
+                <div class="form-group">
+                  <label for="card_number">Número do cartão</label>
+                  <input id="card_number" name="card_number" class="form-control" placeholder="____ ____ ____ ____">
+                </div>
+
+                <div style="display:flex;gap:10px;">
+                  <div class="form-group" style="flex:1;">
+                    <label for="card_exp">Validade</label>
+                    <input id="card_exp" name="card_exp" class="form-control" placeholder="MM/AA">
+                  </div>
+                  <div class="form-group" style="width:120px;">
+                    <label for="card_cvc">CVC</label>
+                    <input id="card_cvc" name="card_cvc" class="form-control" placeholder="123">
+                  </div>
+                </div>
+
+                <div style="margin-top:12px;">
+                  <button type="button" id="btn-add-card" class="btn btn-primary" data-confirm="Adicionar este método de pagamento?" style="background-color: #000;">Adicionar cartão</button>
+                </div>
+              </form>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

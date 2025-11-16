@@ -15,6 +15,26 @@
     <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/png">
 
     <style>
+        .flash-message {
+            padding: 10px;
+            margin: 5px auto;
+            max-width: 400px;
+            border-radius: 4px;
+            color: #333;
+        }
+
+        .flash-message.warning {
+            background-color: #f0ad4e;
+        }
+
+        .flash-message.success {
+            background-color: #5cb85c;
+        }
+
+        .flash-message.info {
+            background-color: #eee;
+    }
+
         body {
             font-family: 'Inter', sans-serif;
             background-color: #0f0f0f;
@@ -53,18 +73,25 @@
             color: #fff;
         }
 
+    
         main {
             min-height: 100vh;
+            /* Adicione padding-bottom para o footer não cobrir o conteúdo */
+            padding-bottom: 50px; 
         }
 
+        /* Estilo para o footer (garantindo que seja fixo e escuro) */
         footer.auth-footer {
             position: fixed;
             bottom: 0;
+            left: 0;
             width: 100%;
             text-align: center;
             font-size: 0.8rem;
-            color: #777;
-            padding: 0.5rem 0;
+            color: #999;
+            padding: 0.8rem 0;
+            background-color: #000; /* Fundo preto sólido */
+            z-index: 50;
         }
 
         @media (max-width: 900px) {
@@ -84,7 +111,20 @@
     </header>
 
     <main>
-        {% block content %}{% endblock %}
+        <main>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div style="position: fixed; top: 15px; left: 50%; transform: translateX(-50%); width: 100%; max-width: 400px; z-index: 1000;">
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }} animated">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+</main>
     </main>
 
     <footer class="auth-footer">

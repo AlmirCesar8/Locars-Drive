@@ -1,3 +1,13 @@
+/* ============================================================
+ Arquivo: 02_insercoes_basicas.sql
+ Autor(es): Benjamin, Fabio; Silva, Almir; Paiva, Gabriel
+ Trabalho: LocarsDrive
+ Curso/Turma: Desenvolvimento de Sistemas - 213 Matutino
+ SGBD: MySQL Versão: 8.0
+ Objetivo: Inserção de dados básicos
+ Execução esperada: após criação do modelo físico
+ ============================================================ */
+
 -- Inserção de funções de usuários
 -- Cada função representa um tipo de usuário no sistema (Cliente, Funcionário, Gerente, Admin, Supervisor)
 insert into funcao (id_Funcao, nome_funcao_, descricao)

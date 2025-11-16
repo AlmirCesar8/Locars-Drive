@@ -1,11 +1,13 @@
 /* ============================================================
  Arquivo: 21_procedures.sql
- Autor(es): Fabio Benjamin; Almir Silva; Gabriel Paiva 
+ Autor(es): Benjamin, Fabio; Silva, Almir; Paiva, Gabriel
  Trabalho: LocarsDrive
- Curso/Turma: Desenvolvimento de Sistemas - 213 Matutino 
- SGBD: MySQL 8.0
+ Curso/Turma: Desenvolvimento de Sistemas - 213 Matutino
+ SGBD: MySQL Versão: 8.0
  Objetivo: Procedures e funções úteis para o sistema
+ Execução esperada: após criação das tabelas e triggers
  ============================================================ */
+
  
  -- P = Parametros
  -- V = Variaveis

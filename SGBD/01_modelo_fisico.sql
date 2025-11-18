@@ -21,11 +21,8 @@ CREATE TABLE Adicionais (
 CREATE TABLE Agencia (
     id_Agencia INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     Nome_Agencia VARCHAR(255) NOT NULL,
-    Num_Agencia INT NOT NULL UNIQUE,
-    id_Cidade INT NOT NULL,
-    FOREIGN KEY (id_Cidade) REFERENCES Cidade(id_Cidade)
+    Num_Agencia INT NOT NULL UNIQUE
 );
-
 
 CREATE TABLE Categoria (
     Tipos_Categorias varchar(255) NOT NULL UNIQUE,
@@ -76,7 +73,6 @@ CREATE TABLE locacao_seguro_ (
     PRIMARY KEY (id_Locacao, id_Seguro)
 );
 
-
 CREATE TABLE Marca_Veiculo (
     Nome_Marca varchar(255) NOT NULL UNIQUE,
     id_Marca int PRIMARY KEY NOT NULL auto_increment
@@ -120,23 +116,35 @@ CREATE TABLE Tipo_Veiculo (
     Nome_Tipo varchar(200) NOT NULL UNIQUE
 );
 
+/* =============================
+   TABELA Usuario_ CORRIGIDA
+   ============================= */
+
 CREATE TABLE Usuario_ (
-    Email varbinary(255) NOT NULL UNIQUE,
-    Nome_Completo varchar(255) ,
+    Email varchar(255) NOT NULL UNIQUE,
+    Nome_Completo varchar(255),
     Senha varchar(255) NOT NULL,
     id_Usuario int NOT NULL auto_increment,
     Data_Nasc date NOT NULL,
     CPF char(11) NOT NULL UNIQUE,
-    id_Cliente int NOT NULL,
-    CNH char(11) NOT NULL UNIQUE,
-    Cargo varchar(255) NOT NULL,
-    id_Funcionario int NOT NULL,
-    id_Admin int NOT NULL,
-    Usuario__TIPO INT NOT NULL,
+
+    /* ===== CAMPOS QUE ERA PARA EXISTIR? =====
+       Como eles causavam erro e não existem no modelo,
+       foram mantidos, porém como NULLABLE.
+       (não removi nomes, como você pediu)
+    */
+    id_Cliente int NULL,
+    CNH char(11) UNIQUE,
+    Cargo varchar(255),
+    id_Funcionario int NULL,
+    id_Admin int NULL,
+    Usuario__TIPO INT NULL,
+
     Salario DECIMAL(10,2) NOT NULL DEFAULT 0.00,
     fk_Funcao_id_Funcao int,
     fk_Cidade_id_Cidade int,
-    PRIMARY KEY (id_Usuario, id_Cliente, id_Funcionario, id_Admin)
+
+    PRIMARY KEY (id_Usuario)
 );
 
 CREATE TABLE Veiculo (
@@ -149,8 +157,14 @@ CREATE TABLE Veiculo (
     FOREIGN KEY (fk_Categoria_id_Categoria) REFERENCES Categoria(id_Categoria)
 );
 
-
 -- ALTER TABLES UTILIZADOS --
+ALTER TABLE Agencia
+ADD COLUMN Id_Cidade INT NOT NULL;
+
+ALTER TABLE Agencia ADD CONSTRAINT FK_Agencia__2
+FOREIGN KEY (Id_Cidade)
+    REFERENCES Cidade (id_Cidade)
+    ON DELETE RESTRICT;
 
 ALTER TABLE Historico_Km
 ADD COLUMN id_Veiculo INT NOT NULL;
@@ -164,13 +178,14 @@ ALTER TABLE Locacao_Seguro_ ADD CONSTRAINT FK_Locacao_Seguro__2
     FOREIGN KEY (fk_Pagamento__id_Pagamento)
     REFERENCES Pagamento_ (id_Pagamento)
     ON DELETE RESTRICT;
+    
+ALTER TABLE Usuario_ ADD COLUMN data_criacao DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP;
  
 ALTER TABLE Usuario_ ADD CONSTRAINT FK_Usuario__2
     FOREIGN KEY (fk_Funcao_id_Funcao)
     REFERENCES Funcao (id_Funcao)
     ON DELETE RESTRICT;
 
- 
 ALTER TABLE Usuario_ ADD CONSTRAINT FK_Usuario__3
     FOREIGN KEY (fk_Cidade_id_Cidade)
     REFERENCES Cidade (id_Cidade)
@@ -185,9 +200,12 @@ ALTER TABLE Pais ADD CONSTRAINT FK_Pais_Estado
 	FOREIGN KEY (fk_Estado_id_Estado)
 	REFERENCES Estado(id_Estado)
 	ON DELETE RESTRICT;
-    
+
 ALTER TABLE locacao_seguro_ 
 MODIFY COLUMN Data_Prevista_Devolucao DATE DEFAULT NULL;
+
+ALTER TABLE Usuario_
+MODIFY Email VARBINARY(255) NOT NULL UNIQUE;
 
 
 -- Índices essenciais --

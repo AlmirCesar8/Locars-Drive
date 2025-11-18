@@ -102,13 +102,13 @@ values
 
 -- Inserção de agências
 -- Localizações físicas de retirada de veículos
-insert into agencia (id_agencia, nome_agencia, num_agencia)
+insert into agencia (id_agencia, nome_agencia, num_agencia, Id_Cidade)
 values
-(1, 'locars Central', 1001),
-(2, 'locars Norte', 1002),
-(3, 'locars Sul', 1003),
-(4, 'locars Leste', 1004),
-(5, 'locars Oeste', 1005);
+(1, 'locars Central', 1001,1),
+(2, 'locars Norte', 1002,1),
+(3, 'locars Sul', 1003,2),
+(4, 'locars Leste', 1004,2),
+(5, 'locars Oeste', 1005,3);
 
 -- Inserção de categorias de veículos
 -- Diferentes tipos de veículos disponíveis para locação

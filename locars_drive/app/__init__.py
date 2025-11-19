@@ -1,12 +1,14 @@
 from flask import Flask
 from app.extensions import db, bcrypt, login_manager
+from app.config import Config
 
 
 def create_app():
     app = Flask(__name__)
     
     # Carrega corretamente a classe de configuração
-    app.config.from_pyfile('config.py')
+    #app.config.from_pyfile('config.py')
+    app.config.from_object(Config)
 
     # Inicializar extensões
     db.init_app(app)

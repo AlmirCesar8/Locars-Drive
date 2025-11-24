@@ -24,6 +24,8 @@ class Usuario(db.Model):
     fk_cidade_id_cidade = db.Column(db.Integer)                               # Chave estrangeira para cidade
     data_criacao = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     
+    pontuacao_reputacao = db.Column(db.Float, default=5.0) 
+    
 
 
     # Métodos para gestão de senhas (boa prática)

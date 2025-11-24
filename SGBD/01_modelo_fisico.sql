@@ -18,15 +18,6 @@ CREATE TABLE Adicionais (
     Disponibilidade enum('disponivel', 'indisponivel') NOT NULL
 );
 
-CREATE TABLE Agencia (
-    id_Agencia INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    Nome_Agencia VARCHAR(255) NOT NULL,
-    Num_Agencia INT NOT NULL UNIQUE,
-    id_Cidade INT NOT NULL,
-    FOREIGN KEY (id_Cidade) REFERENCES Cidade(id_Cidade)
-);
-
-
 CREATE TABLE Categoria (
     Tipos_Categorias varchar(255) NOT NULL UNIQUE,
     id_Categoria int PRIMARY KEY NOT NULL auto_increment
@@ -39,6 +30,14 @@ CREATE TABLE Cidade (
     CEP char(8) NOT NULL UNIQUE,
     Nome_CIdade varchar(255) NOT NULL UNIQUE,
     Complemento varchar(50)
+);
+
+CREATE TABLE Agencia (
+    id_Agencia INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    Nome_Agencia VARCHAR(255) NOT NULL,
+    Num_Agencia INT NOT NULL UNIQUE,
+    id_Cidade INT NOT NULL,
+    FOREIGN KEY (id_Cidade) REFERENCES Cidade(id_Cidade)
 );
 
 CREATE TABLE Estado (
@@ -126,6 +125,7 @@ CREATE TABLE Usuario_ (
     Senha varchar(255) NOT NULL,
     id_Usuario int NOT NULL auto_increment,
     Data_Nasc date NOT NULL,
+    Celular char (20) NOT NULL,
     CPF char(11) NOT NULL UNIQUE,
     id_Cliente int NOT NULL,
     CNH char(11) NOT NULL UNIQUE,
@@ -149,8 +149,32 @@ CREATE TABLE Veiculo (
     FOREIGN KEY (fk_Categoria_id_Categoria) REFERENCES Categoria(id_Categoria)
 );
 
+CREATE TABLE avaliacao (
+    id_avaliacao INT AUTO_INCREMENT PRIMARY KEY,
+    id_veiculo INT,
+    id_usuario INT,
+    nota decimal(3, 2),
+    comentario text,
+    data_avaliacao DATETIME DEFAULT CURRENT_TIMESTAMP -- Current_timestamp insere automaticamente o momento atual se você não fornecer um valor ao inserir
+);
+
 
 -- ALTER TABLES UTILIZADOS --
+
+ALTER TABLE usuario_
+ADD INDEX uniy_id_cliente (id_cliente);
+
+ALTER TABLE avaliacao ADD CONSTRAINT fk_avaliacao_usuario 
+	FOREIGN KEY (id_usuario) 
+    REFERENCES usuario_(id_cliente);
+
+ALTER TABLE avaliacao ADD CONSTRAINT fk_avaliacao_veiculo
+	FOREIGN KEY (id_veiculo)
+	REFERENCES veiculo(id_veiculo);
+
+ALTER TABLE Agencia
+ADD COLUMN bairro VARCHAR(255),
+ADD COLUMN Nome_CIdade varchar(255);
 
 ALTER TABLE Historico_Km
 ADD COLUMN id_Veiculo INT NOT NULL;
@@ -164,6 +188,11 @@ ALTER TABLE Locacao_Seguro_ ADD CONSTRAINT FK_Locacao_Seguro__2
     FOREIGN KEY (fk_Pagamento__id_Pagamento)
     REFERENCES Pagamento_ (id_Pagamento)
     ON DELETE RESTRICT;
+    
+ALTER TABLE Locacao_Seguro_ ADD CONSTRAINT FK_veiculo_1
+	FOREIGN KEY (id_Veiculo) 
+	REFERENCES Veiculo(id_Veiculo)
+	ON DELETE RESTRICT; 
  
 ALTER TABLE Usuario_ ADD CONSTRAINT FK_Usuario__2
     FOREIGN KEY (fk_Funcao_id_Funcao)
@@ -191,6 +220,8 @@ MODIFY COLUMN Data_Prevista_Devolucao DATE DEFAULT NULL;
 
 
 -- Índices essenciais --
+
+
 
 -- AGENCIA --
 create index uniy_agencia on Agencia (Nome_Agencia);

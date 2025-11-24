@@ -29,6 +29,10 @@ class Usuario(UserMixin, db.Model):
     cargo = db.Column(db.String(255), nullable=True) 
     salario = db.Column(db.Numeric(10, 2), default=0.00)
 
+    id_cliente = db.Column(db.Integer, nullable=True)
+    id_funcionario = db.Column(db.Integer, nullable=True)
+    id_admin = db.Column(db.Integer, nullable=True)
+
     # Chaves estrangeiras opcionais
     fk_funcao_id_funcao = db.Column(db.Integer, nullable=True) 
     fk_cidade_id_cidade = db.Column(db.Integer, nullable=True)

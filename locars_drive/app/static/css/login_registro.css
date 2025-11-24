@@ -196,7 +196,7 @@ input[type="password"]:focus {
 }
 
 .register-link a {
-    color: var(--accent-primary);
+    color: rgba(219, 219, 219, 0.863);    
     font-weight: 600;
 }
 

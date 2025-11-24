@@ -18,7 +18,7 @@ class RegistroForm(FlaskForm):
                          default="nao")
 
     # CNH só será validada se o usuário tiver marcado "sim"
-    cnh = StringField("CNH (Opcional)")
+    cnh = StringField("CNH", validators=[Length(min=11, max=11, message="A CNH deve ter 11 números.")])
     cargo = StringField("Cargo", validators=[DataRequired()])
     salario = DecimalField("Salário", validators=[DataRequired()], places=2)
 

@@ -21,7 +21,6 @@
             <form method="POST" action="{{ url_for('autenticacao.registro') }}">
                 {{ form.hidden_tag() }}
 
-                <!-- Nome -->
                 <div class="form-group">
                     {{ form.nome.label(class="form-label") }}
                     {{ form.nome(class="form-input", placeholder="Seu nome completo") }}
@@ -30,7 +29,6 @@
                     {% endfor %}
                 </div>
 
-                <!-- Email -->
                 <div class="form-group">
                     {{ form.email.label(class="form-label") }}
                     {{ form.email(class="form-input", placeholder="Seu email") }}
@@ -39,7 +37,6 @@
                     {% endfor %}
                 </div>
 
-                <!-- CPF -->
                 <div class="form-group">
                     {{ form.cpf.label(class="form-label") }}
                     {{ form.cpf(class="form-input", placeholder="Seu CPF (apenas números)") }}
@@ -48,7 +45,6 @@
                     {% endfor %}
                 </div>
 
-                <!-- Data de nascimento -->
                 <div class="form-group">
                     {{ form.data_nasc.label(class="form-label") }}
                     {{ form.data_nasc(class="form-input", type="date", id="data_nasc") }}
@@ -58,24 +54,36 @@
                     <small id="idade_display" class="form-text text-muted" style="margin-top: 5px;"></small>
                 </div>
 
-                <!-- Pergunta CNH (mostrada após validar idade) -->
                 <div id="cnh_pergunta" style="display: none;" class="form-group">
                     {{ form.tem_cnh.label(class="form-label") }}
                     <div class="form-radio-group">
+                        
                         {% for subfield in form.tem_cnh %}
+                            
+                            {% set custom_id = "" %}
+                            {% if loop.index0 == 0 %}
+                                {% set custom_id = "tem_cnh_sim" %}
+                            {% elif loop.index0 == 1 %}
+                                {% set custom_id = "tem_cnh_nao" %}
+                            {% endif %}
+
                             <label class="form-radio-option">
-                                {{ subfield(class="form-radio-input") }}
+                                {% if custom_id %}
+                                    {{ subfield(class="form-radio-input", id=custom_id) }}
+                                {% else %}
+                                    {{ subfield(class="form-radio-input") }}
+                                {% endif %}
+                                
                                 {{ subfield.label.text }}
                             </label>
                         {% endfor %}
+                            
                     </div>
-
                     {% for error in form.tem_cnh.errors %}
                         <span class="error-message">{{ error }}</span>
                     {% endfor %}
                 </div>
 
-                <!-- Campo CNH -->
                 <div id="cnh_campo_wrapper" style="display: none;">
                     <div class="form-group">
                         {{ form.cnh.label(class="form-label") }}
@@ -86,7 +94,6 @@
                     </div>
                 </div>
 
-                                <!-- Cargo -->
                 <div class="form-group">
                     {{ form.cargo.label(class="form-label") }}
                     {{ form.cargo(class="form-input", placeholder="Ex: Gerente, Atendente, Cliente, etc.") }}
@@ -95,7 +102,6 @@
                     {% endfor %}
                 </div>
 
-                <!-- Salário -->
                 <div class="form-group">
                     {{ form.salario.label(class="form-label") }}
                     {{ form.salario(class="form-input", placeholder="Renda mensal", type="number", step="0.01", min="0") }}
@@ -105,7 +111,6 @@
                 </div>
 
 
-                <!-- Senha -->
                 <div class="form-group">
                     {{ form.senha.label(class="form-label") }}
                     {{ form.senha(class="form-input", placeholder="Crie uma senha") }}
@@ -114,7 +119,6 @@
                     {% endfor %}
                 </div>
 
-                <!-- Confirmar senha -->
                 <div class="form-group">
                     {{ form.confirmar_senha.label(class="form-label") }}
                     {{ form.confirmar_senha(class="form-input", placeholder="Confirme a senha") }}
@@ -128,7 +132,7 @@
 
             <p class="register-link">
                 Já tem uma conta?
-                <a href="{{ url_for('autenticacao.login') }}">Entrar</a>
+                <a href="{{ url_for('autenticacao.login') }}" style="color: rgba(219, 219, 219, 0.863);">Entrar</a>
             </p>
         </div>
     </div>

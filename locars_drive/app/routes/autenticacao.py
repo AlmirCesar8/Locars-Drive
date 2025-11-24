@@ -90,9 +90,9 @@ def registro():
             senha=senha_hash,
             cpf=form.cpf.data,
             data_nasc=form.data_nasc.data,
-            cnh=cnh_valor,
-            cargo=form.cargo.data,          # ✔ SALVO
-            salario=form.salario.data,      # ✔ SALVO
+            cnh=form.cnh.data if form.tem_cnh.data == "sim" else None,            
+            cargo=form.cargo.data,          
+            salario=form.salario.data,      
             fk_funcao_id_funcao=None,
             fk_cidade_id_cidade=None
         )

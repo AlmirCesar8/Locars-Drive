@@ -1,0 +1,210 @@
+/* Variáveis de Cores */
+:root {
+    --primary: #616161; /* Preto principal */
+    --secondary: #000000; /* Índigo, usado para botões e links */
+    --background: #f9fafb; /* Fundo levemente cinza */
+    --card-bg: #ffffff; /* Fundo dos cards/container */
+    --success: #10b981;
+    --alert: #ef4444;
+    --info: #3b82f6;
+    --warning: #f59e0b;
+}
+
+/* Estilos Globais */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--background);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    /* REMOVIDO: align-items: center; */
+    padding-bottom: 2rem;
+    /* Garante que o body ocupe 100% da largura, se não estiver vindo do base.html */
+    width: 100%;
+}
+
+.container {
+    width: 95%; /* Garante que ocupe quase toda a largura */
+    max-width: 1400px; /* Aumentado para preencher mais a tela em desktops */
+    background-color: var(--card-bg);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05); /* Sombra mais suave */
+    border-radius: 12px;
+    padding: 2.5rem;
+    border: 1px solid #e5e7eb;
+    /* CORREÇÃO CHAVE: Auto margem para centralizar em 95% ou no max-width */
+    margin: 1rem auto 2rem auto; 
+}
+
+/* Estilos do Cabeçalho */
+header {
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+}
+
+header h1 {
+    font-size: 1.875rem;
+    font-weight: 800;
+    color: #1f2937;
+}
+
+header h1 span {
+    color: var(--secondary);
+}
+
+header p {
+    color: #6b7280;
+    margin-top: 0.25rem;
+}
+
+/* --- ESTILOS DE FILTRO E BOTÕES --- */
+
+.filter-group {
+    display: inline-flex;
+    margin-right: 1.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.filter-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #4b5563;
+}
+
+.filter-btn.active {
+    background-color: var(--secondary);
+    color: white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.filter-btn:hover:not(.active) {
+    background-color: #f3f4f6;
+}
+
+/* Item de Notificação */
+.notification-item {
+    padding: 1rem;
+    border-radius: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 1px solid transparent; /* Base para o hover */
+}
+
+.notification-item:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    border-color: #e5e7eb;
+}
+
+.notification-unread {
+    background-color: #f5f3ff; /* Cor clara de secondary */
+    border-left: 4px solid var(--secondary);
+    color: #1f2937;
+}
+
+.notification-read {
+    background-color: #f9fafb; /* Cor mais clara para lidas */
+    border-left: 4px solid #d1d5db;
+    color: #6b7280;
+    opacity: 0.8;
+}
+
+.notification-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    flex-grow: 1;
+}
+
+.notification-content .icon {
+    flex-shrink: 0;
+    font-size: 1.5rem;
+    padding-top: 4px;
+}
+
+.notification-unread .icon-color {
+    color: var(--secondary);
+}
+
+.notification-read .icon-color {
+    color: #9ca3af;
+}
+
+.notification-content p {
+    margin-top: 0;
+    line-height: 1.4;
+}
+
+.notification-content .title {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.notification-timestamp {
+    font-size: 0.75rem;
+    color: #9ca3af;
+    margin-top: 4px;
+}
+
+.notification-actions {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.action-btn {
+    padding: 0.4rem 0.8rem;
+    background-color: var(--alert);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 0.25rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.15s;
+}
+
+.action-btn:hover {
+    background-color: #b91c1c;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .container {
+        /* Permite que o container se espalhe mais em telas pequenas, usando margens menores */
+        width: 100%;
+        margin: 0 auto;
+        padding: 1.5rem;
+        border-radius: 0; /* Remove o border-radius nas laterais para 'colar' */
+    }
+    header h1 {
+        font-size: 1.5rem;
+    }
+    .header-actions {
+        flex-direction: column;
+        align-items: stretch !important;
+        gap: 1rem;
+    }
+    .header-actions button {
+        min-width: 100%;
+        order: 2;
+    }
+    .notification-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .notification-actions {
+        margin-top: 0.75rem;
+    }
+}

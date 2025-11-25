@@ -5,7 +5,7 @@ from sqlalchemy import Numeric, Date, String
 # -------------------------------------------------------
 
 class Veiculo(db.Model):
-    __tablename__ = 'veiculos'
+    __table_args__ = {'extend_existing': True}
 
     id_Veiculo = db.Column(db.Integer, primary_key=True, autoincrement=True)
     Frota = db.Column(db.Integer, nullable=False)

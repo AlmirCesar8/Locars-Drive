@@ -25,9 +25,9 @@ class Usuario(db.Model):
     data_criacao = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     
     pontuacao_reputacao = db.Column(db.Float, default=5.0) 
-    
-
-
+    notif_vencimento = db.Column(db.Boolean, default=False)
+    notif_interesse=db.Column(db.Boolean, default=False)
+    notif_promos=db.Column(db.Boolean, default=False)
     # Métodos para gestão de senhas (boa prática)
     def set_password(self, password):
         self.senha_hash = generate_password_hash(password)

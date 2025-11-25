@@ -1,6 +1,8 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request, jsonify, session
 from flask_login import login_user, logout_user, login_required, current_user
 from app.models.usuario import Usuario
+# Importação NECESSÁRIA para buscar as notificações
+from app.models.notificacao import Notificacao 
 from app.extensions import bcrypt, db
 from app.formularios import LoginForm, RegistroForm
 
@@ -90,11 +92,15 @@ def registro():
             senha=senha_hash,
             cpf=form.cpf.data,
             data_nasc=form.data_nasc.data,
-            cnh=form.cnh.data if form.tem_cnh.data == "sim" else None,            
+            cnh=form.cnh.data if form.tem_cnh.data == "sim" else None,          
             cargo=form.cargo.data,          
             salario=form.salario.data,      
             fk_funcao_id_funcao=None,
-            fk_cidade_id_cidade=None
+            fk_cidade_id_cidade=None,
+            # Campos de notificação (assumindo default False se não forem preenchidos)
+            notif_vencimento=False,
+            notif_interesse=False,
+            notif_promos=False
         )
 
         db.session.add(novo_usuario)
@@ -104,7 +110,6 @@ def registro():
         return redirect(url_for('autenticacao.login'))
 
     return render_template('registro.html', form=form)
-
 
 
 # ---------------------------------------------------------
@@ -143,6 +148,7 @@ def perfil():
     plano_ativo = planos_config[plano_chave]
 
     # 4. MONTA O DICIONÁRIO FINAL ENVIADO PARA O TEMPLATE
+    # Nota: Assumindo que current_user tem todos os campos necessários (nome_completo, email, cpf, etc.)
     user_data = {
     'nome': current_user.nome_completo,
     'email': current_user.email,
@@ -162,24 +168,79 @@ def perfil():
 
 
 # ---------------------------------------------------------
-# ROTAS DE PERFIL SECUNDÁRIAS (Sem alterações)
+# PERFIL NOTIFICAÇÕES (Lógica GET e POST atualizada)
 # ---------------------------------------------------------
-
-@autenticacao_bp.route("/perfil/info")
+@autenticacao_bp.route('/perfil/notificacoes', methods=['GET', 'POST'])
 @login_required
-def perfil_info():
-    # Esta rota foi simplificada e agora usaria o plano ativo da sessão se necessário
-    return render_template("perfil_info.html", user_data=perfil_data_mock())
+def perfil_notificacoes():
+    # Lógica POST para salvar preferências
+    if request.method == 'POST':
+        try:
+            # Garante que os valores booleanos são salvos corretamente
+            current_user.notif_vencimento = 'notificacao_vencimento' in request.form
+            current_user.notif_interesse = 'notificacao_interesse' in request.form
+            current_user.notif_promos = 'notificacao_promos' in request.form
+            
+            db.session.commit()
+            flash('Preferências de notificação salvas com sucesso.', 'success')
+            # Redireciona para evitar reenvio do formulário
+            return redirect(url_for('autenticacao.perfil_notificacoes')) 
+        except Exception as e:
+            db.session.rollback()
+            flash(f'Erro ao salvar preferências: {e}', 'danger')
+            return redirect(url_for('autenticacao.perfil_notificacoes'))
 
-@autenticacao_bp.route("/perfil/foto")
+    # Lógica GET para exibir a página (busca as notificações)
+    
+    try:
+        # Busca todas as notificações do usuário logado, ordenadas pela data mais recente
+        # Nota: Assegure-se que Notificacao.fk_usuario_id e current_user.id_Usuario são os campos corretos
+        notificacoes_usuario = db.session.query(Notificacao).filter(
+            Notificacao.fk_usuario_id == current_user.id_Usuario 
+        ).order_by(Notificacao.DataNotificacao.desc()).all()
+        
+    except Exception as e:
+        flash('Não foi possível carregar suas notificações.', 'danger')
+        notificacoes_usuario = []
+        print(f"Erro ao buscar notificações: {e}")
+
+    # Renderiza o template, passando a lista de notificações
+    return render_template(
+        'perfil_notificacoes.html', 
+        notificacoes=notificacoes_usuario
+    )
+
+# ---------------------------------------------------------
+# MARCAR NOTIFICAÇÃO COMO LIDA (NOVA ROTA AJAX)
+# ---------------------------------------------------------
+@autenticacao_bp.route('/notificacoes/marcar_lida/<int:notificacao_id>', methods=['POST'])
 @login_required
-def perfil_foto():
-    return render_template("perfil_foto.html")
+def marcar_lida(notificacao_id):
+    try:
+        notificacao = db.session.query(Notificacao).filter_by(
+            id_Notificacao=notificacao_id, 
+            fk_usuario_id=current_user.id_Usuario
+        ).first()
 
-# ... (outras rotas secundárias do perfil permanecem as mesmas)
+        if notificacao:
+            notificacao.Lida = True
+            db.session.commit()
+            return jsonify({'success': True, 'message': 'Notificação marcada como lida.'}), 200
+        else:
+            return jsonify({'success': False, 'message': 'Notificação não encontrada ou não pertence ao usuário.'}), 404
+    except Exception as e:
+        db.session.rollback()
+        print(f"Erro ao marcar notificação como lida: {e}")
+        return jsonify({'success': False, 'message': 'Erro interno ao processar a requisição.'}), 500
+
+
+# ---------------------------------------------------------
+# ROTAS DE PERFIL SECUNDÁRIAS (Mantidas com pequenas correções)
+# ---------------------------------------------------------
 
 # Função auxiliar para evitar repetição de código (usada nas rotas secundárias)
 def perfil_data_mock():
+    # Esta função precisa ser adaptada para usar current_user se for usada em templates reais
     plano_ativo_id = session.get('plano_ativo', 'basico') 
     planos_config = {
         'basico': {'nome': 'BÁSICO', 'valor': 99.90, 'beneficios': ['10% de desconto', '1 dia grátis']},
@@ -191,24 +252,36 @@ def perfil_data_mock():
     plano_ativo = planos_config[plano_chave]
 
     return {
-        'membro_desde': '15/11/2025',
-        'valido_ate': '01/12/2025',
+        # Usando dados reais do current_user sempre que possível
+        'nome': current_user.nome_completo,
+        'email': current_user.email,
+        'membro_desde': current_user.data_criacao.strftime('%d/%m/%Y'),
+        'valido_ate': '01/12/2025', # Mock, pois o vencimento do plano não está no modelo
         'plano_ativo': plano_ativo['nome'],
         'valor_plano': plano_ativo['valor'],
         'beneficios_resumo': plano_ativo['beneficios']
     }
 
-# ... (restante das rotas secundárias, usando perfil_data_mock se precisarem de user_data)
+
+@autenticacao_bp.route("/perfil/info")
+@login_required
+def perfil_info():
+    # Passa dados mockados (e reais) para o template
+    return render_template("perfil_info.html", user_data=perfil_data_mock())
+
+@autenticacao_bp.route("/perfil/foto")
+@login_required
+def perfil_foto():
+    return render_template("perfil_foto.html")
+
+
 @autenticacao_bp.route("/perfil/seguranca")
 @login_required
 def perfil_seguranca():
     return render_template("perfil_seguranca.html")
 
 
-@autenticacao_bp.route("/perfil/notificacoes")
-@login_required
-def perfil_notificacoes():
-    return render_template("perfil_notificacoes.html")
+# Nota: perfil_notificacoes foi movida e atualizada acima
 
 
 @autenticacao_bp.route("/perfil/pagamentos")

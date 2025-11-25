@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h2>Devolução e Check-in do Veículo</h2>
+        <p class="lead">Selecione o aluguel ativo e insira os dados finais da locação para calcular as cobranças extras e liberar o veículo.</p>
+        
+        <form method="POST" action="{{ url_for('devolucao.devolucao') }}">
+            
+            <div class="form-group">
+                <label for="aluguel_id">Selecione a Locação Ativa:</label>
+                <select class="form-control" id="aluguel_id" name="aluguel_id" required>
+                    <option value="">-- Escolha uma Locação --</option>
+                    {% for locacao in locacoes %}
+                        <option value="{{ locacao.id_aluguel }}">
+                            ID: {{ locacao.id_aluguel }} | Placa: {{ locacao.veiculo.Placa }} | Cliente: {{ locacao.cliente.Nome }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <hr>
+            
+            <h4>Dados do Check-in</h4>
+
+            <div class="form-group">
+                <label for="quilometragem_final">Quilometragem Final (Km):</label>
+                <input type="number" step="0.01" class="form-control" id="quilometragem_final" name="quilometragem_final" placeholder="Ex: 54321.00" required>
+            </div>
+
+            <div class="form-group">
+                <label for="nivel_combustivel">Nível de Combustível (0.0 a 1.0):</label>
+                <input type="number" step="0.01" min="0.0" max="1.0" class="form-control" id="nivel_combustivel" name="nivel_combustivel" placeholder="Ex: 0.75 para 3/4 cheio" required>
+            </div>
+
+            <div class="form-group">
+                <label for="avarias_reportadas">Avarias/Danos Reportados (Check-in):</label>
+                <textarea class="form-control" id="avarias_reportadas" name="avarias_reportadas" rows="3" placeholder="Descreva novos danos ou escreva 'Nenhuma'"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-success btn-lg btn-block mt-4">
+                Finalizar Locação e Calcular Cobrança
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

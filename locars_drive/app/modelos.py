@@ -9,7 +9,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 # -------------------------------------------------------
 # Modelo de Usuário
 # -------------------------------------------------------
-class Usuario(UserMixin, db.Model):
+'''class Usuario(UserMixin, db.Model):
     __tablename__ = 'usuario_'
 
     id_usuario = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -45,21 +45,19 @@ class Usuario(UserMixin, db.Model):
         self.senha = generate_password_hash(password)
 
     def check_password(self, password):
-        return check_password_hash(self.senha, password)
+        return check_password_hash(self.senha, password)'''
 
 # -------------------------------------------------------
 # Modelo de Veículo (para uso futuro)
 # -------------------------------------------------------
-class Veiculo(db.Model):
-    __tablename__ = 'veiculo'
+'''class Veiculo(db.Model):
+    __table_args__ = {'extend_existing': True}
 
-    id = db.Column(db.Integer, primary_key=True)
-    marca = db.Column(db.String(80), nullable=False)
-    modelo = db.Column(db.String(100), nullable=False)
-    ano = db.Column(db.Integer, nullable=False)
-    categoria = db.Column(db.String(50))
-    diaria = db.Column(db.Float, nullable=False)
-    disponivel = db.Column(db.Boolean, default=True)
+    id_Veiculo = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    Frota = db.Column(db.Integer, nullable=False)
+    Placa = db.Column(db.String(7), unique=True, nullable=False)
+    Km_Rodado = db.Column(db.Numeric(10,2), nullable=False)
+    StatusVeiculo = db.Column(db.Enum('Disponível', 'Indisponível'), nullable=False)
 
     def __repr__(self):
         return f'<Veiculo {self.marca} {self.modelo} ({self.ano})>'
@@ -82,4 +80,4 @@ class Locacao(db.Model):
     status = db.Column(db.String(50), default='Em andamento')
 
     def __repr__(self):
-        return f'<Locacao {self.id} - Usuário {self.usuario_id}>'
+        return f'<Locacao {self.id} - Usuário {self.usuario_id}>'''''

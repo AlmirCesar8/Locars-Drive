@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <h2>⭐ Avaliação de Serviço</h2>
+        <p class="lead">Por favor, atribua uma nota de 1 a 5 para a experiência de locação n° **{{ aluguel.id_aluguel }}** do cliente **{{ aluguel.cliente.Nome }}**.</p>
+        
+        <form method="POST" action="{{ url_for('devolucao.processar_avaliacao') }}">
+            <input type="hidden" name="aluguel_id" value="{{ aluguel.id_aluguel }}">
+            
+            <div class="form-group text-center">
+                <label for="nota" class="h4">Nota do Serviço (1 - Péssimo a 5 - Excelente):</label>
+                <div class="d-flex justify-content-center mt-3">
+                    {% for i in range(1, 6) %}
+                        <div class="form-check form-check-inline mx-2">
+                            <input class="form-check-input" type="radio" name="nota" id="nota{{ i }}" value="{{ i }}" required>
+                            <label class="form-check-label" for="nota{{ i }}">{{ i }}</label>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="form-group mt-4">
+                <label for="observacoes">Observações Adicionais (Opcional):</label>
+                <textarea class="form-control" id="observacoes" name="observacoes" rows="3"></textarea>
+            </div>
+            
+
+            <button type="submit" class="btn btn-warning btn-lg btn-block mt-4">
+                Registrar Avaliação e Atualizar Reputação
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{# Este template seria renderizado após a devolução, chamando uma rota que busca o objeto 'aluguel'. #}

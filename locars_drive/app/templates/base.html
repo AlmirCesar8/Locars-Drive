@@ -17,6 +17,7 @@
     <script src="https://kit.fontawesome.com/a2d0b1c5e1.js" crossorigin="anonymous"></script>
 
     <link rel="icon" href="{{ url_for('static', filename='img/logo.ico') }}">
+    {% block css_file %}{% endblock %}
 </head>
 <body>
 
@@ -62,6 +63,11 @@
 
                 <li><a href="{{ url_for('locacao.locacao') }}" class="{% if request.endpoint == 'locacao.locacao' %}ativo{% endif %}">
                     <i class="fas fa-calendar"></i> Minhas Reservas
+                </a></li>
+
+                <!-- NOVO LINK DE NOTIFICAÇÕES -->
+                <li><a href="{{ url_for('notificacoes.notificacoes') }}" class="{% if request.endpoint == 'notificacoes.notificacoes' %}ativo{% endif %}">
+                    <i class="fas fa-bell"></i> Notificações
                 </a></li>
 
                 {% if current_user.is_authenticated %}
@@ -110,6 +116,8 @@
         <div class="menu_topico">
             <h4>Suporte</h4>
             <ul>
+                <!-- ADICIONAR NOTIFICAÇÕES AO MENU DROPDOWN -->
+                <li><a href="{{ url_for('notificacoes.notificacoes') }}">Notificações</a></li>
                 <li><a href="{{ url_for('contato.contato') }}">Contato</a></li>
                 <li><a href="{{ url_for('autenticacao.login') }}">Entrar</a></li>
                 <li><a href="{{ url_for('autenticacao.registro') }}">Registrar</a></li>
@@ -143,5 +151,6 @@
     </footer>
 
     <script src="{{ url_for('static', filename='js/menu.js') }}" defer></script>
+    {% block js_file %}{% endblock %}
 </body>
 </html>

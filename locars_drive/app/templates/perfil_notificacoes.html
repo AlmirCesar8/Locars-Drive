@@ -8,9 +8,6 @@
 
 <section class="perfil-main">
   <div class="perfil-wrapper">
-    <!-- ======================
-         SIDEBAR
-    ====================== -->
     <aside class="perfil-sidebar">
       <nav>
         <ul>
@@ -25,12 +22,8 @@
       </nav>
     </aside>
 
-    <!-- ======================
-         CONTENT AREA
-    ====================== -->
     <div class="perfil-content">
 
-      <!-- HEADER -->
       <div class="perfil-header">
         <div class="perfil-header-inner">
           <div class="perfil-avatar"><i class="fa-solid fa-user"></i></div>
@@ -49,8 +42,10 @@
           </aside>
 
           <div class="col-right">
-            <div class="card">
-              <h3>Notificações</h3>
+            
+            {# --- 1. PREFERÊNCIAS DE NOTIFICAÇÃO --- #}
+            <div class="card mb-4"> 
+              <h3>Preferências de Notificação</h3>
               <form id="form-notifs" method="POST" action="{{ url_for('autenticacao.perfil_notificacoes') }}">
                 {{ csrf_token() if csrf_token is defined }}
 
@@ -76,11 +71,51 @@
                 </div>
 
                 <div style="display:flex;gap:10px;margin-top:12px;">
-                  <button type="button" id="btn-save-notifs" class="btn btn-primary" data-confirm="Salvar preferências de notificação?" style="background-color: #000;">Salvar</button>
+                  <button type="submit" id="btn-save-notifs" class="btn btn-primary" data-confirm="Salvar preferências de notificação?" style="background-color: #000;">Salvar</button>
                   <a href="{{ url_for('autenticacao.perfil') }}" class="btn btn-secondary">Cancelar</a>
                 </div>
               </form>
             </div>
+            
+            {# --- 2. LISTA DE NOTIFICAÇÕES (IMPORTADA) --- #}
+            <div class="card">
+                <h3>🔔 Minhas Notificações</h3>
+                <p class="text-muted">Veja os alertas e avisos sobre suas atividades e locações.</p>
+                
+                {% if notificacoes %}
+                    <ul class="list-group list-group-flush">
+                        {% for n in notificacoes %}
+                            {# Define a classe do badge com base no tipo para visualização (Assumindo bootstrap/cores customizadas) #}
+                            {% set badge_class = {
+                                'ALERTA': 'danger', 
+                                'AVISO': 'warning', 
+                                'SUCESSO': 'success', 
+                                'INFO': 'info'
+                            }.get(n.TipoNotificacao|upper, 'secondary') %}
+                            
+                            <li class="list-group-item d-flex justify-content-between align-items-center {% if not n.Lida %}bg-light{% endif %}">
+                                <div>
+                                    <span class="badge badge-pill badge-{{ badge_class }} mr-2">
+                                        {{ n.TipoNotificacao|upper }}
+                                    </span>
+                                    <strong>{{ n.Titulo }}</strong> 
+                                    - {{ n.Mensagem }}
+                                    <small class="text-muted d-block mt-1">{{ n.DataNotificacao.strftime('%d/%m/%Y %H:%M') }}</small>
+                                </div>
+                                {% if not n.Lida %}
+                                    {# Aqui você precisaria de uma rota Flask para marcar como lida #}
+                                    <a href="#" class="btn btn-sm btn-outline-primary">Marcar como Lida</a>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <div class="alert alert-info mt-3" role="alert">
+                        Você não tem notificações recentes.
+                    </div>
+                {% endif %}
+            </div>
+
           </div>
 
         </div>

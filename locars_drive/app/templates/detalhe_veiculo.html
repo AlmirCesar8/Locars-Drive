@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Detalhe do Veículo: {{ veiculo.marca }} {{ veiculo.modelo }}{% endblock %}
+{% block title %}Detalhe do Veículo: {{ veiculo.Marca }} {{ veiculo.Modelo }}{% endblock %}
 
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/detalhe.css') }}">
@@ -8,7 +8,7 @@
 <section class="detalhe-main">
     <div class="container">
         <div class="breadcrumb">
-            <a href="{{ url_for('frotas.frotas') }}">Veículos</a> / <span>{{ veiculo.marca }} {{ veiculo.modelo }}</span>
+            <a href="{{ url_for('locacao.locacao') }}">Veículos</a> / <span>{{ veiculo.Marca }} {{ veiculo.Modelo }}</span>
         </div>
 
         <div class="detalhe-wrapper">
@@ -16,52 +16,42 @@
             <main class="detalhe-col-principal">
                 
                 <div class="veiculo-header">
-                    <h1>{{ veiculo.marca }} {{ veiculo.modelo }}</h1>
+                    <h1>{{ veiculo.Marca }} {{ veiculo.Modelo }}</h1>
+                    {# Assumindo que estas variáveis são calculadas na sua rota Flask e anexadas ao objeto veiculo #}
                     <div class="avaliacao">
-                        <i class="fa-solid fa-star"></i> <span>{{ veiculo.media_avaliacao | round(1) }} ({{ veiculo.total_avaliacoes }} avaliações)</span>
+                        <i class="fa-solid fa-star"></i> <span>{{ veiculo.media_avaliacao | default(5.0) | round(1) }} ({{ veiculo.total_avaliacoes | default(0) }} avaliações)</span>
                     </div>
                 </div>
 
                 <div class="galeria-fotos">
-                    <img src="{{ veiculo.imagem_principal }}" alt="{{ veiculo.modelo }}" class="imagem-principal">
-                    <div class="miniaturas">
-                        {% for imagem in veiculo.imagens_secundarias %}
-                            <img src="{{ imagem }}" alt="Detalhe do {{ veiculo.modelo }}">
-                        {% endfor %}
-                    </div>
+                    {# Use a ImagemURL do seu modelo #}
+                    <img src="{{ veiculo.ImagemURL or url_for('static', filename='img/default.jpg') }}" alt="{{ veiculo.Modelo }}" class="imagem-principal">
+                    {# Se você tiver uma lista de URLs em veiculo.imagens_secundarias #}
                 </div>
                 
                 <div class="detalhe-card">
                     <h2>Especificações Chave</h2>
                     <ul class="lista-especificacoes">
-                        <li><i class="fa-solid fa-gas-pump"></i> Combustível: <span>{{ veiculo.combustivel }}</span></li>
-                        <li><i class="fa-solid fa-gear"></i> Transmissão: <span>{{ veiculo.transmissao }}</span></li>
+                        <li><i class="fa-solid fa-gas-pump"></i> Combustível: <span>{{ veiculo.TipoCombustivel }}</span></li>
+                        <li><i class="fa-solid fa-gear"></i> Transmissão: <span>{{ veiculo.TipoTransmissao or 'N/A' }}</span></li>
                         
-                        {% if veiculo.categoria == 'carro' %}
-                            <li><i class="fa-solid fa-user-group"></i> Assentos: <span>{{ veiculo.assentos }}</span></li>
-                            <li><i class="fa-solid fa-door-open"></i> Portas: <span>{{ veiculo.portas }}</span></li>
-                        {% elif veiculo.categoria == 'moto' %}
-                            <li><i class="fa-solid fa-motorcycle"></i> Cilindrada: <span>{{ veiculo.cilindrada }}</span></li>
-                            <li><i class="fa-solid fa-helmet-safety"></i> Capacete Incluso: <span>{{ 'Sim' if veiculo.capacete_incluso else 'Não' }}</span></li>
+                        {# Adapte a exibição de detalhes com base na Categoria/Tipo #}
+                        {% if veiculo.Categoria == 'carro' %}
+                            <li><i class="fa-solid fa-user-group"></i> Assentos: <span>{{ veiculo.NumeroAssentos }}</span></li>
+                            <li><i class="fa-solid fa-door-open"></i> Portas: <span>{{ veiculo.NumeroPortas }}</span></li>
+                        {% elif veiculo.Categoria == 'moto' %}
+                            <li><i class="fa-solid fa-motorcycle"></i> Cilindrada: <span>{{ veiculo.Cilindrada }}</span></li>
+                            <li><i class="fa-solid fa-helmet-safety"></i> CNH Necessária: <span>{{ 'Sim' if veiculo.RequerCNH else 'Não' }}</span></li>
                         {% else %}
-                        <li><i class="fa-solid fa-bolt"></i> Tipo: <span>{{ 'Elétrico' if veiculo.eletrico else 'Comum' }}</span></li>
-                            <li><i class="fa-solid fa-route"></i> Autonomia: <span>{{ veiculo.autonomia }} km</span></li>
+                        <li><i class="fa-solid fa-bolt"></i> Tipo: <span>{{ 'Elétrico' if veiculo.Tipo == 'Eletrico' else 'Comum' }}</span></li>
+                            <li><i class="fa-solid fa-route"></i> Autonomia: <span>{{ veiculo.Autonomia or 'N/A' }} km</span></li>
                         {% endif %}
                     </ul>
                 </div>
                 
                 <div class="detalhe-card">
                     <h2>Descrição</h2>
-                    <p>{{ veiculo.descricao_completa | default("Este veículo é uma excelente opção para suas necessidades de locomoção. Consulte a seção de reserva para incluir um motorista.") | safe }}</p>
-                </div>
-
-                <div class="detalhe-card">
-                    <h2>Para Usuários Sem CNH</h2>
-                    <ul class="lista-vantagens">
-                        <li><i class="fa-solid fa-shield-halved"></i> **Segurança:** Motoristas profissionais e verificados.</li>
-                        <li><i class="fa-solid fa-calendar-check"></i> **Flexibilidade:** Agende a locação e o motorista por hora ou dia.</li>
-                        <li><i class="fa-solid fa-map-location-dot"></i> **Cobertura:** Atendimento em diversas regiões.</li>
-                    </ul>
+                    <p>{{ veiculo.DescricaoCompleta or "Este veículo é uma excelente opção para suas necessidades de locomoção." }}</p>
                 </div>
 
             </main>
@@ -70,11 +60,14 @@
                 <div class="card-reserva">
                     
                     <div class="preco-base">
-                        <span class="preco-valor">R$ {{ veiculo.preco_base | round(2) }}</span>
-                        <span class="preco-unidade">/ {{ 'hora' if veiculo.categoria in ['bicicleta', 'patinete'] else 'dia' }}</span>
+                        {# Usando ValorDiaria/ValorHora do seu modelo #}
+                        <span class="preco-valor">R$ {{ veiculo.ValorDiaria | round(2) }}</span>
+                        <span class="preco-unidade">/ dia</span>
                     </div>
 
-                    <form id="form-reserva" action="{{ url_for('reservas.checkout', veiculo_id=veiculo.id) }}" method="POST">
+                    {# FORMULÁRIO QUE SUBMETE PARA A ROTA DE RESERVA (locacao.py) #}
+                    <form id="form-reserva" action="{{ url_for('locacao.locacao') }}" method="POST">
+                        <input type="hidden" name="veiculo_id" value="{{ veiculo.id_Veiculo }}">
                         
                         <div class="form-group">
                             <label for="data_retirada">Data e Hora de Retirada</label>
@@ -85,23 +78,24 @@
                             <input type="datetime-local" id="data_devolucao" name="data_devolucao" required>
                         </div>
 
-                        {% if veiculo.categoria in ['carro', 'moto'] %}
+                        {# Este campo é crucial para a lógica de Risco/CNH que você implementou #}
+                        {% if veiculo.RequerCNH %}
                         <div class="form-group">
-                            <label for="motorista">Incluir Motorista LocarsDrive?</label>
-                            <select id="motorista" name="motorista" class="form-control" required>
-                                <option value="sim" selected>Sim, preciso de Motorista (Sem CNH)</option>
-                                <option value="nao">Não, eu dirigirei (Possuo CNH)</option>
+                            <label for="cnh_status">Quem irá conduzir?</label>
+                            <select id="cnh_status" name="cnh_status" class="form-control" required>
+                                <option value="motorista">Motorista LocarsDrive (Recomendado se não tiver CNH)</option>
+                                <option value="proprio">Eu mesmo (Possuo CNH válida)</option>
                             </select>
                         </div>
                         {% endif %}
 
                         <div class="resumo-total">
-                            <span>Subtotal da Locação:</span>
+                            <span>Estimativa de Diárias:</span>
                             <span id="subtotal">R$ 0,00</span>
                         </div>
                         <div class="resumo-total total-final">
-                            <span>Total Final:</span>
-                            <span id="total-final">R$ 0,00</span>
+                            <span>Valor Previsto:</span>
+                            <span id="total-final" data-base-price="{{ veiculo.ValorDiaria | round(2) }}">R$ 0,00</span>
                         </div>
 
                         <button type="submit" class="btn btn-primary btn-checkout">
@@ -115,8 +109,47 @@
 </section>
 
 <script>
-    // A lógica JavaScript para calcular a diferença de datas, multiplicar pelo preço base e atualizar o subtotal/total deve ser inserida aqui.
-    // Isso envolveria escutar eventos 'change' nos inputs de data.
+    document.addEventListener('DOMContentLoaded', () => {
+        const retiradaInput = document.getElementById('data_retirada');
+        const devolucaoInput = document.getElementById('data_devolucao');
+        const totalFinalSpan = document.getElementById('total-final');
+        const subtotalSpan = document.getElementById('subtotal');
+        const basePrice = parseFloat(totalFinalSpan.getAttribute('data-base-price'));
+
+        function calcularTotal() {
+            const dataRetirada = new Date(retiradaInput.value);
+            const dataDevolucao = new Date(devolucaoInput.value);
+
+            if (dataRetirada && dataDevolucao && dataDevolucao > dataRetirada) {
+                // Cálculo da diferença em milissegundos
+                const diffMs = dataDevolucao - dataRetirada;
+                
+                // Conversão para dias
+                const msPerDay = 1000 * 60 * 60 * 24;
+                let diasFracionados = diffMs / msPerDay;
+
+                // Arredonda para cima (cobranca de diária inteira)
+                const diasCobranca = Math.ceil(diasFracionados);
+                
+                // O valor mínimo de dias de cobrança é 1
+                const diasValidos = Math.max(1, diasCobranca);
+                
+                const total = basePrice * diasValidos;
+
+                subtotalSpan.textContent = `${diasValidos} diária(s)`;
+                totalFinalSpan.textContent = `R$ ${total.toFixed(2)}`;
+            } else {
+                subtotalSpan.textContent = 'R$ 0,00';
+                totalFinalSpan.textContent = 'R$ 0,00';
+            }
+        }
+
+        retiradaInput.addEventListener('change', calcularTotal);
+        devolucaoInput.addEventListener('change', calcularTotal);
+        
+        // Inicializa o cálculo se os valores estiverem pré-preenchidos
+        calcularTotal();
+    });
 </script>
 
 {% endblock %}

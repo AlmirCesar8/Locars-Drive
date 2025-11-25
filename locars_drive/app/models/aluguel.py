@@ -12,7 +12,7 @@ class Aluguel(db.Model):
     # Liga ao Cliente que alugou
     fk_usuario_id = db.Column(db.Integer, ForeignKey('Usuario_.id_usuario'), nullable=False)
     # Liga ao Veículo alugado
-    fk_veiculo_id = db.Column(db.Integer, ForeignKey('veiculos.id_Veiculo'), nullable=False)
+    fk_veiculo_id = db.Column(db.Integer, ForeignKey('veiculo.id_Veiculo'), nullable=False)
     
     # --- Datas da Locação ---
     data_retirada = db.Column(db.DateTime, nullable=False)

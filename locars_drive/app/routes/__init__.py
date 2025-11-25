@@ -9,6 +9,7 @@ from app.routes.administrador import administrador_bp
 from app.routes.devolucao import devolucao_bp
 from app.routes.erros import erros_bp
 from app.routes.teste import teste_bp
+from app.routes.notificacoes import notificacoes_bp
 
 
 blueprints = [
@@ -21,6 +22,7 @@ blueprints = [
     (administrador_bp, '/admin'),
     (autenticacao_bp, '/auth'),
     (devolucao_bp, '/devolucao'),
+    (notificacoes_bp, '/notificacoes'),
     (erros_bp, None),
     (teste_bp, None),
 ]

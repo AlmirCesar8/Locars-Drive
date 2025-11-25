@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}Central de Notificações{% endblock %}
+
+{% block css_file %}
+    <!-- Mantém o link para o CSS que foi corrigido para o layout -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/notificacoes.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <h1>
+                <span>LocarsDrive</span> | Central de Notificações
+            </h1>
+            <!-- CORREÇÃO: Usando .id_usuario -->
+            <p>Acompanhe alertas importantes sobre aluguéis e sistema. (ID do Usuário: {{ current_user.id_usuario }})</p>
+        </header>
+
+        <!-- AÇÕES E FILTROS -->
+        <div class="header-actions">
+            <h2 style="font-size: 1.25rem; font-weight: 600; color: #374151; order: 1;">Notificações Recentes</h2>
+            
+            <!-- FORMULÁRIO PARA MARCAR TODAS COMO LIDAS -->
+            <form method="POST" action="{{ url_for('notificacoes.marcar_lidas') }}" 
+                  style="order: 3; min-width: 200px;">
+                
+                <!-- CORREÇÃO CHAVE: Renderiza o token CSRF usando o objeto 'form' -->
+                {{ form.csrf_token }} 
+                
+                <button type="submit"
+                        {% if nao_lidas_count == 0 %}disabled{% endif %}
+                        style="width: 100%; padding: 0.5rem 1rem; background-color: var(--secondary); color: white; font-size: 0.875rem; font-weight: 500; border-radius: 0.5rem; transition: background-color 0.15s; border: none; cursor: pointer;">
+                    Marcar {{ nao_lidas_count }} como Lidas
+                </button>
+            </form>
+        </div>
+        
+        <!-- LISTA DE NOTIFICAÇÕES (RENDERIZADA POR JINJA2) -->
+        <div id="notifications-list" style="display: flex; flex-direction: column; gap: 1rem;">
+            
+            {% if notificacoes %}
+                {% for notificacao in notificacoes %}
+                    {% set read_class = 'notification-read' if notificacao.lida else 'notification-unread' %}
+                    
+                    {% if notificacao.tipo == 'alerta' %}
+                        {% set icon = '🚨' %}
+                        {% set icon_color_class = 'text-red-500' %}
+                    {% elif notificacao.tipo == 'sucesso' %}
+                        {% set icon = '✅' %}
+                        {% set icon_color_class = 'text-green-500' %}
+                    {% elif notificacao.tipo == 'locacao' %}
+                        {% set icon = '🚗' %}
+                        {% set icon_color_class = 'text-yellow-600' %}
+                    {% else %}
+                        {% set icon = '🔔' %}
+                        {% set icon_color_class = 'text-blue-500' %}
+                    {% endif %}
+
+                    <div class="notification-item {{ read_class }}">
+                        <div class="notification-content">
+                            <div class="icon {{ icon_color_class }}">{{ icon }}</div>
+                            <div>
+                                <p class="title">{{ notificacao.tipo }}</p>
+                                <p class="text-sm">{{ notificacao.mensagem }}</p>
+                                <span class="notification-timestamp">
+                                    {# Usando data_envio #}
+                                    {{ notificacao.data_envio.strftime('%d/%m/%Y %H:%M') }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="notification-actions">
+                            <a href="#" class="text-xs text-indigo-600 hover:text-indigo-800 font-medium">Detalhes &raquo;</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div id="no-notifications" style="text-align: center; padding: 2rem;">
+                    <p style="color: #6b7280; font-style: italic;">Você está em dia! Nenhuma notificação pendente.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block js_file %}
+{% endblock %}

@@ -1,14 +1,20 @@
 from flask import Flask
 from app.extensions import db, bcrypt, login_manager
 from app.config import Config
+from app.teste import initialize_admin_user
+import os
 
 
 def create_app():
     app = Flask(__name__)
     
+    # Configuração da chave secreta
+    SECRET_KEY_VALUE = os.getenv("SECRET_KEY", "devkey123")
+    app.config['SECRET_KEY'] = SECRET_KEY_VALUE
+    
     # Carrega corretamente a classe de configuração
-    #app.config.from_pyfile('config.py')
-    app.config.from_object(Config)
+    app.config.from_pyfile('config.py')
+    # app.config.from_object(Config)
 
     # Inicializar extensões
     db.init_app(app)
@@ -25,6 +31,8 @@ def create_app():
     def load_user(user_id):
         from app.models.usuario import Usuario
         return Usuario.query.get(int(user_id))
+    
+    initialize_admin_user(app) 
 
     # Registrar blueprints
     from app.routes import blueprints

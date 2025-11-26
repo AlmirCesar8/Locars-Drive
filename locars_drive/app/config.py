@@ -38,5 +38,5 @@ DB_PATH = os.path.join(os.path.dirname(BASE_DIR), "instance", "locars.db")
 
 # A URI de SQLite abaixo está descomentada, mas se a linha 13 (conectar_db) estiver ativa, ela será sobrescrita dependendo de como você carrega a configuração.
 # Se você pretende usar MySQL, mantenha a linha 13 ativa. Se for usar SQLite, comente a linha 13 e 14.
-SQLALCHEMY_DATABASE_URI = f"sqlite:///{DB_PATH}"
+# SQLALCHEMY_DATABASE_URI = f"sqlite:///{DB_PATH}"
 SQLALCHEMY_TRACK_MODIFICATIONS = False

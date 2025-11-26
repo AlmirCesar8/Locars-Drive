@@ -12,57 +12,70 @@
         <h1>Gestão de Frota | Adicionar Veículo</h1>
         <p>Preencha os dados do novo veículo para adicioná-lo à frota LocarsDrive.</p>
     </header>
+    
+    
 
-    <form id="vehicle-form" class="form-card">
+    <form method="POST" action="{{ url_for('admin_bp.adicionar_veiculo') }}" class="form-card">
+        {{ form.hidden_tag() }} 
+
+        
         <div class="input-group">
-            <label for="brand">Marca:</label>
-            <input type="text" id="brand" required placeholder="Ex: Chevrolet">
+            <label>{{ form.fk_marca_id_marca.label }}</label>
+            {{ form.fk_marca_id_marca(class="form-control") }}
+            {% for error in form.fk_marca_id_marca.errors %}
+                <span style="color: red; font-size: 0.8em;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+        
+        <div class="input-group">
+            <label>{{ form.fk_modelo_id_modelo.label }}</label>
+            {{ form.fk_modelo_id_modelo(class="form-control") }}
+            {% for error in form.fk_modelo_id_modelo.errors %}
+                <span style="color: red; font-size: 0.8em;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+        
+        <div class="input-group">
+            <label>{{ form.fk_categoria_id_categoria.label }}</label>
+            {{ form.fk_categoria_id_categoria(class="form-control") }}
+            {% for error in form.fk_categoria_id_categoria.errors %}
+                <span style="color: red; font-size: 0.8em;">[{{ error }}]</span>
+            {% endfor %}
         </div>
 
         <div class="input-group">
-            <label for="model">Modelo:</label>
-            <input type="text" id="model" required placeholder="Ex: Onix Plus">
+            <label>{{ form.placa.label }}</label>
+            {{ form.placa(class="form-control", placeholder="Ex: ABC1E34") }}
+            {% for error in form.placa.errors %}
+                <span style="color: red; font-size: 0.8em;">[{{ error }}]</span>
+            {% endfor %}
         </div>
 
         <div class="input-group">
-            <label for="year">Ano:</label>
-            <input type="number" id="year" required min="2000" max="{{ 'now' | strftime('%Y') | int + 1 }}" placeholder="Ex: 2024">
+            <label>{{ form.frota.label }}</label>
+            {{ form.frota(class="form-control", placeholder="Ex: 2024") }}
+            {% for error in form.frota.errors %}
+                <span style="color: red; font-size: 0.8em;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+        
+        <div class="input-group">
+            <label>{{ form.km_rodado.label }}</label>
+            {{ form.km_rodado(class="form-control", placeholder="Ex: 5000") }}
+            {% for error in form.km_rodado.errors %}
+                <span style="color: red; font-size: 0.8em;">[{{ error }}]</span>
+            {% endfor %}
         </div>
 
         <div class="input-group">
-            <label for="plate">Placa:</label>
-            <input type="text" id="plate" required pattern="[A-Z]{3}\d[A-Z0-9]\d{2}" title="Formato Mercosul (ex: ABC1E34)" placeholder="Ex: ABC1E34">
+            <label>{{ form.status_veiculo.label }}</label>
+            {{ form.status_veiculo(class="form-control") }}
+            {% for error in form.status_veiculo.errors %}
+                <span style="color: red; font-size: 0.8em;">[{{ error }}]</span>
+            {% endfor %}
         </div>
 
-        <div class="input-group">
-            <label for="daily_rate">Valor da Diária (R$):</label>
-            <input type="number" id="daily_rate" required min="10" step="0.01" placeholder="Ex: 120.50">
-        </div>
-
-        <div class="input-group">
-            <label for="location">Localização (Cidade/Filial):</label>
-            <input type="text" id="location" required placeholder="Ex: São Paulo - Filial Centro">
-        </div>
-
-        <div class="input-group">
-            <label for="type">Tipo de Carro:</label>
-            <select id="type" required>
-                <option value="" disabled selected>Selecione o Tipo</option>
-                <option value="Hatch">Hatch</option>
-                <option value="Sedan">Sedan</option>
-                <option value="SUV">SUV</option>
-                <option value="Picape">Picape</option>
-                <option value="Esportivo">Esportivo</option>
-            </select>
-        </div>
-
-        <div class="input-group">
-            <label for="imageUrl">URL da Imagem (Placeholder):</label>
-            <input type="url" id="imageUrl" placeholder="Ex: https://placehold.co/600x400">
-        </div>
-
-        <button type="submit" id="submit-btn" class="submit-btn">Adicionar Veículo à Frota</button>
-        <p id="message-area" class="message-area" style="display:none;"></p>
+        <button type="submit" class="submit-btn">Adicionar Veículo à Frota</button>
     </form>
 </div>
 {% endblock %}

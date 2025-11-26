@@ -1,0 +1,136 @@
+/*
+ * Arquivo: veiculos_admin.css
+ * Responsável pelo estilo da página de Adicionar/Editar Veículos
+ */
+
+/* Estilos de Estrutura e Container Principal */
+.container_admin {
+    max-width: 900px;
+    margin: 40px auto; /* Centraliza na página */
+    padding: 20px;
+    background-color: #ffffff; /* Fundo branco para o conteúdo principal */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+/* Estilos do Cabeçalho */
+.container_admin header {
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #eeeeee; /* Linha divisória */
+}
+
+.container_admin header h1 {
+    color: #34495e; /* Tonalidade de azul/cinza para o título */
+    font-size: 2.2em;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.container_admin header p {
+    color: #7f8c8d; /* Texto cinza claro para a descrição */
+    font-size: 1.0em;
+    margin: 0;
+}
+
+/* Estilos do Formulário */
+.form-card {
+    display: grid;
+    /* Define o layout de duas colunas para campos mais curtos em telas grandes */
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 20px 30px; /* Espaçamento entre as linhas e colunas */
+}
+
+/* Estilo para cada grupo de input */
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group label {
+    font-weight: 600;
+    color: #2c3e50; /* Cor escura para o label */
+    margin-bottom: 5px;
+    font-size: 0.9em;
+}
+
+/* Estilo para todos os campos de input e select */
+.input-group input[type="text"],
+.input-group input[type="number"],
+.input-group input[type="url"],
+.input-group select {
+    padding: 10px 15px;
+    border: 1px solid #bdc3c7; /* Borda cinza suave */
+    border-radius: 4px;
+    font-size: 1.0em;
+    width: 100%;
+    box-sizing: border-box; /* Inclui padding e border no tamanho total */
+    transition: border-color 0.3s;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+    border-color: #3498db; /* Borda azul ao focar */
+    outline: none;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+}
+
+/* Estilo do Botão de Envio (Submit) */
+.submit-btn {
+    /* Faz o botão ocupar a largura total do grid */
+    grid-column: 1 / -1; 
+    
+    background-color: #27ae60; /* Verde vibrante */
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    margin-top: 15px; /* Espaçamento extra antes do botão */
+}
+
+.submit-btn:hover {
+    background-color: #2ecc71; /* Verde mais claro no hover */
+    transform: translateY(-1px);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+/* Estilos de Mensagens Flash (Se aplicável) */
+.message-area {
+    grid-column: 1 / -1; 
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 10px;
+    text-align: center;
+    font-weight: 500;
+}
+/* Estilos para mensagens de erro/sucesso */
+.message-area.error {
+    background-color: #f4baba;
+    color: #c0392b;
+    border: 1px solid #e74c3c;
+}
+.message-area.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+/* Responsividade (Para telas menores, torna-se uma única coluna) */
+@media (max-width: 768px) {
+    .container_admin {
+        margin: 20px 10px;
+        padding: 15px;
+    }
+
+    .form-card {
+        /* Garante que o grid se ajuste a uma única coluna */
+        grid-template-columns: 1fr;
+    }
+}

@@ -5,7 +5,7 @@ from app.routes.locacao import locacao_bp
 from app.routes.planos import planos_bp
 from app.routes.veiculos import veiculos_bp
 from app.routes.autenticacao import autenticacao_bp
-from app.routes.administrador import administrador_bp
+from app.routes.administrador import admin_bp
 from app.routes.devolucao import devolucao_bp
 from app.routes.erros import erros_bp
 from app.routes.teste import teste_bp
@@ -20,7 +20,7 @@ blueprints = [
     (locacao_bp, '/locacao'),
     (planos_bp, '/planos'),
     (veiculos_bp, '/veiculos'),
-    (administrador_bp, '/admin'),
+    (admin_bp, '/admin'),
     (autenticacao_bp, '/auth'),
     (devolucao_bp, '/devolucao'),
     (notificacoes_bp, '/notificacoes'),

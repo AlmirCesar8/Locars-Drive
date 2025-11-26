@@ -10,7 +10,7 @@
         <h1>Veículos Disponíveis para Locação</h1>
         
         <!-- INÍCIO: Botão de Cadastro para Administradores -->
-        {% if is_admin %}
+        {% if current_user.is_authenticated and current_user.is_admin %}
         <div class="admin-actions mb-4 text-center">
             <a href="{{ url_for('veiculos.adicionar_veiculo') }}" class="btn btn-primary btn-lg">
                 <i class="fas fa-plus-circle"></i> Cadastrar Novo Veículo

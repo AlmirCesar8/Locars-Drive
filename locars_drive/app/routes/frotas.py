@@ -4,7 +4,7 @@ from flask import Blueprint, render_template, url_for
 from app.models.veiculo import Veiculo
 from flask_login import current_user # Para checagem de permissão
 
-frotas_bp = Blueprint('frotas_bp', __name__, url_prefix='/frotas')
+frotas_bp = Blueprint('frotas', __name__, url_prefix='/frotas')
 
 @frotas_bp.route('/', methods=['GET'])
 def listar_veiculos():

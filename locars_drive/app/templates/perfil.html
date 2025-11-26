@@ -3,6 +3,7 @@
 
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/perfil.css') }}">
+
 <script defer src="{{ url_for('static', filename='js/perfil.js') }}"></script>
 
 <section class="perfil-main">
@@ -16,7 +17,7 @@
           <li><a href="{{ url_for('autenticacao.perfil_seguranca') }}" class="{% if request.endpoint == 'autenticacao.perfil_seguranca' %}ativo{% endif %}">Segurança</a></li>
           <li><a href="{{ url_for('autenticacao.perfil_notificacoes') }}" class="{% if request.endpoint == 'autenticacao.perfil_notificacoes' %}ativo{% endif %}">Notificações</a></li>
           <li><a href="{{ url_for('autenticacao.perfil_pagamentos') }}" class="{% if request.endpoint == 'autenticacao.perfil_pagamentos' %}ativo{% endif %}">Assinatura & Pagamentos</a></li>
-          
+
           <li>
             <a href="{{ url_for('autenticacao.logout') }}" 
                data-confirm="Você tem certeza que deseja sair da sua conta?"
@@ -60,25 +61,32 @@
               </div>
             </div>
 
+            {# ==============================
+                CARD DE ASSINATURA CORRIGIDO
+            =============================== #}
             {% if user_data %}
-            <div class="perfil-card plano-ativo-card">
-              <div class="plano-header">
-                  <span class="plano-nome-badge">{{ user_data.plano_ativo or "Nenhum plano" }}</span>
-                  <span class="membro-desde">{{ user_data.membro_desde or "" }}</span>
+            <div class="card assinatura-card">
+
+              <div class="assinatura-top">
+                <span class="badge">{{ user_data.plano_ativo }}</span>
+
+                <div class="assinatura-price">
+                  R$ {{ "%.2f"|format(user_data.valor_plano or 0) }} <span>/mês</span>
+                </div>
+
+                <div class="assinatura-valid">
+                  Válida até {{ user_data.valido_ate or "—" }}
+                </div>
               </div>
 
-              <div class="plano-corpo">
-                  <span class="preco-valor">R$ {{ (user_data.valor_plano or 0) | round(2) }} <span>/mês</span></span>
-                  <span class="valido-ate">Válido até {{ user_data.valido_ate or "—" }}</span>
-              </div>
-              
-              <ul class="beneficios-resumo-lista">
-                  {% for beneficio in user_data.beneficios_resumo or [] %}
-                      <li><i class="fa-solid fa-check"></i> {{ beneficio }}</li>
-                  {% endfor %}
+              <hr>
+
+              <ul class="beneficios">
+                {% for beneficio in user_data.beneficios_resumo %}
+                <li>{{ beneficio }}</li>
+                {% endfor %}
               </ul>
-              
-              <a href="{{ url_for('planos.planos') }}" class="btn btn-upgrade">Gerenciar / Mudar Plano</a>
+
             </div>
             {% endif %}
 

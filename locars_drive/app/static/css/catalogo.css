@@ -297,4 +297,331 @@
 }
 
 
+/* Estilos Específicos para Frotas/Catálogo */
+.catalogo-main {
+    padding: 40px 0;
+    background-color: #f7f9fc;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.catalogo-wrapper {
+    display: flex;
+    gap: 30px;
+}
+
+.filtro-sidebar {
+    width: 280px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    height: fit-content;
+    position: sticky;
+    top: 20px;
+}
+
+.filtro-sidebar h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+.filtro-group {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed #eee;
+}
+
+.filtro-group:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.filtro-group h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.filtro-group input[type="text"],
+.filtro-group select,
+.filtro-group input[type="range"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    margin-top: 5px;
+    font-family: 'Inter', sans-serif;
+}
+
+.filtro-group label {
+    display: block;
+    font-size: 0.9rem;
+    color: #444;
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+.filtro-group input[type="radio"],
+.filtro-group input[type="checkbox"] {
+    margin-right: 8px;
+    accent-color: #007bff;
+}
+
+/* Estilo para o Range de Preço */
+.filtro-group input[type="range"] {
+    padding: 0;
+    -webkit-appearance: none;
+    height: 8px;
+    background: #ddd;
+    outline: none;
+    margin-bottom: 10px;
+}
+
+.filtro-group input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: #007bff;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.filtro-group #preco-display {
+    display: block;
+    text-align: center;
+    font-weight: 700;
+    color: #007bff;
+}
+
+.btn {
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s, transform 0.2s;
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 10px;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    transform: translateY(-1px);
+}
+
+.resultados-area {
+    flex-grow: 1;
+}
+
+.resultado-contagem {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 20px;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.veiculos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.veiculo-card {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.veiculo-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.veiculo-card a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    flex-grow: 1;
+}
+
+.card-imagem {
+    height: 200px;
+    background-color: #ddd;
+    background-size: cover;
+    background-position: center;
+}
+
+.card-info {
+    padding: 15px;
+    flex-grow: 1;
+}
+
+.card-info h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.card-localizacao {
+    font-size: 0.9rem;
+    color: #777;
+    margin-bottom: 10px;
+}
+
+.card-localizacao i {
+    color: #007bff;
+    margin-right: 5px;
+}
+
+.card-detalhes {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-size: 0.85rem;
+    color: #555;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+.card-detalhes i {
+    margin-right: 5px;
+    color: #4096d2;
+}
+
+.card-preco {
+    text-align: right;
+    margin-bottom: 10px;
+}
+
+.preco-valor {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #28a745; /* Verde para preço */
+}
+
+.preco-unidade {
+    font-size: 0.9rem;
+    color: #777;
+    font-weight: 500;
+}
+
+.card-status {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.status-disponível {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status-indisponível {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.btn-rent {
+    background-color: #ffc107; /* Amarelo/Laranja para alugar */
+    color: #333;
+    border: none;
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 0 0 12px 12px;
+}
+
+.btn-rent:hover {
+    background-color: #e0a800;
+    transform: none;
+}
+
+.btn-disabled {
+    background-color: #e9ecef;
+    color: #6c757d;
+    border: none;
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 0 0 12px 12px;
+    cursor: not-allowed;
+}
+
+.admin-actions {
+    margin-bottom: 30px;
+    padding: 15px;
+    background: #e9f7ff;
+    border: 1px solid #cce5ff;
+    border-radius: 8px;
+}
+
+.no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px;
+    font-size: 1.2rem;
+    color: #999;
+}
+
+/* Responsividade */
+@media (max-width: 992px) {
+    .catalogo-wrapper {
+        flex-direction: column;
+    }
+
+    .filtro-sidebar {
+        width: 100%;
+        position: static;
+        margin-bottom: 20px;
+    }
+}
+@media (max-width: 768px) {
+    .veiculos-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
 

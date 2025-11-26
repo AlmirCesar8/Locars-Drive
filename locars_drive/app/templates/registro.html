@@ -3,7 +3,7 @@
 {% block content %}
 
 <link rel="stylesheet" href="{{ url_for('static', filename='css/login_registro.css') }}">
-<script defer src="{{ url_for('static', filename='js/registro.js') }}"></script>
+<script src="{{ url_for('static', filename='js/registro.js') }}"></script>
 <script src="{{ url_for('static', filename='js/login_registro.js') }}"></script>
 
 <div class="auth-container reverse">
@@ -20,6 +20,18 @@
 
             <form method="POST" action="{{ url_for('autenticacao.registro') }}">
                 {{ form.hidden_tag() }}
+
+                <!-- NOVO CAMPO: SELEÇÃO DE PERFIL -->
+                <div class="form-group">
+                    {{ form.tipo_perfil.label(class="form-label") }}
+                    {{ form.tipo_perfil(class="form-input custom-select") }}
+                    {% for error in form.tipo_perfil.errors %}
+                        <span class="error-message">{{ error }}</span>
+                    {% endfor %}
+                    <small class="form-text text-muted">
+                        Escolha sua função principal na plataforma: Locar (Cliente), Alugar (Parceiro/Dono de Frota), ou Ambos.
+                    </small>
+                </div>
 
                 <div class="form-group">
                     {{ form.nome.label(class="form-label") }}
@@ -94,9 +106,11 @@
                     </div>
                 </div>
 
+                <!-- NOTA: Estes campos são sobrecargas para o uso de usuário-funcionário
+                Para simplificar, eles serão mantidos visíveis, mas devem ser tratados na rota. -->
                 <div class="form-group">
                     {{ form.cargo.label(class="form-label") }}
-                    {{ form.cargo(class="form-input", placeholder="Ex: Gerente, Atendente, Cliente, etc.") }}
+                    {{ form.cargo(class="form-input", placeholder="Ex: Cliente, Parceiro, Gerente, etc.") }}
                     {% for error in form.cargo.errors %}
                         <span class="error-message">{{ error }}</span>
                     {% endfor %}

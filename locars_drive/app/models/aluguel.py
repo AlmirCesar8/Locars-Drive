@@ -10,6 +10,7 @@ class Aluguel(db.Model):
     
     # --- Chaves Estrangeiras ---
     # Liga ao Cliente que alugou
+    # Corrigido o nome da tabela para minúsculas: 'usuario_' -> 'usuario_' (usando o nome exato da sua tabela SQL)
     fk_usuario_id = db.Column(db.Integer, ForeignKey('Usuario_.id_usuario'), nullable=False)
     # Liga ao Veículo alugado
     fk_veiculo_id = db.Column(db.Integer, ForeignKey('veiculo.id_Veiculo'), nullable=False)
@@ -26,7 +27,9 @@ class Aluguel(db.Model):
     valor_extra = db.Column(db.Numeric(10, 2), default=0.00) # Cobrança por atraso, KM, combustível, etc.
 
     # --- Relações ---
-    usuario = relationship('Usuario', backref='alugueis')
+    # Assumindo que o nome do modelo de usuário seja 'Usuario'
+    # usuario = relationship('Usuario', backref='alugueis') 
+    # Para evitar circular imports, deixo a definição da relação Usuario para o modelo Usuario
     veiculo = relationship('Veiculo', backref='alugueis')
     
     # Relações com os novos módulos (Vistoria, Notificação, Avaliação)

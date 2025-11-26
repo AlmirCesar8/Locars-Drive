@@ -119,12 +119,10 @@
                 const planoId = botao.getAttribute('data-plano-id');
                 
                 fetch("{{ url_for('autenticacao.ativar_plano') }}", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ plano_id: planoId })
-                })
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ plano: planoId })                })
+
                 .then(response => {
                     if (response.ok) {
                         return response.json();
@@ -139,7 +137,7 @@
                 .catch(error => {
                     console.error('Erro ao ativar plano:', error);
                     // Se houver erro (ex: não logado), você pode exibir uma mensagem de erro na tela.
-                    // alert('❌ Falha na ativação. Por favor, tente novamente ou faça login.'); 
+                    // alert(' Falha na ativação. Por favor, tente novamente ou faça login.'); 
                 });
             });
         });

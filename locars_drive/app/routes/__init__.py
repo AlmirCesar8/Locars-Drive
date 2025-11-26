@@ -12,6 +12,7 @@ from app.routes.teste import teste_bp
 from app.routes.notificacoes import notificacoes_bp
 
 
+
 blueprints = [
     (index_bp, None),
     (contato_bp, '/contato'),

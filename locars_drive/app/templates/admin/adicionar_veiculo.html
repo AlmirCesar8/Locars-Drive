@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Adicionar Novo Veículo{% endblock %}
+
+{% block css_file %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/veiculos_admin.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container_admin">
+    <header>
+        <h1>Gestão de Frota | Adicionar Veículo</h1>
+        <p>Preencha os dados do novo veículo para adicioná-lo à frota LocarsDrive.</p>
+    </header>
+
+    <form id="vehicle-form" class="form-card">
+        <div class="input-group">
+            <label for="brand">Marca:</label>
+            <input type="text" id="brand" required placeholder="Ex: Chevrolet">
+        </div>
+
+        <div class="input-group">
+            <label for="model">Modelo:</label>
+            <input type="text" id="model" required placeholder="Ex: Onix Plus">
+        </div>
+
+        <div class="input-group">
+            <label for="year">Ano:</label>
+            <input type="number" id="year" required min="2000" max="{{ 'now' | strftime('%Y') | int + 1 }}" placeholder="Ex: 2024">
+        </div>
+
+        <div class="input-group">
+            <label for="plate">Placa:</label>
+            <input type="text" id="plate" required pattern="[A-Z]{3}\d[A-Z0-9]\d{2}" title="Formato Mercosul (ex: ABC1E34)" placeholder="Ex: ABC1E34">
+        </div>
+
+        <div class="input-group">
+            <label for="daily_rate">Valor da Diária (R$):</label>
+            <input type="number" id="daily_rate" required min="10" step="0.01" placeholder="Ex: 120.50">
+        </div>
+
+        <div class="input-group">
+            <label for="location">Localização (Cidade/Filial):</label>
+            <input type="text" id="location" required placeholder="Ex: São Paulo - Filial Centro">
+        </div>
+
+        <div class="input-group">
+            <label for="type">Tipo de Carro:</label>
+            <select id="type" required>
+                <option value="" disabled selected>Selecione o Tipo</option>
+                <option value="Hatch">Hatch</option>
+                <option value="Sedan">Sedan</option>
+                <option value="SUV">SUV</option>
+                <option value="Picape">Picape</option>
+                <option value="Esportivo">Esportivo</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label for="imageUrl">URL da Imagem (Placeholder):</label>
+            <input type="url" id="imageUrl" placeholder="Ex: https://placehold.co/600x400">
+        </div>
+
+        <button type="submit" id="submit-btn" class="submit-btn">Adicionar Veículo à Frota</button>
+        <p id="message-area" class="message-area" style="display:none;"></p>
+    </form>
+</div>
+{% endblock %}
+
+{% block js_file %}
+    <script type="module" src="{{ url_for('static', filename='js/veiculos_admin.js') }}"></script>
+{% endblock %}

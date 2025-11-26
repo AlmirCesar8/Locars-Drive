@@ -3,6 +3,7 @@ from sqlalchemy import String, DateTime, ForeignKey, Text, Boolean
 from sqlalchemy.orm import relationship
 from datetime import datetime
 
+
 class Notificacao(db.Model):
     __tablename__ = 'notificacao'
 

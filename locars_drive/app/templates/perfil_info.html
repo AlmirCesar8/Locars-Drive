@@ -5,14 +5,10 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/perfil.css') }}">
 <script defer src="{{ url_for('static', filename='js/perfil.js') }}"></script>
 
-{% include '_confirm_modal.html' %}
-
 <section class="perfil-main">
   <div class="perfil-wrapper">
 
-    <!-- ======================
-         SIDEBAR
-    ====================== -->
+    <!-- Sidebar -->
     <aside class="perfil-sidebar">
       <nav>
         <ul>
@@ -22,17 +18,20 @@
           <li><a href="{{ url_for('autenticacao.perfil_seguranca') }}" class="{% if request.endpoint == 'autenticacao.perfil_seguranca' %}ativo{% endif %}">Segurança</a></li>
           <li><a href="{{ url_for('autenticacao.perfil_notificacoes') }}" class="{% if request.endpoint == 'autenticacao.perfil_notificacoes' %}ativo{% endif %}">Notificações</a></li>
           <li><a href="{{ url_for('autenticacao.perfil_pagamentos') }}" class="{% if request.endpoint == 'autenticacao.perfil_pagamentos' %}ativo{% endif %}">Assinatura & Pagamentos</a></li>
-          <li><a href="{{ url_for('autenticacao.logout') }}" data-confirm="Você tem certeza que deseja sair da sua conta?"id="logout-link">Sair</a></li>
+          <li>
+            <a href="{{ url_for('autenticacao.logout') }}"
+               data-confirm="Você tem certeza que deseja sair da sua conta?"
+               id="logout-link">
+               Sair
+            </a>
+          </li>
         </ul>
       </nav>
     </aside>
 
-    <!-- ======================
-         CONTENT AREA
-    ====================== -->
+    <!-- Conteúdo principal -->
     <div class="perfil-content">
 
-      <!-- HEADER -->
       <div class="perfil-header">
         <div class="perfil-header-inner">
           <div class="perfil-avatar"><i class="fa-solid fa-user"></i></div>
@@ -43,63 +42,64 @@
         </div>
       </div>
 
-      <!-- BODY -->
       <div class="perfil-body">
         <div class="perfil-container">
 
-          <!-- LEFT COLUMN (same as perfil.html) -->
+          <!-- Coluna Esquerda -->
           <aside class="col-left">
+
+            <!-- Informações pessoais -->
             <div class="card info-conta">
-              <h3>Informações da Conta</h3>
+              <h3>Informações Pessoais</h3>
+
               <div class="info-row"><i class="fa-regular fa-user"></i><span>{{ current_user.nome }}</span></div>
               <div class="info-row"><i class="fa-regular fa-envelope"></i><span>{{ current_user.email }}</span></div>
-              <div class="info-row"><i class="fa-regular fa-calendar"></i><span>Membro desde {{ current_user.data_criacao.strftime('%d/%m/%Y') }}</span></div>
+
+              <div class="info-row">
+                <i class="fa-regular fa-calendar"></i>
+                <span>
+                  {% if current_user.data_criacao %}
+                    Membro desde {{ current_user.data_criacao.strftime('%d/%m/%Y') }}
+                  {% else %}
+                    Data não informada
+                  {% endif %}
+                </span>
+              </div>
             </div>
 
-            <div class="card assinatura-card">
-              <div class="assinatura-top">
-                <span class="badge">BÁSICO</span>
-                <div class="assinatura-price">R$ 99.90 <span>/mês</span></div>
-                <div class="assinatura-valid">Válida até 01/12/2025</div>
+            <!-- PLANO ATIVO – MESMO MODELO DO perfil.html -->
+            {% if user_data %}
+            <div class="perfil-card plano-ativo-card">
+              <div class="plano-header">
+                  <span class="plano-nome-badge">{{ user_data.plano_ativo or "Nenhum plano" }}</span>
+                  <span class="membro-desde">{{ user_data.membro_desde or "" }}</span>
               </div>
-              <hr>
-              <ul class="beneficios">
-                <li>10% de desconto em todas as locações</li>
-                <li>1 dia grátis por mês</li>
-                <li>Cancelamento flexível</li>
+
+              <div class="plano-corpo">
+                  <span class="preco-valor">
+                    R$ {{ (user_data.valor_plano or 0) | round(2) }}
+                    <span>/mês</span>
+                  </span>
+                  <span class="valido-ate">Válido até {{ user_data.valido_ate or "—" }}</span>
+              </div>
+              
+              <ul class="beneficios-resumo-lista">
+                {% for beneficio in user_data.beneficios_resumo or [] %}
+                    <li><i class="fa-solid fa-check"></i> {{ beneficio }}</li>
+                {% endfor %}
               </ul>
+
+              <a href="{{ url_for('planos.planos') }}" class="btn btn-upgrade">Gerenciar / Mudar Plano</a>
             </div>
+            {% endif %}
+
           </aside>
 
-          <!-- RIGHT COLUMN – EDIT FORM -->
+          <!-- Coluna Direita -->
           <div class="col-right">
             <div class="card">
-              <h3>Editar Informações Pessoais</h3>
-
-              <form method="POST" action="{{ url_for('autenticacao.perfil_info') }}">
-                {{ csrf_token() if csrf_token is defined }}
-
-                <div class="form-group">
-                  <label for="nome">Nome completo</label>
-                  <input id="nome" name="nome" class="form-control" value="{{ current_user.nome }}" required>
-                </div>
-
-                <div class="form-group">
-                  <label for="email">Email</label>
-                  <input id="email" name="email" type="email" class="form-control" value="{{ current_user.email }}" required>
-                </div>
-
-                <div class="form-group">
-                  <label for="telefone">Telefone</label>
-                  <input id="telefone" name="telefone" class="form-control" value="{{ current_user.telefone or '' }}">
-                </div>
-
-                <div class="form-buttons" style="color: #000;">
-                  <button type="submit" class="btn btn-primary" style="background-color: #000;">Salvar</button>
-                  <a href="{{ url_for('autenticacao.perfil') }}" class="btn btn-secondary">Cancelar</a>
-                </div>
-
-              </form>
+              <h3>Alterar Informações Pessoais</h3>
+              <p class="muted">Por enquanto, esta área exibirá apenas informações. Em breve você poderá editá-las.</p>
             </div>
           </div>
 
@@ -107,8 +107,8 @@
       </div>
 
     </div>
-
   </div>
 </section>
 
+{% include '_confirm_modal.html' %}
 {% endblock %}

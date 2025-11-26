@@ -2,18 +2,28 @@
 {% block title %}Veículos Disponíveis{% endblock %}
 
 {% block content %}
+<!-- Incluindo o CSS correto -->
 <link rel="stylesheet" href="{{ url_for('static', filename='css/catalogo.css') }}">
-catalogo
+
 <section class="catalogo-main">
     <div class="container">
         <h1>Veículos Disponíveis para Locação</h1>
+        
+        <!-- INÍCIO: Botão de Cadastro para Administradores -->
+        {% if is_admin %}
+        <div class="admin-actions mb-4 text-center">
+            <a href="{{ url_for('veiculos.adicionar_veiculo') }}" class="btn btn-primary btn-lg">
+                <i class="fas fa-plus-circle"></i> Cadastrar Novo Veículo
+            </a>
+        </div>
+        {% endif %}
+        <!-- FIM: Botão de Cadastro para Administradores -->
 
         <div class="catalogo-wrapper">
             
             <aside class="filtro-sidebar">
-                            
                 <h3>Filtrar Busca</h3>
-                <form action="{{ url_for('frotas.frotas') }}" method="GET">
+                <form action="{{ url_for('veiculos.veiculos') }}" method="GET">
                     
                     <div class="filtro-group">
                         <h4>Tipo de Veículo Principal</h4>
@@ -31,7 +41,7 @@ catalogo
                     </div>
 
                     <div class="filtro-group">
-                        <h4>Preço por hora / dia</h4>
+                        <h4>Preço por dia</h4>
                         <input type="range" name="preco_max" min="10" max="1200" step="10" value="500"> 
                         <span id="preco-display">R$ 500</span>
                     </div>
@@ -39,7 +49,7 @@ catalogo
                     <div id="filtro-carro" class="filtro-condicional">
                         <div class="filtro-group">
                             <h4>Necessidade de CNH</h4>
-                            <label><input type="radio" name="cnh" value="motorista"> Com Motorista LocarsDrive</label>
+                            <label><input type="radio" name="cnh" value="motorista" checked> Com Motorista LocarsDrive</label>
                             <label><input type="radio" name="cnh" value="proprio"> Sem Motorista (Possuo CNH)</label>
                         </div>
                         
@@ -78,7 +88,7 @@ catalogo
                             <label><input type="checkbox" name="cc" value="alta"> Acima de 500cc</label>
                         </div>
                     </div>
-                    
+
                     <div id="filtro-bicicleta" class="filtro-condicional" style="display:none;">
                         <div class="filtro-group">
                             <h4>Tipo e Potência</h4>
@@ -103,35 +113,57 @@ catalogo
                     </div>
 
                     <button type="submit" class="btn btn-primary">Aplicar Filtros</button>
-                    <a href="{{ url_for('frotas.frotas') }}" class="btn btn-secondary" style="width:100%; margin-top:10px;">Limpar Filtros</a>
+                    <a href="{{ url_for('veiculos.veiculos') }}" class="btn btn-secondary" style="width:100%; margin-top:10px;">Limpar Filtros</a>
                 </form>
 
             </aside>
             <main class="resultados-area">
-                <p class="resultado-contagem">Mostrando X de Y resultados</p>
+                <p class="resultado-contagem">Mostrando {{ veiculos | length }} veículos</p>
                 
                 <div class="veiculos-grid">
                     
                     {% for veiculo in veiculos %}
                     <div class="veiculo-card">
-                        <a href="{{ url_for('veiculos.detalhe', veiculo_id=veiculo.id) }}">
-                            <div class="card-imagem" style="background-image: url('{{ veiculo.imagem_url }}');"></div>
+                        <!-- Link para o detalhe do veículo (corrigido o endpoint) -->
+                        <a href="{{ url_for('veiculos.detalhe_veiculo', veiculo_id=veiculo.id_Veiculo) }}">
+                            <!-- Placeholder de Imagem -->
+                            <div class="card-imagem" style="background-image: url('https://placehold.co/400x200/4096d2/ffffff?text={{ veiculo.marca.Nome_Marca }}');"></div>
                             <div class="card-info">
-                                <h2>{{ veiculo.marca }} {{ veiculo.modelo }}</h2>
-                                <p class="card-localizacao"><i class="fa-solid fa-location-dot"></i> {{ veiculo.localizacao }}</p>
+                                <!-- Acessando corretamente Marca e Modelo -->
+                                <h2>{{ veiculo.marca.Nome_Marca }} {{ veiculo.modelo.Nome_Modelo }}</h2>
+                                <p class="card-localizacao"><i class="fa-solid fa-car-on"></i> Frota: {{ veiculo.Frota }}</p>
+                                
                                 <div class="card-detalhes">
-                                    <span><i class="fa-solid fa-gas-pump"></i> {{ veiculo.combustivel }}</span>
-                                    <span><i class="fa-solid fa-gear"></i> {{ veiculo.transmissao }}</span>
+                                    <!-- Exibindo Categoria e Status -->
+                                    <span><i class="fa-solid fa-list-ul"></i> Cat: {{ veiculo.categoria.Nome_Categoria }}</span>
+                                    <span><i class="fa-solid fa-road"></i> KM: {{ veiculo.Km_Rodado }}</span>
                                 </div>
                                 <div class="card-preco">
-                                    <span class="preco-valor">R$ {{ veiculo.preco_dia | round(2) }}</span>
-                                    <span class="preco-unidade">/ dia</span>
+                                    <!-- PLACEHOLDER: Valor Diária. Assumindo que você adicionará este campo ou uma função que o calcule -->
+                                    <span class="preco-valor">R$ 150,00</span>
+                                    <span class="preco-unidade">/ dia (Base)</span>
+                                </div>
+                                
+                                <div class="card-status">
+                                    <span class="status-badge status-{{ veiculo.StatusVeiculo.lower() }}">
+                                        {{ veiculo.StatusVeiculo }}
+                                    </span>
                                 </div>
                             </div>
                         </a>
+                        <!-- Botão de Locação -->
+                        {% if veiculo.StatusVeiculo == 'Disponível' %}
+                            <a href="{{ url_for('locacao.locacao', veiculo_id=veiculo.id_Veiculo) }}" class="btn btn-rent">
+                                <i class="fas fa-calendar-check"></i> Alugar Agora
+                            </a>
+                        {% else %}
+                             <button class="btn btn-disabled" disabled>
+                                <i class="fas fa-ban"></i> Indisponível
+                            </button>
+                        {% endif %}
                     </div>
                     {% else %}
-                        <p class="no-results">Nenhum veículo encontrado com os filtros aplicados.</p>
+                        <p class="no-results">Nenhum veículo cadastrado na frota. Tente cadastrar um como Administrador.</p>
                     {% endfor %}
                     
                 </div>
@@ -204,5 +236,6 @@ document.addEventListener('DOMContentLoaded', () => {
     atualizarFiltros(); 
 });
 </script>
+
 
 {% endblock %}

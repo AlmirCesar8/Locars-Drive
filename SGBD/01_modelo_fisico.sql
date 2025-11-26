@@ -253,6 +253,9 @@ ALTER TABLE Usuario_ ADD CONSTRAINT FK_Usuario__3
     FOREIGN KEY (fk_Cidade_id_Cidade)
     REFERENCES Cidade (id_Cidade)
     ON DELETE RESTRICT;
+    
+ALTER TABLE Usuario_
+ADD COLUMN tipo_perfil VARCHAR(50);
 
 ALTER TABLE usuario_
 ADD COLUMN notif_interesse TINYINT(1) DEFAULT 0;
@@ -264,7 +267,17 @@ ADD COLUMN notif_vencimento TINYINT(1) DEFAULT 0;
 ALTER TABLE usuario_
 ADD COLUMN notif_promos TINYINT(1) DEFAULT 0;
 
+ALTER TABLE veiculo
+    ADD COLUMN fk_Marca_id_Marca INT NULL,
+    ADD COLUMN fk_Modelo_id_Modelo INT NULL,
+    ADD CONSTRAINT fk_veiculo_marca
+        FOREIGN KEY (fk_Marca_id_Marca)
+        REFERENCES Marca_Veiculo(id_Marca);
 
+ALTER TABLE veiculo
+    ADD CONSTRAINT fk_veiculo_modelo
+        FOREIGN KEY (fk_Modelo_id_Modelo)
+        REFERENCES Modelo(id_Modelo);
 
 
 ALTER TABLE Cidade

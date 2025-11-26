@@ -249,3 +249,84 @@
         width: 100%;
     }
 }
+
+/* ================================
+   CARD DE ASSINATURA - CORRIGIDO
+================================ */
+
+.assinatura-card {
+    border-radius: 18px;
+    padding: 25px;
+    background: #fff;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+}
+
+/* Topo do card */
+.assinatura-top {
+    text-align: center;
+}
+
+.assinatura-top .badge {
+    background: #000;
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* Preço */
+.assinatura-price {
+    font-size: 28px;
+    font-weight: 700;
+    margin-top: 12px;
+}
+
+.assinatura-price span {
+    font-size: 14px;
+    font-weight: 400;
+}
+
+/* Validade */
+.assinatura-valid {
+    font-size: 14px;
+    color: #666;
+    margin-top: 6px;
+}
+
+/* Lista de benefícios */
+.beneficios {
+    margin-top: 18px;
+    padding-left: 20px;
+}
+
+.beneficios li {
+    margin-bottom: 8px;
+    font-size: 15px;
+}
+
+/* Botão */
+.btn-upgrade {
+    display: block;
+    margin-top: 18px;
+    text-align: center;
+    background: #000;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.btn-upgrade:hover {
+    background: #222;
+}
+
+.assinatura-card .badge {
+    background: #000;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-size: 13px;
+}
+

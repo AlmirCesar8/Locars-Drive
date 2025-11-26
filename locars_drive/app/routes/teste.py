@@ -1,6 +1,6 @@
 from flask import Blueprint
-from app.models import Usuario
-from app.models import Cidade
+from app.models.usuario import Usuario
+from app.models.cidade import Cidade
 
 teste_bp = Blueprint('teste', __name__)
 

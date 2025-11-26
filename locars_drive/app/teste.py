@@ -19,7 +19,7 @@ def initialize_admin_user(app):
                 tipo_perfil='misto',
                 id_funcionario=1,
                 cargo='Administrador Geral',
-                Salario=1000.00
+                salario=1000.00
             )
             # A senha de login será 'senha_secreta_aqui'
             novo_admin.set_password('senha_secreta_aqui')

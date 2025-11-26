@@ -67,7 +67,7 @@ def verificar_risco_cliente(session: Session, fk_usuario_id: int) -> tuple[bool,
     """
     Avalia o score de reputação do cliente antes de confirmar a reserva.
     """
-    score = session.query(Usuario_.Pontuacao_Reputacao).filter(Usuario_.id_Usuario == fk_usuario_id).scalar()
+    score = session.query(Usuario.Pontuacao_Reputacao).filter(Usuario.id_Usuario == fk_usuario_id).scalar()
     
     if score is None:
         return True, "Cliente novo, sem score de risco registrado."

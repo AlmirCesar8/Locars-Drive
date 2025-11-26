@@ -85,10 +85,10 @@ def registro():
             # eles estão com DataRequired(). É recomendável remover o DataRequired no formulario.py
             # para perfis não-funcionários. Por enquanto, passo os dados como estão no form.
             cargo=form.cargo.data, 
-            Salario=form.salario.data,
+            salario=form.salario.data,
 
-            fk_Funcao_id_Funcao=None,
-            fk_Endereco_id_Endereco=None,
+            fk_funcao_id_funcao=None,
+            fk_endereco_id_endereco=None,
 
             notif_vencimento=False,
             notif_interesse=False,
@@ -161,8 +161,8 @@ def perfil():
         'data_nasc': current_user.data_nasc.strftime('%d/%m/%Y'),
         'cnh': current_user.cnh,
         'cargo': current_user.cargo,
-        'salario': float(current_user.Salario or 0),
-        'endereco': current_user.fk_Endereco_id_Endereco,
+        'salario': float(current_user.salario or 0),
+        'endereco': current_user.fk_endereco_id_endereco,
         'membro_desde': current_user.data_criacao.strftime('%d/%m/%Y'),
         'plano_ativo': plano_ativo['nome'],
         'valor_plano': plano_ativo['valor'],
@@ -199,8 +199,8 @@ def perfil_info():
         'data_nasc': current_user.data_nasc.strftime('%d/%m/%Y'),
         'cnh': current_user.cnh,
         'cargo': current_user.cargo,
-        'salario': float(current_user.Salario or 0),
-        'endereco': current_user.fk_Endereco_id_Endereco,
+        'salario': float(current_user.salario or 0),
+        'endereco': current_user.fk_endereco_id_endereco,
         'membro_desde': current_user.data_criacao.strftime('%d/%m/%Y'),
         'plano_ativo': plano_ativo['nome'],
         'valor_plano': plano_ativo['valor'],

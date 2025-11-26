@@ -56,13 +56,13 @@
             {% else %}
             <div class="nenhuma-reserva">
                 <p>Você não tem nenhuma reserva registrada neste momento.</p>
-                <a href="{{ url_for('frotas.frotas') }}" class="btn btn-primary" style="background-color: #000;">Começar a Locar</a>
+                <a href="{{ url_for('frotas.listar_veiculos') }}" class="btn btn-primary" style="background-color: #000;">Começar a Locar</a>
             </div>
             {% endfor %}
         </div>
     </div>
 </section>
-
+{% raw %}
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const tabButtons = document.querySelectorAll('.tab-button');
@@ -92,5 +92,5 @@
         filterReservas('Todas'); 
     });
 </script>
-
+{% endraw %}
 {% endblock %}

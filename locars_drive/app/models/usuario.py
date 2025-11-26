@@ -44,6 +44,7 @@ class Usuario(UserMixin,db.Model):
 
     fk_funcao_id_funcao = db.Column(db.Integer, nullable=True)
     fk_cidade_id_cidade = db.Column(db.Integer, nullable=True)
+    fk_endereco_id_endereco = db.Column(db.Integer, nullable=True)
 
     data_criacao = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 

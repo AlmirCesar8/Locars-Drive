@@ -1,9 +1,11 @@
+# app/models/pais.py
+
 from app.extensions import db
-from sqlalchemy import Numeric, Date, String
+from sqlalchemy import String
+
 # -------------------------------------------------------
 # Modelo País
 # -------------------------------------------------------
-
 class Pais(db.Model):
     __tablename__ = 'Pais'
 
@@ -12,4 +14,4 @@ class Pais(db.Model):
     Sigla_ = db.Column(db.String(3), nullable=False, unique=True)
 
     def __repr__(self):
-        return f"<Pais id={self.id_Pais} nome={self.Nome_Pais} sigla={self.Sigla}>"
+        return f"<Pais id={self.id_Pais} nome={self.Nome_Pais} sigla={self.Sigla_}>"

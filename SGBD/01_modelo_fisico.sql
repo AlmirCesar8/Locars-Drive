@@ -14,7 +14,7 @@ CREATE DATABASE LocarsDrives;
 USE LocarsDrives;
 
 -- =============================================================
--- DDL - DEFINIÇÃO DA ESTRUTURA
+-- DDL - DEFINIÇÃO DA ESTRUTURA (TABELAS BASE)
 -- =============================================================
 
 CREATE TABLE Adicionais (
@@ -36,15 +36,22 @@ CREATE TABLE Categoria (
 );
 
 CREATE TABLE Cidade (
-    Num_Casa int NOT NULL, -- Removido UNIQUE (várias pessoas/agências podem ter o mesmo número em casas diferentes)
-    Bairro varchar(255) NOT NULL,
     id_Cidade int PRIMARY KEY NOT NULL auto_increment,
-    CEP char(8) NOT NULL UNIQUE,
-    Nome_CIdade varchar(255) NOT NULL UNIQUE,
-    Complemento varchar(50)
+    Nome_Cidade varchar(255) NOT NULL UNIQUE
 );
 
--- Tabela Estado: Removida a FK para Cidade (fk_Cidade_id_Cidade) - Relação Invertida
+CREATE TABLE Endereco (
+    id_Endereco INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    
+    CEP char(8) NOT NULL,
+    Logradouro varchar(255) NOT NULL,
+    Num_Casa int NOT NULL,
+    Bairro varchar(255) NOT NULL,
+    Complemento varchar(50) NULL,
+    fk_Cidade_id_Cidade INT NOT NULL,
+    FOREIGN KEY (fk_Cidade_id_Cidade) REFERENCES Cidade(id_Cidade)
+);
+
 CREATE TABLE Estado (
     id_Estado int PRIMARY KEY NOT NULL auto_increment,
     Nome_Estado varchar(255) NOT NULL UNIQUE,
@@ -54,7 +61,7 @@ CREATE TABLE Estado (
 CREATE TABLE Funcao (
     id_Funcao int PRIMARY KEY NOT NULL auto_increment,
     Descricao text NOT NULL,
-    Nome_Funcao varchar(255) NOT NULL UNIQUE -- Corrigido: Removido o underscore (Nome_Funcao_)
+    Nome_Funcao varchar(255) NOT NULL UNIQUE 
 );
 
 CREATE TABLE historico_km (
@@ -88,7 +95,6 @@ CREATE TABLE Pagamento_ (
     Status_Pagamento enum('Pago', 'Pendente') NOT NULL
 );
 
--- Tabela Pais: Removida a FK para Estado (fk_Estado_id_Estado) - Relação Invertida
 CREATE TABLE Pais (
     id_Pais int PRIMARY KEY NOT NULL auto_increment,
     Sigla_ char(3) NOT NULL UNIQUE,
@@ -117,18 +123,19 @@ CREATE TABLE Usuario_ (
     Data_Nasc date NOT NULL,
     CPF char(11) NOT NULL UNIQUE,
 
-    -- Campos opcionais
+    -- IDs e Permissões
     id_Cliente int NULL,
     CNH char(11) UNIQUE,
     Cargo varchar(255),
     id_Funcionario int NULL,
     id_Admin int NULL,
-    Usuario__TIPO INT NULL,
+    Usuario__TIPO INT NULL, -- Manter temporariamente, embora redundante
 
-    Salario DECIMAL(10,2) DEFAULT 0.00, -- Corrigido: Permitido NULL ou Default
+    Salario DECIMAL(10,2) DEFAULT 0.00,
     Pontuacao_Reputacao FLOAT DEFAULT 5.0,
+    
     fk_Funcao_id_Funcao int,
-    fk_Cidade_id_Cidade int,
+    
     data_criacao DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     PRIMARY KEY (id_Usuario)
@@ -148,7 +155,6 @@ CREATE TABLE Veiculo (
 -- NOVAS TABELAS PARA O RMS E CONTROLE DE RISCO/QUALIDADE
 -- =================================================-----
 
--- Tabela `aluguel` (RMS Central)
 CREATE TABLE IF NOT EXISTS aluguel (
     id_aluguel INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     fk_usuario_id INT NOT NULL,
@@ -163,12 +169,10 @@ CREATE TABLE IF NOT EXISTS aluguel (
     valor_total_previsto DECIMAL(10, 2) NOT NULL,
     valor_extra DECIMAL(10, 2) DEFAULT 0.00,
     
-    -- Chaves Estrangeiras
     FOREIGN KEY (fk_usuario_id) REFERENCES Usuario_(id_usuario),
     FOREIGN KEY (fk_veiculo_id) REFERENCES Veiculo(id_Veiculo)
 );
 
--- Tabela `vistoria` (Check-in/Check-out)
 CREATE TABLE IF NOT EXISTS vistoria (
     id_vistoria INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     fk_aluguel_id INT NOT NULL,
@@ -181,6 +185,7 @@ CREATE TABLE IF NOT EXISTS vistoria (
     
     FOREIGN KEY (fk_aluguel_id) REFERENCES aluguel(id_aluguel)
 );
+
 CREATE TABLE locacao_seguro_ (
     id_Locacao int NOT NULL auto_increment,
     id_Cliente int NOT NULL,
@@ -197,7 +202,6 @@ CREATE TABLE locacao_seguro_ (
     PRIMARY KEY (id_Locacao, id_Seguro)
 );
 
--- Tabela `notificacao` (Comunicação)
 CREATE TABLE IF NOT EXISTS notificacao (
     id_notificacao INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     fk_usuario_id INT NOT NULL,
@@ -212,7 +216,6 @@ CREATE TABLE IF NOT EXISTS notificacao (
     FOREIGN KEY (fk_aluguel_id) REFERENCES aluguel(id_aluguel)
 );
 
--- Tabela `avaliacao_servico` (Reputação)
 CREATE TABLE IF NOT EXISTS avaliacao_servico (
     id_avaliacao INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     fk_aluguel_id INT NOT NULL UNIQUE,
@@ -225,17 +228,24 @@ CREATE TABLE IF NOT EXISTS avaliacao_servico (
     FOREIGN KEY (fk_aluguel_id) REFERENCES aluguel(id_aluguel)
 );
 
-
--- ALTER TABLES --
-
+-- =============================================================
+-- ALTER TABLES (APLICANDO AS CHAVES ESTRANGEIRAS)
+-- =============================================================
 ALTER TABLE Agencia
-ADD COLUMN Id_Cidade INT NOT NULL;
-
-ALTER TABLE Agencia ADD CONSTRAINT FK_Agencia__2
-FOREIGN KEY (Id_Cidade)
-    REFERENCES Cidade (id_Cidade)
+    ADD COLUMN fk_Endereco_id_Endereco INT NOT NULL;
+    
+ALTER TABLE Agencia ADD CONSTRAINT FK_Agencia_Endereco
+FOREIGN KEY (fk_Endereco_id_Endereco)
+    REFERENCES Endereco (id_Endereco)
     ON DELETE RESTRICT;
 
+ALTER TABLE Usuario_ ADD COLUMN fk_Endereco_id_Endereco INT NULL; -- O endereço é opcional
+    
+ALTER TABLE Usuario_ ADD CONSTRAINT FK_Usuario_Endereco
+FOREIGN KEY (fk_Endereco_id_Endereco)
+    REFERENCES Endereco (id_Endereco)
+    ON DELETE RESTRICT;
+    
 ALTER TABLE Historico_Km
 ADD COLUMN id_Veiculo INT NOT NULL;
 
@@ -249,11 +259,6 @@ ALTER TABLE Usuario_ ADD CONSTRAINT FK_Usuario__2
     REFERENCES Funcao (id_Funcao)
     ON DELETE RESTRICT;
 
-ALTER TABLE Usuario_ ADD CONSTRAINT FK_Usuario__3
-    FOREIGN KEY (fk_Cidade_id_Cidade)
-    REFERENCES Cidade (id_Cidade)
-    ON DELETE RESTRICT;
-    
 ALTER TABLE Usuario_
 ADD COLUMN tipo_perfil VARCHAR(50);
 
@@ -279,7 +284,9 @@ ALTER TABLE veiculo
         FOREIGN KEY (fk_Modelo_id_Modelo)
         REFERENCES Modelo(id_Modelo);
 
-
+-- ************************************************************
+-- RELACIONAMENTOS DE PAÍS > ESTADO > CIDADE
+-- ************************************************************
 ALTER TABLE Cidade
 ADD COLUMN fk_Estado_id_Estado INT NOT NULL;
 
@@ -306,7 +313,7 @@ MODIFY COLUMN Data_Prevista_Devolucao DATE DEFAULT NULL;
 -- ============================================================
 
 
--- Índices essenciais (Ajustados) --
+-- Índices essenciais (Mantidos) --
 
 -- AGENCIA --
 create index uniy_agencia on Agencia (Nome_Agencia);
@@ -315,7 +322,7 @@ create index uniy_agencia on Agencia (Nome_Agencia);
 create index uniy_nome_usuario on Usuario_ (Nome_Completo);
 create index uniy_cargo_usuario on Usuario_ (Cargo);
 create index uniy_fk_funcao on Usuario_ (fk_Funcao_id_Funcao);
-create index uniy_fk_cidade on Usuario_ (fk_Cidade_id_Cidade);
+create index idx_fk_endereco on Usuario_ (fk_Endereco_id_Endereco); -- NOVO ÍNDICE
 
 -- MODELO --
 create index uniy_nome_modelo on Modelo (Nome_Modelo);
@@ -336,16 +343,20 @@ create index uniy_data_multa on Multa (Data_Multa);
 create index uniy_valor_multa on Multa (Valor);
 
 -- FUNCAO --
-create index uniy_nome_funcao on Funcao (Nome_Funcao); -- Corrigido: Nome_Funcao
+create index uniy_nome_funcao on Funcao (Nome_Funcao);
 
 -- CIDADE --
-create index uniy_nome_cidade on Cidade (Nome_CIdade); 
-create index uniy_bairro on Cidade (Bairro);
-create index uniy_fk_estado on Cidade (fk_Estado_id_Estado); -- Novo índice
+create index uniy_nome_cidade on Cidade (Nome_Cidade); 
+create index uniy_fk_estado on Cidade (fk_Estado_id_Estado); 
+
+-- ENDERECO --
+create index uniy_cep on Endereco (CEP); -- NOVO ÍNDICE
+create index uniy_bairro on Endereco (Bairro); -- NOVO ÍNDICE
+create index uniy_fk_cidade on Endereco (fk_Cidade_id_Cidade); -- NOVO ÍNDICE
 
 -- ESTADO --
 create index uniy_regiao on Estado (Regiao);
-create index uniy_fk_pais on Estado (fk_Pais_id_Pais); -- Novo índice
+create index uniy_fk_pais on Estado (fk_Pais_id_Pais); 
 
 -- PAIS --
 create index uniy_sigla on Pais (Sigla_);
@@ -354,8 +365,8 @@ create index uniy_sigla on Pais (Sigla_);
 create index uniy_data_registo on Historico_Km (Data_Registro);
 
 -- PERMISSÃO --
-create index uniy_acoes on Permissao (Acoes(255)); -- Corrigido: Tamanho do prefixo para BLOB
-create index uniy_recursos on Permissao (Recursos_(255)); -- Corrigido: Tamanho do prefixo para BLOB
+create index uniy_acoes on Permissao (Acoes(255));
+create index uniy_recursos on Permissao (Recursos_(255));
 
 -- NOVOS ÍNDICES PARA RMS
 create index idx_aluguel_usuario on aluguel (fk_usuario_id);

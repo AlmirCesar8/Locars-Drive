@@ -28,7 +28,7 @@ class Aluguel(db.Model):
 
     # --- Relações ---
     # Assumindo que o nome do modelo de usuário seja 'Usuario'
-    # usuario = relationship('Usuario', backref='alugueis') 
+    usuario = relationship('Usuario', backref='alugueis') 
     # Para evitar circular imports, deixo a definição da relação Usuario para o modelo Usuario
     veiculo = relationship('Veiculo', backref='alugueis')
     

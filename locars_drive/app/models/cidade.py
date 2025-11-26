@@ -1,19 +1,25 @@
+# app/models/cidade.py
+
 from app.extensions import db 
-from sqlalchemy import Numeric, Date, String
+from sqlalchemy import Numeric, Date, String, ForeignKey
+from sqlalchemy.orm import relationship # Import necessário para relacionamentos
+
 # -------------------------------------------------------
-# Modelo de Cidade
+# Modelo de Cidade (AGORA APENAS DADOS GEOGRÁFICOS)
 # -------------------------------------------------------
 class Cidade(db.Model):
-    __tablename__ = 'Cidade'  # Nome da tabela no banco de dados
+    __tablename__ = 'Cidade'  
 
     id_Cidade = db.Column(db.Integer, primary_key=True, autoincrement=True)
     Nome_Cidade = db.Column(db.String(255), nullable=False, unique=True)
-    CEP = db.Column(db.String(8), nullable=False, unique=True)
-    Complemento = db.Column(db.String(50), nullable=True)
-    Bairro = db.Column(db.String(255), nullable=False)
-    Num_Casa = db.Column(db.Integer, nullable=False, unique=True)
     
-    ### será q num-casa deve ser unico?
+    # NOVO CAMPO: FK para Estado
+    fk_Estado_id_Estado = db.Column(db.Integer, db.ForeignKey('Estado.id_Estado'), nullable=False)
     
+    # Relações
+    # Permite acessar o estado a partir da cidade
+    estado = relationship('Estado', backref='cidades')
+
     def __repr__(self):
-        return f"<Cidade id={self.id_Cidade} nome={self.Nome_Cidade} bairro={self.Bairro} cep={self.CEP_}>"
+        # Acesso direto ao Nome_Cidade e ao estado (via relationship)
+        return f"<Cidade id={self.id_Cidade} nome={self.Nome_Cidade} estado={self.estado.Nome_Estado}>"

@@ -1,6 +1,10 @@
 from app import db
 
+from .endereco import Endereco
 from .agencia import Agencia
+from .aluguel import Aluguel
+from .adicionais import Adicionais
+from .avaliacao import AvaliacaoServico
 from .categoria import Categoria
 from .cidade import Cidade
 from .estado import Estado
@@ -10,9 +14,11 @@ from .locacao_seguro import LocacaoSeguro
 from .marca_veiculo import MarcaVeiculo
 from .modelo import Modelo
 from .multa import Multa
+from .notificacao import Notificacao
 from .pagamento import Pagamento
 from .pais import Pais
 from .permissao import Permissao
 from .tipo_veiculo import TipoVeiculo
 from .usuario import Usuario
 from .veiculo import Veiculo
+from .vistoria import Vistoria

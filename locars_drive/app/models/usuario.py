@@ -1,84 +1,91 @@
-# app/models/usuario.py
-
 from app.extensions import db
 from flask_login import UserMixin
-from sqlalchemy import Numeric, String, DateTime, ForeignKey, Boolean
+from sqlalchemy import Numeric, String, Date, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 
-# Definindo as opções de perfil para manter a consistência
-PERFIS_CHOICES = [
-    'locador',  # Aluga o carro do usuário (LocarsDrive)
-    'alugador', # Cliente que aluga o carro (Locatário)
-    'misto'     # Pode fazer ambos
-]
+PERFIS_CHOICES = ['locador', 'alugador', 'misto']
+
 
 class Usuario(UserMixin, db.Model):
-    __tablename__ = 'Usuario_'
+    __tablename__ = 'usuario_'  # <<< Padronizado e correto
 
-    # IDs principais
+    # Identificação principal
     id_usuario = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
-    # Outros campos (manter)
+    # Dados pessoais
     email = db.Column(db.String(255), nullable=False, unique=True)
     senha = db.Column(db.String(255), nullable=False)
     nome_completo = db.Column(db.String(255), nullable=False)
-    data_nasc = db.Column(db.Date, nullable=False) # Mudança de DateTime para Date
+    data_nasc = db.Column(Date, nullable=False)
     cpf = db.Column(db.String(11), nullable=False, unique=True)
-    cnh = db.Column(db.String(10), nullable=True, unique=True)
+    cnh = db.Column(db.String(11), nullable=True, unique=True)
 
-    # Informações de Funcionário
+    # Perfis do sistema
+    tipo_perfil = db.Column(db.String(50), nullable=False, default='alugador')
+
+    # Identificadores internos
     id_cliente = db.Column(db.Integer, nullable=False, default=0)
     id_funcionario = db.Column(db.Integer, nullable=False, default=0)
     id_admin = db.Column(db.Integer, nullable=False, default=0)
-    cargo = db.Column(db.String(100), nullable=True) # Adicionei nullable=True se não for funcionário
-    Salario = db.Column(db.Numeric(10, 2), default=0.00)
-    Pontuacao_Reputacao = db.Column(db.Float, default=5.0)
 
-    # NOVO CAMPO (Do DDL): Tipo de Perfil
-    tipo_perfil = db.Column(db.String(50), nullable=False, default='alugador')
-    
-    # --- NOVAS CHAVES ESTRANGEIRAS (FKs) ---
-    
-    # 1. FK para Endereco (da correção anterior, opcional para usuário)
-    fk_Endereco_id_Endereco = db.Column(db.Integer, ForeignKey('Endereco.id_Endereco'), nullable=True)
-
-    # CNH única (None é permitido)
-    cnh = db.Column(db.String(11), nullable=True, unique=True)
-
-    # Dados somente para funcionários
+    # Funcionário
     cargo = db.Column(db.String(255), nullable=True)
     salario = db.Column(Numeric(10, 2), nullable=True, default=0.00)
 
-    fk_funcao_id_funcao = db.Column(db.Integer, nullable=True)
-    fk_cidade_id_cidade = db.Column(db.Integer, nullable=True)
+    # Pontuação
+    Pontuacao_Reputacao = db.Column(db.Float, default=5.0)
 
-    data_criacao = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    # ============================
+    #          FOREIGN KEYS
+    # ============================
 
-    # Campos de Notificação (manter)
-    # notif_email = db.Column(db.Boolean, default=False)
-    # notif_sms = db.Column(db.Boolean, default=False)
-    # notif_push = db.Column(db.Boolean, default=False)
-    # notif_promos = db.Column(db.Boolean, default=False)
+    # FK → Endereco (CHAVE ESTRANGEIRA DEFINIDA)
+    fk_endereco_id = db.Column(
+        db.Integer,
+        ForeignKey('Endereco.id_Endereco'),
+        nullable=True
+    )
 
-    # --- Relações ---
-    # Relação com Endereco
-    endereco = relationship('Endereco', backref='usuarios')
-    # Relação com Funcao
-    funcao = relationship('Funcao', backref='usuarios')
-    # Relação com Permissao
-    # permissao = relationship('Permissao', backref='usuarios')
-    
-    
-    # Métodos de senha
+    # FK → Funcao  (AGORA CORRETA!)
+    fk_funcao_id = db.Column(
+        db.Integer,
+        ForeignKey('funcao.id_funcao'),
+        nullable=True
+    )
+
+    # FK → Cidade
+    fk_cidade_id_cidade = db.Column(
+        db.Integer,
+        ForeignKey('Cidade.id_Cidade'),
+        nullable=True
+    )
+
+    # Data de criação
+    data_criacao = db.Column(DateTime, nullable=False, default=datetime.utcnow)
+
+    # ============================
+    #          RELACIONAMENTOS
+    # ============================
+
+    # CORREÇÃO APLICADA AQUI: Especificamos `foreign_keys` para evitar a ambiguidade.
+    endereco = relationship('Endereco', backref='usuarios', lazy=True, foreign_keys=[fk_endereco_id])
+
+    funcao = relationship('Funcao', backref='usuarios', lazy=True, foreign_keys=[fk_funcao_id])
+
+    cidade = relationship('Cidade', backref='usuarios', lazy=True, foreign_keys=[fk_cidade_id_cidade])
+
+    # ============================
+    #       MÉTODOS E UTILITIES
+    # ============================
+
     def set_password(self, password):
         self.senha = generate_password_hash(password)
 
     def check_password(self, password):
         return check_password_hash(self.senha, password)
 
-    # Flask-Login
     def get_id(self):
         return str(self.id_usuario)
 
@@ -86,21 +93,16 @@ class Usuario(UserMixin, db.Model):
     def is_active(self):
         return True
 
-    # NOVAS PROPRIEDADES PARA CHECAGEM DE PERMISSÃO
     @property
     def is_alugador(self):
-        """Pode alugar veículos (cliente normal)"""
         return self.tipo_perfil in ['alugador', 'misto']
 
     @property
     def is_locador(self):
-        """Pode cadastrar veículos e gerenciar frota"""
         return self.tipo_perfil in ['locador', 'misto']
 
     @property
     def is_admin(self):
-        """Verifica se o usuário é administrador (campo existente)"""
-        # Supondo que id_admin > 0 significa que é admin
         return self.id_admin > 0
 
     def __repr__(self):

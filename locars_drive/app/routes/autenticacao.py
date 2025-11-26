@@ -87,12 +87,12 @@ def registro():
             cargo=form.cargo.data, 
             salario=form.salario.data,
 
-            fk_funcao_id_funcao=None,
-            fk_endereco_id_endereco=None,
+            fk_funcao_id=None,
+            fk_endereco_id=None,
 
-            notif_vencimento=False,
-            notif_interesse=False,
-            notif_promos=False
+            #notif_vencimento=False,
+            #notif_interesse=False,
+            #notif_promos=False
         )
         
         # Certificando-se que a senha foi hasheada (mantendo a lógica original)
@@ -162,7 +162,7 @@ def perfil():
         'cnh': current_user.cnh,
         'cargo': current_user.cargo,
         'salario': float(current_user.salario or 0),
-        'endereco': current_user.fk_endereco_id_endereco,
+        'endereco': current_user.fk_endereco_id,
         'membro_desde': current_user.data_criacao.strftime('%d/%m/%Y'),
         'plano_ativo': plano_ativo['nome'],
         'valor_plano': plano_ativo['valor'],
@@ -200,7 +200,7 @@ def perfil_info():
         'cnh': current_user.cnh,
         'cargo': current_user.cargo,
         'salario': float(current_user.salario or 0),
-        'endereco': current_user.fk_endereco_id_endereco,
+        'endereco': current_user.fk_endereco_id,
         'membro_desde': current_user.data_criacao.strftime('%d/%m/%Y'),
         'plano_ativo': plano_ativo['nome'],
         'valor_plano': plano_ativo['valor'],

@@ -116,7 +116,7 @@ VALUES
 -- 6. INSERÇÃO DE USUÁRIOS
 -- ------------------------------------------------------------
 
-INSERT IGNORE INTO Usuario_ (id_Usuario, Email, Nome_Completo, Senha, Data_Nasc, CPF, CNH, Cargo, Salario, Pontuacao_Reputacao, fk_Funcao_id_Funcao, fk_Endereco_id_Endereco, id_Cliente, id_Funcionario, id_Admin, tipo_perfil)
+INSERT IGNORE INTO Usuario_ (id_Usuario, Email, Nome_Completo, Senha, Data_Nasc, CPF, CNH, Cargo, Salario, Pontuacao_Reputacao, fk_Funcao_id_Funcao, fk_Endereco_id, id_Cliente, id_Funcionario, id_Admin, tipo_perfil)
 VALUES
 (1, 'roberto.admin@locarsdrive.com', 'Roberto Campos (Admin)', '$2b$12$...', '1990-05-15', '12345678901', 'ABC12345678', 'Administrador Geral', 10000.00, 5.0, 4, 4, 1, 1, 1, 'misto'), -- Ref. Endereço 4
 (2, 'joao.cliente@mail.com', 'João Silva', '$2b$12$...', '1985-11-20', '98765432109', 'DEF87654321', NULL, 0.00, 4.5, 1, NULL, 2, 0, 0, 'alugador'), -- Sem endereço

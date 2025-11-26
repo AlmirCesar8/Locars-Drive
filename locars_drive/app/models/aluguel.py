@@ -11,7 +11,7 @@ class Aluguel(db.Model):
     # --- Chaves Estrangeiras ---
     # Liga ao Cliente que alugou
     # Corrigido o nome da tabela para minúsculas: 'usuario_' -> 'usuario_' (usando o nome exato da sua tabela SQL)
-    fk_usuario_id = db.Column(db.Integer, ForeignKey('Usuario_.id_usuario'), nullable=False)
+    fk_usuario_id = db.Column(db.Integer, ForeignKey('usuario_.id_usuario'), nullable=False)
     # Liga ao Veículo alugado
     fk_veiculo_id = db.Column(db.Integer, ForeignKey('veiculo.id_Veiculo'), nullable=False)
     

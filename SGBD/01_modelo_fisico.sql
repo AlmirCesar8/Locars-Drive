@@ -258,6 +258,9 @@ ALTER TABLE Usuario_ ADD CONSTRAINT FK_Usuario__2
     FOREIGN KEY (fk_Funcao_id_Funcao)
     REFERENCES Funcao (id_Funcao)
     ON DELETE RESTRICT;
+    
+ALTER TABLE Usuario_
+ADD COLUMN fk_endereco_id INT NULL;
 
 ALTER TABLE Usuario_
 ADD COLUMN tipo_perfil VARCHAR(50);
@@ -271,6 +274,22 @@ ADD COLUMN notif_vencimento TINYINT(1) DEFAULT 0;
 
 ALTER TABLE usuario_
 ADD COLUMN notif_promos TINYINT(1) DEFAULT 0;
+
+ALTER TABLE usuario_
+ADD COLUMN fk_funcao_id INT NULL;
+
+ALTER TABLE usuario_
+ADD COLUMN fk_cidade_id_cidade INT NULL;
+
+ALTER TABLE Usuario_
+DROP FOREIGN KEY FK_Usuario_Endereco;
+
+ALTER TABLE Usuario_
+DROP COLUMN fk_Endereco_id_Endereco;
+
+ALTER TABLE Usuario_
+ADD CONSTRAINT fk_usuario_endereco
+FOREIGN KEY (fk_endereco_id) REFERENCES Endereco(id_Endereco);
 
 ALTER TABLE veiculo
     ADD COLUMN fk_Marca_id_Marca INT NULL,
@@ -322,7 +341,7 @@ create index uniy_agencia on Agencia (Nome_Agencia);
 create index uniy_nome_usuario on Usuario_ (Nome_Completo);
 create index uniy_cargo_usuario on Usuario_ (Cargo);
 create index uniy_fk_funcao on Usuario_ (fk_Funcao_id_Funcao);
-create index idx_fk_endereco on Usuario_ (fk_Endereco_id_Endereco); -- NOVO ÍNDICE
+create index idx_fk_endereco on Usuario_ (fk_Endereco_id); -- NOVO ÍNDICE
 
 -- MODELO --
 create index uniy_nome_modelo on Modelo (Nome_Modelo);

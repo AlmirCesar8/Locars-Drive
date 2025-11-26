@@ -1,34 +1,24 @@
-# app/models/endereco.py
-
 from app.extensions import db
-from sqlalchemy import Numeric, Date, String, ForeignKey
+from sqlalchemy import String
 from sqlalchemy.orm import relationship
 
-# -------------------------------------------------------
-# Modelo de Endereco
-# -------------------------------------------------------
 class Endereco(db.Model):
+    # CRITÉRIO 1: O nome da tabela DEVE ser 'endereco' para a FK funcionar
     __tablename__ = 'Endereco'
 
+    # CRITÉRIO 2: A chave primária DEVE se chamar 'id_endereco'
     id_Endereco = db.Column(db.Integer, primary_key=True, autoincrement=True)
     
-    # Dados de Endereço Físico (movidos de Cidade)
-    CEP = db.Column(db.String(8), nullable=False)
-    Logradouro = db.Column(db.String(255), nullable=False)
-    Num_Casa = db.Column(db.Integer, nullable=False)
-    Bairro = db.Column(db.String(255), nullable=False)
-    Complemento = db.Column(db.String(50), nullable=True)
-
-    # Chave Estrangeira para Cidade
-    fk_Cidade_id_Cidade = db.Column(db.Integer, db.ForeignKey('Cidade.id_Cidade'), nullable=False)
-
-    # Relações
-    # Permite acessar a cidade a partir do endereço
-    cidade = relationship('Cidade', backref='enderecos')
+    # Dados de endereço
+    cep = db.Column(db.String(10), nullable=False)
+    logradouro = db.Column(db.String(255), nullable=False)
+    numero = db.Column(db.String(20), nullable=False)
+    complemento = db.Column(db.String(255), nullable=True)
+    bairro = db.Column(db.String(255), nullable=False)
     
-    # Relações bidirecionais (para ser acessado pelas tabelas que o referenciam)
-    # agencias = relationship('Agencia', backref='endereco')
-    # usuarios = relationship('Usuario', backref='endereco')
-
+    # RELAÇÃO INVERSA: Usada pelo `backref='usuarios'` no modelo Usuario
+    # Esta relação não precisa ser definida aqui, mas é bom para consulta:
+    # usuarios = relationship('Usuario', backref='endereco_obj', lazy=True)
+    
     def __repr__(self):
-        return f"<Endereco id={self.id_Endereco} cep={self.CEP} logradouro={self.Logradouro}>"
+        return f"<Endereco id={self.id_endereco} - {self.logradouro}, {self.numero}>"

@@ -14,7 +14,7 @@ class Agencia(db.Model):
     id_Agencia = db.Column(db.Integer, primary_key=True, autoincrement=True)
     Nome_Agencia = db.Column(db.String(255), nullable=False)
     Num_Agencia = db.Column(db.Integer, nullable=False, unique=True)
-    fk_Endereco_id_Endereco = db.Column(db.Integer, db.ForeignKey('Endereco.id_Endereco'), nullable=False)
+    fk_Endereco_id = db.Column(db.Integer, db.ForeignKey('Endereco.id_Endereco'), nullable=False)
     
     # Relação: Permite acessar os detalhes do endereço
     endereco = relationship('Endereco', backref='agencias')

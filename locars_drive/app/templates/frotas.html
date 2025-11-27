@@ -125,9 +125,9 @@
                     {% for veiculo in veiculos %}
                     <div class="veiculo-card">
                         <!-- Link para o detalhe do veículo (corrigido o endpoint) -->
-                        <a href="{{ url_for('veiculos.detalhe_veiculo', veiculo_id=veiculo.id_Veiculo) }}">
+                        <a href="{{ url_for('veiculos.detalhe', id_veiculo=veiculo.id_Veiculo) }}">
                             <!-- Placeholder de Imagem -->
-                            <div class="card-imagem" style="background-image: url('https://placehold.co/400x200/4096d2/ffffff?text={{ veiculo.marca.Nome_Marca }}');"></div>
+                            <div class="card-imagem" style="background-image: url(&quot;{{ url_for('static', filename='uploads/' ~ veiculo.imagem_principal) if veiculo.imagem_principal else 'placehold.co' ~ veiculo.marca.Nome_Marca }}&quot;)"></div>
                             <div class="card-info">
                                 <!-- Acessando corretamente Marca e Modelo -->
                                 <h2>{{ veiculo.marca.Nome_Marca }} {{ veiculo.modelo.Nome_Modelo }}</h2>
@@ -153,7 +153,7 @@
                         </a>
                         <!-- Botão de Locação -->
                         {% if veiculo.StatusVeiculo == 'Disponível' %}
-                            <a href="{{ url_for('locacao.locacao', veiculo_id=veiculo.id_Veiculo) }}" class="btn btn-rent">
+                            <a href="{{ url_for('veiculos.detalhe', id_veiculo=veiculo.id_Veiculo) }}" class="btn btn-rent">
                                 <i class="fas fa-calendar-check"></i> Alugar Agora
                             </a>
                         {% else %}

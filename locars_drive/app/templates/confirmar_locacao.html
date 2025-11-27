@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Confirmar Locação{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/detalhe.css') }}">
+
+<div class="locacao-detalhes">
+
+    <h1>{{ veiculo.Modelo.Nome_Modelo }}</h1>
+
+    <img src="{{ url_for('static', filename='uploads/' ~ veiculo.imagem_principal) }}"
+         class="detalhes-img">
+
+    <div class="dados-veiculo">
+        <p><strong>Marca:</strong> {{ veiculo.Marca.Nome_Marca }}</p>
+        <p><strong>Modelo:</strong> {{ veiculo.Modelo.Nome_Modelo }}</p>
+        <p><strong>Categoria:</strong> {{ veiculo.Categoria.Nome_Categoria }}</p>
+        <p><strong>Placa:</strong> {{ veiculo.Placa }}</p>
+        <p><strong>KMs:</strong> {{ veiculo.Km_Rodado }}</p>
+        <p><strong>Status:</strong> {{ veiculo.StatusVeiculo }}</p>
+    </div>
+
+    <form method="POST">
+        <button type="submit" class="btn btn-success">
+            Confirmar Locação
+        </button>
+
+        <a href="{{ url_for('veiculos.lista_veiculos') }}" class="btn btn-secondary">
+            Cancelar
+        </a>
+    </form>
+
+</div>
+{% endblock %}

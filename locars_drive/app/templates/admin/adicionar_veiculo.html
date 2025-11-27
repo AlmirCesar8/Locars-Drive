@@ -1,85 +1,123 @@
 {% extends "base.html" %}
 
-{% block title %}Adicionar Novo Veículo{% endblock %}
+{% block title %}Adicionar Novo Veículo | Administração{% endblock %}
 
 {% block css_file %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/veiculos_admin.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/veiculos_admin.css') }}">
 {% endblock %}
 
 {% block content %}
 <div class="container_admin">
-    <header>
-        <h1>Gestão de Frota | Adicionar Veículo</h1>
-        <p>Preencha os dados do novo veículo para adicioná-lo à frota LocarsDrive.</p>
+
+    <header class="page-header">
+        <h1>Gestão da Frota – Adicionar Veículo</h1>
+        <p>Informe os dados necessários para cadastrar um novo veículo na plataforma LocarsDrive.</p>
     </header>
-    
-    
 
-    <form method="POST" action="{{ url_for('admin_bp.adicionar_veiculo') }}" class="form-card">
-        {{ form.hidden_tag() }} 
+    <form method="POST" action="{{ url_for('admin_bp.adicionar_veiculo') }}" class="form-card" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
 
-        
-        <div class="input-group">
-            <label>{{ form.fk_marca_id_marca.label }}</label>
-            {{ form.fk_marca_id_marca(class="form-control") }}
-            {% for error in form.fk_marca_id_marca.errors %}
-                <span style="color: red; font-size: 0.8em;">[{{ error }}]</span>
-            {% endfor %}
-        </div>
-        
-        <div class="input-group">
-            <label>{{ form.fk_modelo_id_modelo.label }}</label>
-            {{ form.fk_modelo_id_modelo(class="form-control") }}
-            {% for error in form.fk_modelo_id_modelo.errors %}
-                <span style="color: red; font-size: 0.8em;">[{{ error }}]</span>
-            {% endfor %}
-        </div>
-        
-        <div class="input-group">
-            <label>{{ form.fk_categoria_id_categoria.label }}</label>
-            {{ form.fk_categoria_id_categoria(class="form-control") }}
-            {% for error in form.fk_categoria_id_categoria.errors %}
-                <span style="color: red; font-size: 0.8em;">[{{ error }}]</span>
-            {% endfor %}
+        <!-- Seleção de Tipo de Veículo -->
+        <section class="form-section">
+            <h2>Informações do Tipo</h2>
+            <div class="input-group">
+                <label>{{ form.fk_tipo_id_tipo.label }}</label>
+                {{ form.fk_tipo_id_tipo(class="form-control", id="select-tipo", aria_label="Tipo do veículo") }}
+                {% for error in form.fk_tipo_id_tipo.errors %}
+                    <span class="error-msg">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <p class="section-hint">Selecione o tipo do veículo (Carro, Moto, E-bike, Patinete...). Isso liberará apenas marcas e modelos compatíveis.</p>
+        </section>
+
+        <div class="form-group">
+            <label for="imagem">Imagem do veículo</label>
+            {{ form.imagem(class="form-control") }}
         </div>
 
-        <div class="input-group">
-            <label>{{ form.placa.label }}</label>
-            {{ form.placa(class="form-control", placeholder="Ex: ABC1E34") }}
-            {% for error in form.placa.errors %}
-                <span style="color: red; font-size: 0.8em;">[{{ error }}]</span>
-            {% endfor %}
-        </div>
+        <!-- Informações técnicas -->
+        <section class="form-section">
+            <h2>Identificação e Especificações</h2>
 
-        <div class="input-group">
-            <label>{{ form.frota.label }}</label>
-            {{ form.frota(class="form-control", placeholder="Ex: 2024") }}
-            {% for error in form.frota.errors %}
-                <span style="color: red; font-size: 0.8em;">[{{ error }}]</span>
-            {% endfor %}
-        </div>
-        
-        <div class="input-group">
-            <label>{{ form.km_rodado.label }}</label>
-            {{ form.km_rodado(class="form-control", placeholder="Ex: 5000") }}
-            {% for error in form.km_rodado.errors %}
-                <span style="color: red; font-size: 0.8em;">[{{ error }}]</span>
-            {% endfor %}
-        </div>
+            <div class="input-grid-2">
+                
+                <div class="input-group">
+                    <label>{{ form.fk_marca_id_marca.label }}</label>
+                    {{ form.fk_marca_id_marca(class="form-control", id="select-marca") }}
+                    {% for error in form.fk_marca_id_marca.errors %}
+                        <span class="error-msg">{{ error }}</span>
+                    {% endfor %}
+                </div>
 
-        <div class="input-group">
-            <label>{{ form.status_veiculo.label }}</label>
-            {{ form.status_veiculo(class="form-control") }}
-            {% for error in form.status_veiculo.errors %}
-                <span style="color: red; font-size: 0.8em;">[{{ error }}]</span>
-            {% endfor %}
-        </div>
+                <div class="input-group">
+                    <label>{{ form.fk_modelo_id_modelo.label }}</label>
+                    {{ form.fk_modelo_id_modelo(class="form-control", id="select-modelo") }}
+                    {% for error in form.fk_modelo_id_modelo.errors %}
+                        <span class="error-msg">{{ error }}</span>
+                    {% endfor %}
+                </div>
 
-        <button type="submit" class="submit-btn">Adicionar Veículo à Frota</button>
+                <div class="input-group">
+                    <label>{{ form.fk_categoria_id_categoria.label }}</label>
+                    {{ form.fk_categoria_id_categoria(class="form-control") }}
+                    {% for error in form.fk_categoria_id_categoria.errors %}
+                        <span class="error-msg">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+                <div class="input-group">
+                    <label>{{ form.status_veiculo.label }}</label>
+                    {{ form.status_veiculo(class="form-control") }}
+                    {% for error in form.status_veiculo.errors %}
+                        <span class="error-msg">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Dados operacionais -->
+        <section class="form-section">
+            <h2>Detalhes Operacionais</h2>
+
+            <div class="input-grid-3">
+
+                <div class="input-group">
+                    <label>{{ form.placa.label }}</label>
+                    {{ form.placa(class="form-control", placeholder="Ex: ABC1E34", maxlength="7") }}
+                    {% for error in form.placa.errors %}
+                        <span class="error-msg">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+                <div class="input-group">
+                    <label>{{ form.frota.label }}</label>
+                    {{ form.frota(class="form-control", placeholder="Ano da frota (Ex: 2024)") }}
+                    {% for error in form.frota.errors %}
+                        <span class="error-msg">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+                <div class="input-group">
+                    <label>{{ form.km_rodado.label }}</label>
+                    {{ form.km_rodado(class="form-control", placeholder="Quilometragem atual (Ex: 5000)") }}
+                    {% for error in form.km_rodado.errors %}
+                        <span class="error-msg">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Ação -->
+        <button type="submit" class="submit-btn">
+            Adicionar Veículo à Frota
+        </button>
+
     </form>
 </div>
 {% endblock %}
 
 {% block js_file %}
-    <script type="module" src="{{ url_for('static', filename='js/veiculos_admin.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/veiculos_admin.js') }}"></script>
 {% endblock %}

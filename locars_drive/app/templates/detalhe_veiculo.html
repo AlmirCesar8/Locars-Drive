@@ -1,155 +1,115 @@
 {% extends 'base.html' %}
-{% block title %}Detalhe do Veículo: {{ veiculo.Marca }} {{ veiculo.Modelo }}{% endblock %}
+{% block title %}Detalhe do Veículo{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/detalhe.css') }}">
 
+<link rel="stylesheet" href="{{ url_for('static', filename='css/detalhe.css') }}">
 
 <section class="detalhe-main">
     <div class="container">
+
         <div class="breadcrumb">
-            <a href="{{ url_for('locacao.locacao') }}">Veículos</a> / <span>{{ veiculo.Marca }} {{ veiculo.Modelo }}</span>
+            <a href="{{ url_for('locacao.locacao') }}">Veículos</a> / 
+            <span>{{ marca_nome }} {{ modelo_nome }}</span>
         </div>
 
         <div class="detalhe-wrapper">
-            
+
+            <!-- COLUNA PRINCIPAL -->
             <main class="detalhe-col-principal">
-                
+
                 <div class="veiculo-header">
-                    <h1>{{ veiculo.Marca }} {{ veiculo.Modelo }}</h1>
-                    {# Assumindo que estas variáveis são calculadas na sua rota Flask e anexadas ao objeto veiculo #}
+                    <h1>{{ marca_nome }} {{ modelo_nome }}</h1>
+
+                    <!-- Avaliação fictícia só para estilização -->
                     <div class="avaliacao">
-                        <i class="fa-solid fa-star"></i> <span>{{ veiculo.media_avaliacao | default(5.0) | round(1) }} ({{ veiculo.total_avaliacoes | default(0) }} avaliações)</span>
+                        <i class="fa-solid fa-star"></i> 
+                        <span>5.0 (0 avaliações)</span>
                     </div>
                 </div>
 
+                <!-- FOTO PRINCIPAL -->
                 <div class="galeria-fotos">
-                    {# Use a ImagemURL do seu modelo #}
-                    <img src="{{ veiculo.ImagemURL or url_for('static', filename='img/default.jpg') }}" alt="{{ veiculo.Modelo }}" class="imagem-principal">
-                    {# Se você tiver uma lista de URLs em veiculo.imagens_secundarias #}
-                </div>
-                
-                <div class="detalhe-card">
-                    <h2>Especificações Chave</h2>
-                    <ul class="lista-especificacoes">
-                        <li><i class="fa-solid fa-gas-pump"></i> Combustível: <span>{{ veiculo.TipoCombustivel }}</span></li>
-                        <li><i class="fa-solid fa-gear"></i> Transmissão: <span>{{ veiculo.TipoTransmissao or 'N/A' }}</span></li>
+                    <img 
+                        src="{{ url_for('static', filename='uploads/' ~ veiculo.imagem_principal) }}"
                         
-                        {# Adapte a exibição de detalhes com base na Categoria/Tipo #}
-                        {% if veiculo.Categoria == 'carro' %}
-                            <li><i class="fa-solid fa-user-group"></i> Assentos: <span>{{ veiculo.NumeroAssentos }}</span></li>
-                            <li><i class="fa-solid fa-door-open"></i> Portas: <span>{{ veiculo.NumeroPortas }}</span></li>
-                        {% elif veiculo.Categoria == 'moto' %}
-                            <li><i class="fa-solid fa-motorcycle"></i> Cilindrada: <span>{{ veiculo.Cilindrada }}</span></li>
-                            <li><i class="fa-solid fa-helmet-safety"></i> CNH Necessária: <span>{{ 'Sim' if veiculo.RequerCNH else 'Não' }}</span></li>
-                        {% else %}
-                        <li><i class="fa-solid fa-bolt"></i> Tipo: <span>{{ 'Elétrico' if veiculo.Tipo == 'Eletrico' else 'Comum' }}</span></li>
-                            <li><i class="fa-solid fa-route"></i> Autonomia: <span>{{ veiculo.Autonomia or 'N/A' }} km</span></li>
-                        {% endif %}
+                        alt="Imagem do veículo"
+                        class="imagem-principal">
+                </div>
+
+                <!-- ESPECIFICAÇÕES -->
+                <div class="detalhe-card">
+                    <h2>Especificações</h2>
+
+                    <ul class="lista-especificacoes">
+                        <li><i class="fa-solid fa-car"></i> Tipo: 
+                            <span>{{ tipo_nome }}</span>
+                        </li>
+
+                        <li><i class="fa-solid fa-tag"></i> Categoria: 
+                            <span>{{ categoria_nome }}</span>
+                        </li>
+
+                        <li><i class="fa-solid fa-gauge-high"></i> Km Rodado: 
+                            <span>{{ veiculo.Km_Rodado }}</span>
+                        </li>
+
+                        <li><i class="fa-solid fa-car-side"></i> Ano da Frota: 
+                            <span>{{ veiculo.Frota }}</span>
+                        </li>
+
+                        <li><i class="fa-solid fa-shield-halved"></i> Status: 
+                            <span>{{ veiculo.StatusVeiculo }}</span>
+                        </li>
+
+                        <li><i class="fa-solid fa-id-card"></i> Placa: 
+                            <span>{{ veiculo.Placa }}</span>
+                        </li>
                     </ul>
                 </div>
-                
+
+                <!-- DESCRIÇÃO GENÉRICA -->
                 <div class="detalhe-card">
                     <h2>Descrição</h2>
-                    <p>{{ veiculo.DescricaoCompleta or "Este veículo é uma excelente opção para suas necessidades de locomoção." }}</p>
+                    <p>Veículo disponível para locação. Para mais características,
+                       adicione campos ao modelo Veículo futuramente.</p>
                 </div>
 
             </main>
 
+            <!-- COLUNA LATERAL (RESERVA) -->
             <aside class="detalhe-col-reserva">
+
                 <div class="card-reserva">
-                    
+
                     <div class="preco-base">
-                        {# Usando ValorDiaria/ValorHora do seu modelo #}
-                        <span class="preco-valor">R$ {{ veiculo.ValorDiaria | round(2) }}</span>
+                        <span class="preco-valor">R$ {{ preco_base }}</span>
                         <span class="preco-unidade">/ dia</span>
                     </div>
 
-                    {# FORMULÁRIO QUE SUBMETE PARA A ROTA DE RESERVA (locacao.py) #}
-                    <form id="form-reserva" action="{{ url_for('locacao.locacao') }}" method="POST">
+                    <form action="{{ url_for('locacao.locacao') }}" method="POST">
+
                         <input type="hidden" name="veiculo_id" value="{{ veiculo.id_Veiculo }}">
-                        
+
                         <div class="form-group">
-                            <label for="data_retirada">Data e Hora de Retirada</label>
-                            <input type="datetime-local" id="data_retirada" name="data_retirada" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="data_devolucao">Data e Hora de Devolução</label>
-                            <input type="datetime-local" id="data_devolucao" name="data_devolucao" required>
+                            <label>Data e Hora de Retirada</label>
+                            <input type="datetime-local" name="data_retirada" required>
                         </div>
 
-                        {# Este campo é crucial para a lógica de Risco/CNH que você implementou #}
-                        {% if veiculo.RequerCNH %}
                         <div class="form-group">
-                            <label for="cnh_status">Quem irá conduzir?</label>
-                            <select id="cnh_status" name="cnh_status" class="form-control" required>
-                                <option value="motorista">Motorista LocarsDrive (Recomendado se não tiver CNH)</option>
-                                <option value="proprio">Eu mesmo (Possuo CNH válida)</option>
-                            </select>
-                        </div>
-                        {% endif %}
-
-                        <div class="resumo-total">
-                            <span>Estimativa de Diárias:</span>
-                            <span id="subtotal">R$ 0,00</span>
-                        </div>
-                        <div class="resumo-total total-final">
-                            <span>Valor Previsto:</span>
-                            <span id="total-final" data-base-price="{{ veiculo.ValorDiaria | round(2) }}">R$ 0,00</span>
+                            <label>Data e Hora de Devolução</label>
+                            <input type="datetime-local" name="data_devolucao" required>
                         </div>
 
-                        <button type="submit" class="btn btn-primary btn-checkout">
+                        <a href="{{ url_for('locacao.locacao') }}" class="btn btn-primary btn-checkout">
                             Reservar Agora <i class="fa-solid fa-arrow-right"></i>
-                        </button>
+                        </a>
                     </form>
                 </div>
+
             </aside>
         </div>
     </div>
 </section>
-
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const retiradaInput = document.getElementById('data_retirada');
-        const devolucaoInput = document.getElementById('data_devolucao');
-        const totalFinalSpan = document.getElementById('total-final');
-        const subtotalSpan = document.getElementById('subtotal');
-        const basePrice = parseFloat(totalFinalSpan.getAttribute('data-base-price'));
-
-        function calcularTotal() {
-            const dataRetirada = new Date(retiradaInput.value);
-            const dataDevolucao = new Date(devolucaoInput.value);
-
-            if (dataRetirada && dataDevolucao && dataDevolucao > dataRetirada) {
-                // Cálculo da diferença em milissegundos
-                const diffMs = dataDevolucao - dataRetirada;
-                
-                // Conversão para dias
-                const msPerDay = 1000 * 60 * 60 * 24;
-                let diasFracionados = diffMs / msPerDay;
-
-                // Arredonda para cima (cobranca de diária inteira)
-                const diasCobranca = Math.ceil(diasFracionados);
-                
-                // O valor mínimo de dias de cobrança é 1
-                const diasValidos = Math.max(1, diasCobranca);
-                
-                const total = basePrice * diasValidos;
-
-                subtotalSpan.textContent = `${diasValidos} diária(s)`;
-                totalFinalSpan.textContent = `R$ ${total.toFixed(2)}`;
-            } else {
-                subtotalSpan.textContent = 'R$ 0,00';
-                totalFinalSpan.textContent = 'R$ 0,00';
-            }
-        }
-
-        retiradaInput.addEventListener('change', calcularTotal);
-        devolucaoInput.addEventListener('change', calcularTotal);
-        
-        // Inicializa o cálculo se os valores estiverem pré-preenchidos
-        calcularTotal();
-    });
-</script>
 
 {% endblock %}

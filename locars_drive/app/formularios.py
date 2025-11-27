@@ -4,6 +4,7 @@ from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationE
 from datetime import date
 from wtforms.fields import DecimalField, DateTimeLocalField
 from app.extensions import db
+from flask_wtf.file import FileField, FileAllowed
 
 # Importações dos modelos (necessárias para o VeiculoForm)
 # NOTA: Assumo que estas importações estão corretas no seu ambiente Flask.
@@ -11,6 +12,7 @@ try:
     from app.models.marca_veiculo import MarcaVeiculo
     from app.models.modelo import Modelo
     from app.models.categoria import Categoria
+    from app.models.tipo_veiculo import TipoVeiculo
 except ImportError:
     # Fallback para execução em ambiente simulado, você deve garantir que esses modelos existam.
     class MockModel:
@@ -39,6 +41,13 @@ except ImportError:
 
 
 # Funções auxiliares para buscar dados do banco de dados
+
+def get_tipos_choices():
+    try:
+        return [(t.id_Tipo, t.Nome_Tipo) for t in db.session.query(TipoVeiculo).all()]
+    except:
+        return []
+    
 def get_marcas_choices():
     # Busca todas as marcas do banco e formata como (id, nome)
     try:
@@ -57,6 +66,7 @@ def get_categorias_choices():
     # Busca todas as categorias do banco e formata como (id, nome)
     try:
         return [(c.id_Categoria, c.Tipos_Categorias) for c in db.session.query(Categoria).all()]
+
     except:
         return [(1, 'Sedan'), (2, 'SUV')] # Fallback
 
@@ -130,39 +140,43 @@ class LoginForm(FlaskForm):
 
 # --- Formulário de Cadastro de Veículo ---
 class VeiculoForm(FlaskForm):
-    # Frota INT NOT NULL
-    frota = IntegerField("Número da Frota", validators=[DataRequired(), NumberRange(min=1)], render_kw={"placeholder": "Ex: 101"})
-    
-    # Placa CHAR(7) NOT NULL UNIQUE
-    placa = StringField("Placa (7 caracteres)", validators=[DataRequired(), Length(min=7, max=7)], render_kw={"placeholder": "ABC1234"})
-    
-    # Km_Rodado DECIMAL(10,2) NOT NULL
-    km_rodado = DecimalField("Km Rodado (Inicial)", validators=[DataRequired(), NumberRange(min=0)], places=2, render_kw={"placeholder": "12000.50"})
-    
-    # StatusVeiculo ENUM('Disponível','Indisponível') NOT NULL (Opções fixas)
+    frota = IntegerField("Número da Frota", validators=[DataRequired(), NumberRange(min=1)])
+    placa = StringField("Placa (7 caracteres)", validators=[DataRequired(), Length(min=7, max=7)])
+    km_rodado = DecimalField("Km Rodado (Inicial)", validators=[DataRequired(), NumberRange(min=0)], places=2)
+
     status_veiculo = SelectField("Status Inicial", choices=[
         ('Disponível', 'Disponível'),
         ('Indisponível', 'Indisponível')
     ], validators=[DataRequired()])
-    
-    # fk_Marca_id_Marca (SelectField dinâmico)
-    fk_marca_id_marca = SelectField("Marca", coerce=int, validators=[DataRequired()])
 
-    # fk_Modelo_id_Modelo (SelectField dinâmico)
+    fk_tipo_id_tipo = SelectField("Tipo do Veículo", coerce=int, validators=[DataRequired()])
+    fk_marca_id_marca = SelectField("Marca", coerce=int, validators=[DataRequired()])
     fk_modelo_id_modelo = SelectField("Modelo", coerce=int, validators=[DataRequired()])
-    
-    # fk_Categoria_id_Categoria (SelectField dinâmico)
     fk_categoria_id_categoria = SelectField("Categoria", coerce=int, validators=[DataRequired()])
-    
+
+
+    imagem = FileField("Imagem do Veículo", validators=[
+        FileAllowed(['jpg', 'jpeg', 'png'], "Somente imagens são permitidas.")
+    ])
+
     submit = SubmitField("Cadastrar Veículo")
 
-    # Injeta as opções dinâmicas no construtor
     def __init__(self, *args, **kwargs):
-        super(VeiculoForm, self).__init__(*args, **kwargs)
-        # Preenche os campos SelectField com dados do banco de dados
+        super().__init__(*args, **kwargs)
+
+        # IMPORTANTE → Popular o campo que estava faltando
+        from app.models.tipo_veiculo import TipoVeiculo
+        #self.fk_tipo_id_tipo.choices = [
+            #(t.id_Tipo, t.Nome_Tipo) for t in db.session.query(TipoVeiculo).all()
+        #]
+
+        self.fk_tipo_id_tipo.choices = get_tipos_choices()
+
+        
         self.fk_marca_id_marca.choices = get_marcas_choices()
         self.fk_modelo_id_modelo.choices = get_modelos_choices()
         self.fk_categoria_id_categoria.choices = get_categorias_choices()
+
 
 # --- Formulário de Locação (Reserva) ---
 class LocacaoForm(FlaskForm):

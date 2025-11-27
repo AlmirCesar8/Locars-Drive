@@ -6,6 +6,7 @@ from app.models.veiculo import Veiculo
 # from app.models.modelo import Modelo # Não precisamos importar aqui
 # from app.models.categoria import Categoria # Não precisamos importar aqui
 from app.formularios import VeiculoForm
+from flask import abort
 
 veiculos_bp = Blueprint('veiculos', __name__)
 
@@ -37,16 +38,28 @@ def veiculos():
                            # Passa a verificação de admin para o template decidir se mostra o botão
                            is_admin=is_admin_placeholder())
 
-@veiculos_bp.route('/<int:veiculo_id>')
-def detalhe_veiculo(veiculo_id):
-    # Busca o veículo pelo ID com carregamento das relações para evitar N+1
-    veiculo = db.session.query(Veiculo).filter(Veiculo.id_Veiculo == veiculo_id).first()
-    
+
+
+@veiculos_bp.route('/detalhe/<int:id_veiculo>')
+def detalhe(id_veiculo):
+    veiculo = Veiculo.query.get(id_veiculo)
+
     if not veiculo:
-        flash("Veículo não encontrado.", 'error')
-        return redirect(url_for('veiculos.veiculos'))
-        
-    return render_template('detalhe_veiculo.html', veiculo=veiculo)
+        abort(404)
+
+    # Caso você ainda não tenha esses campos no BD, evita erro
+    veiculo.media_avaliacao = getattr(veiculo, "media_avaliacao", 5.0)
+    veiculo.total_avaliacoes = getattr(veiculo, "total_avaliacoes", 0)
+    veiculo.DescricaoCompleta = getattr(veiculo, "DescricaoCompleta", "Sem descrição disponível.")
+
+    # Ajustar imagem
+    if veiculo.imagem_principal:
+        veiculo.ImagemURL = f"/uploads/{veiculo.imagem_principal}"
+    else:
+        veiculo.ImagemURL = None
+
+    return render_template("detalhe_veiculo.html", veiculo=veiculo)
+
 
 
 # --- NOVO: Rota de Cadastro de Veículos (CRUD - Create) ---

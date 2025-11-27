@@ -15,6 +15,8 @@ class Veiculo(db.Model):
     Placa = db.Column(db.String(7), unique=True, nullable=False)
     Km_Rodado = db.Column(db.Numeric(10,2), nullable=False)
     StatusVeiculo = db.Column(db.Enum('Disponível', 'Indisponível'), nullable=False)
+    imagem_principal = db.Column(db.String(255))
+    fk_Tipo_Veiculo_id_Tipo = db.Column(db.Integer, ForeignKey('Tipo_Veiculo.id_Tipo'), nullable=False)
 
     # --- Chaves Estrangeiras Adicionadas (Para suportar o formulário) ---
     # O DDL original só tinha Categoria, mas o formulário pede todos.

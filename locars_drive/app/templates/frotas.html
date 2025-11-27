@@ -28,7 +28,7 @@
                     <div class="filtro-group">
                         <h4>Tipo de Veículo Principal</h4>
                         <select id="tipo-veiculo" name="categoria_principal" class="form-control" required style="cursor: pointer;">
-                            <option value="carro" selected>Carro (Com Motorista)</option>
+                            <option value="carro" selected>Carro</option>
                             <option value="moto">Moto</option>
                             <option value="bicicleta">Bicicleta / E-Bike</option>
                             <option value="patinete">Patinete Elétrico</option>
@@ -47,11 +47,7 @@
                     </div>
                     
                     <div id="filtro-carro" class="filtro-condicional">
-                        <div class="filtro-group">
-                            <h4>Necessidade de CNH</h4>
-                            <label><input type="radio" name="cnh" value="motorista" checked> Com Motorista LocarsDrive</label>
-                            <label><input type="radio" name="cnh" value="proprio"> Sem Motorista (Possuo CNH)</label>
-                        </div>
+                        
                         
                         <div class="filtro-group">
                             <h4>Detalhes do Carro</h4>
@@ -63,7 +59,7 @@
                         <div class="filtro-group">
                             <h4>Capacidade</h4>
                             <label><input type="checkbox" name="assentos" value="5"> 5 Assentos</label>
-                            <label><input type="checkbox" name="portas" value="4"> 4 Portas</label>
+                            <label><input type="checkbox" name="portas" value="4"> 8 Assentos</label>
                         </div>
                     </div>
 
@@ -127,7 +123,7 @@
                         <!-- Link para o detalhe do veículo (corrigido o endpoint) -->
                         <a href="{{ url_for('veiculos.detalhe', id_veiculo=veiculo.id_Veiculo) }}">
                             <!-- Placeholder de Imagem -->
-                            <div class="card-imagem" style="background-image: url(&quot;{{ url_for('static', filename='uploads/' ~ veiculo.imagem_principal) if veiculo.imagem_principal else 'placehold.co' ~ veiculo.marca.Nome_Marca }}&quot;)"></div>
+                            <div class="card-imagem" style="background-image: url(&quot;{{ url_for('static', filename='uploads/' ~ veiculo.imagem_principal) if veiculo.imagem_principal else '../static/img/carroelse.jpg' ~ veiculo.marca.Nome_Marca }}&quot;)"></div>
                             <div class="card-info">
                                 <!-- Acessando corretamente Marca e Modelo -->
                                 <h2>{{ veiculo.marca.Nome_Marca }} {{ veiculo.modelo.Nome_Modelo }}</h2>

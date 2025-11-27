@@ -9,8 +9,8 @@
         <h1>Minhas Reservas</h1>
 
         <div class="reservas-tabs">
-            <button class="tab-button ativo" data-status="Todas">Todas ({{ reservas | length }})</button>
-            <button class="tab-button" data-status="Ativa">Ativas ({{ reservas | selectattr('status', 'equalto', 'Ativa') | list | length }})</button>
+            <button class="tab-button ativo" data-status="Todas">Todas (1)</button>
+            <button class="tab-button" data-status="Ativa">Ativas (1)</button>
             <button class="tab-button" data-status="Concluída">Histórico</button>
             <button class="tab-button" data-status="Cancelada">Canceladas</button>
         </div>
@@ -24,23 +24,27 @@
                 </div>
 
                 <div class="reserva-body">
-                    <img src="{{ reserva.imagem }}" alt="{{ reserva.veiculo }}" class="reserva-imagem">
+                    <img 
+                        src="{{ url_for('static', filename='uploads/' ~ veiculo.imagem_principal) }}"
+                        
+                        alt="Imagem do veículo"
+                        class="imagem-principal">
                     
                     <div class="reserva-detalhes">
                         <h3>{{ reserva.veiculo }}</h3>
                         <p class="categoria">{{ reserva.categoria }}</p>
 
                         <div class="info-grupo">
-                            <span class="info-item"><i class="fa-solid fa-clock"></i> **Retirada:** {{ reserva.retirada }}</span>
-                            <span class="info-item"><i class="fa-solid fa-location-dot"></i> **Local:** {{ reserva.local }}</span>
+                            <span class="info-item"><i class="fa-solid fa-clock"></i> Retirada: {{ reserva.retirada }}</span>
+                            <span class="info-item"><i class="fa-solid fa-location-dot"></i> Local: {{ reserva.local }}</span>
                             {% if reserva.motorista != 'N/A' %}
-                            <span class="info-item"><i class="fa-solid fa-person-military-pointing"></i> **Motorista:** {{ reserva.motorista }}</span>
+                            <span class="info-item"><i class="fa-solid fa-person-military-pointing"></i> Motorista: {{ reserva.motorista }}</span>
                             {% endif %}
                         </div>
                     </div>
 
                     <div class="reserva-acoes">
-                        <span class="total-reserva">Total: **R$ {{ reserva.total | round(2) }}**</span>
+                        <span class="total-reserva">Total: R$ {{ reserva.total | round(2) }}</span>
                         
                         {% if reserva.status == 'Ativa' %}
                             <a href="#" class="btn btn-action primary">Gerenciar / Cancelar</a>
@@ -59,9 +63,41 @@
                 <a href="{{ url_for('frotas.listar_veiculos') }}" class="btn btn-primary" style="background-color: #000;">Começar a Locar</a>
             </div>
             {% endfor %}
+
+            <!-- DIV PROVISÓRIA -->
+            <div class="reserva-card provisoria" data-status="Todas">
+                <div class="reserva-header">
+                    <span class="reserva-id">Reserva #000</span>
+                    <span class="badge-status status-provisoria">PROVISÓRIA</span>
+                </div>
+
+                <div class="reserva-body">
+                    <img src="{{ url_for('static', filename='images/carro_teste.jpg') }}" 
+                         alt="Veículo Provisório" class="reserva-imagem">
+                    
+                    <div class="reserva-detalhes">
+                        <h3>Toyota Corolla</h3>
+                        <p class="categoria">Categoria Hatch</p>
+
+                        <div class="info-grupo">
+                            <span class="info-item"><i class="fa-solid fa-clock"></i> Retirada: 27/11/2025 - 12:00</span>
+                            <span class="info-item"><i class="fa-solid fa-location-dot"></i> Local: Provisório</span>
+                            <span class="info-item"><i class="fa-solid fa-person-military-pointing"></i> Motorista: N/A</span>
+                        </div>
+                    </div>
+
+                    <div class="reserva-acoes">
+                        <span class="total-reserva">Total: R$ 150</span>
+                        <a href="#" class="btn btn-action secondary">Detalhes</a>
+                    </div>
+                </div>
+            </div>
+            <!-- FIM DIV PROVISÓRIA -->
+
         </div>
     </div>
 </section>
+
 {% raw %}
 <script>
     document.addEventListener('DOMContentLoaded', () => {

@@ -107,4 +107,4 @@ O projeto foi idealizado com foco em **eficiência, precisão e segurança**, pr
 
 ## :dart: Status do projeto
 
-*  🚧 Em desenvolvimento 🚧
+* Concluido ✅
